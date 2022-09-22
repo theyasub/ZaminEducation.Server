@@ -6,9 +6,11 @@ using ZaminEducation.Domain.Commons;
 
 namespace ZaminEducation.Domain.Entities.Courses
 {
-    public class CourseLearnPlan : Auditable<long>
+    public class CourseTarget : Auditable
     {
-        public string Title { get; set; }
+        public string Name  { get; set; }
+        
         public long CourseId { get; set; }
+        public Course Course { get; set; }
     }
 }

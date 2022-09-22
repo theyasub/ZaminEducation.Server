@@ -2,8 +2,8 @@ using ZaminEducation.Domain.Commons;
 
 namespace ZaminEducation.Domain.Entities.Courses
 {
-    public class CourseType : Auditable<long>
+    public class HashTag : Auditable
     {
-
+        public string Name { get; set; }
     }
 }
