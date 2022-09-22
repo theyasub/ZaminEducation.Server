@@ -1,5 +1,5 @@
-using System.Net.Mail;
 using ZaminEducation.Domain.Commons;
+using ZaminEducation.Domain.Entities.Commons;
 
 namespace ZaminEducation.Domain.Entities.Quizzes
 {

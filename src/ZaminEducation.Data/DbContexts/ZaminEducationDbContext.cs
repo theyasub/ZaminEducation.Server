@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.UserCourses;
@@ -14,6 +15,7 @@ namespace ZaminEducation.Data.DbContexts
         {
         }
 
+        public virtual DbSet<Attachment> Attachments { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
         public virtual DbSet<CourseCategory> CourseCategories { get; set; }
         public virtual DbSet<CourseModule> CourseModules { get; set; }
