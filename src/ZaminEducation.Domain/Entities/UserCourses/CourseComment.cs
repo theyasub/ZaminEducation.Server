@@ -11,7 +11,7 @@ namespace ZaminEducation.Domain.Entities.UserCourses
     public class CourseComment : Auditable
     {
         public string Text { get; set; }
-        
+
         public long UserId { get; set; }
         public User User { get; set; }
 
