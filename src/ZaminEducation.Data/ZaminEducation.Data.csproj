@@ -13,5 +13,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ZaminEducation.Domain\ZaminEducation.Domain.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Repositories" />
+  </ItemGroup>
 
 </Project>
