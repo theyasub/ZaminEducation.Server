@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using ZaminEducation.Domain.Enums;
 
 namespace ZaminEducation.Domain.Commons
