@@ -47,22 +47,24 @@ namespace ZaminEducation.Data.DbContexts
             modelBuilder.Entity<Certificate>()
                 .HasOne(c => c.User)
                 .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<CourseComment>()
                 .HasOne(c => c.User)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
 
-             modelBuilder.Entity<CourseRate>()
-                .HasOne(c => c.User)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<CourseRate>()
+               .HasOne(c => c.User)
+               .WithOne()
+               .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<QuizResult>()
                 .HasOne(q => q.User)
                 .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
+                .HasForeignKey(q => q.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // saved courses
             modelBuilder.Entity<SavedCourse>()
@@ -77,7 +79,7 @@ namespace ZaminEducation.Data.DbContexts
                 .HasOne(sc => sc.Course)
                 .WithMany()
                 .HasForeignKey(sc => sc.CourseId);
-            
+
             // question
             modelBuilder.Entity<QuestionAnswer>()
                 .HasOne(q => q.Question)
@@ -99,7 +101,7 @@ namespace ZaminEducation.Data.DbContexts
                 .HasOne(c => c.Author)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-            
+
         }
     }
 }

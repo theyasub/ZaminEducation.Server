@@ -29,12 +29,13 @@ namespace ZaminEducation.Data.Repositories
         public void Delete(TSource entity)
             => dbSet.Remove(entity);
 
-        public IQueryable<TSource> GetAll(Expression<Func<TSource, bool>> expression = null, string include = null, bool isTracking = true)
+        public IQueryable<TSource> GetAll(Expression<Func<TSource, bool>> expression = null, string[] includes = null, bool isTracking = true)
         {
             IQueryable<TSource> query = expression is null ? dbSet : dbSet.Where(expression);
 
-            if (!string.IsNullOrEmpty(include))
-                query = query.Include(include);
+            if (includes is not null)
+                foreach (var include in includes)
+                    query = query.Include(include);
 
             if (!isTracking)
                 query = query.AsNoTracking();
@@ -42,8 +43,8 @@ namespace ZaminEducation.Data.Repositories
             return query;
         }
 
-        public async Task<TSource> GetAsync(Expression<Func<TSource, bool>> expression = null, string include = null)
-            => await GetAll(expression, include).FirstOrDefaultAsync();
+        public Task<TSource> GetAsync(Expression<Func<TSource, bool>> expression, string[] includes = null)
+            => GetAll(expression, includes).FirstOrDefaultAsync();
 
         public TSource Update(TSource entity)
             => dbSet.Update(entity).Entity;
