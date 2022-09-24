@@ -14,4 +14,3 @@ namespace ZaminEducation.Service.DTOs.UserCoursesDtos
         public CourseCommentForCreationDto Parent { get; set; }
     }
 }
-}
