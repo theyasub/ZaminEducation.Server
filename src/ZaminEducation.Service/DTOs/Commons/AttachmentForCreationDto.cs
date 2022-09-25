@@ -5,9 +5,9 @@ namespace ZaminEducation.Service.DTOs.Commons
     public class AttachmentForCreationDto
     {
         [Required]
-        public string Name { get; set; }
+        public string FileName { get; set; }
 
         [Required]
-        public string Path { get; set; }
+        public Stream Stream { get; set; }
     }
 }
