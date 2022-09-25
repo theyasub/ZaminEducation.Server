@@ -1,11 +1,22 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using ZaminEducation.Data.IRepositories;
+using ZaminEducation.Data.Repositories;
+using ZaminEducation.Domain.Entities.Courses;
+using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.Services;
 
 namespace ZaminEducation.Api
 {
     public static class ServiceExtensions
     {
+        public static void AddCustomServices(this IServiceCollection services)
+        {
+            services.AddScoped<IRepository<Course>, Repository<Course>>();
+            services.AddScoped<ICourseService, CourseService>();
+        }
+
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection("Jwt");
