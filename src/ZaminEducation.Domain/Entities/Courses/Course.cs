@@ -41,5 +41,6 @@ namespace ZaminEducation.Domain.Entities.Courses
         public virtual ICollection<CourseTarget> Targets { get; set; }
         public virtual ICollection<CourseRate> Rates { get; set; }
         public virtual ICollection<User> Users { get; set; }
+        public virtual ICollection<CourseVideo> Videos { get; set; }
     }
 }

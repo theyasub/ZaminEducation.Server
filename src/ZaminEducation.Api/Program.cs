@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using ZaminEducation.Api;
+using Newtonsoft.Json;
 using Serilog;
+using ZaminEducation.Api;
 using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
@@ -9,6 +10,9 @@ using ZaminEducation.Domain.Entities.Users;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ZaminEducationDbContext>(option =>
@@ -22,6 +26,8 @@ builder.Services.ConfigureJwt(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddCustomServices();
 
 // Serilog
 var logger = new LoggerConfiguration()
