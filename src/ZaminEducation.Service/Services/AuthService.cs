@@ -6,6 +6,7 @@ using System.Text;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
+using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Service.Services
@@ -26,7 +27,7 @@ namespace ZaminEducation.Service.Services
             User user = await repository.GetAsync(u =>
                 u.Username == username && u.Password == password && u.State != ItemState.Deleted);
             if (user is null)
-                throw new("Login or Password is incorrect");
+                throw new ZaminEducationException(400, "Login or Password is incorrect");
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 

@@ -4,9 +4,8 @@ using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Service.Helpers;
 using Newtonsoft.Json;
 using Serilog;
-using ZaminEducation.Data.IRepositories;
-using ZaminEducation.Data.Repositories;
-using ZaminEducation.Domain.Entities.Users;
+using ZaminEducation.Api.Middlewares;
+using ZaminEducation.Service.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +31,7 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
 // Add custom services
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddSwaggerService();
 builder.Services.AddCustomServices();
@@ -51,6 +51,8 @@ EnvironmentHelper.WebRootPath = app.Services.GetService<IWebHostEnvironment>()?.
 
 if (app.Services.GetService<IHttpContextAccessor>() != null)
     HttpContextHelper.Accessor = app.Services.GetRequiredService<IHttpContextAccessor>();
+
+app.UseMiddleware<ZaminEducationExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 
