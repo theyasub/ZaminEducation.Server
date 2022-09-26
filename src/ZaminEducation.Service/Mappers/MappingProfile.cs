@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using System.Net.Mail;
+using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.UserCourses;
@@ -16,25 +16,32 @@ namespace ZaminEducation.Service.Mappers
     {
         public MappingProfile()
         {
+            // user 
             CreateMap<UserSocialNetwork, UserSocialNetworkForCreationDto>().ReverseMap();
             CreateMap<User, UserForCreationDto>().ReverseMap();
             CreateMap<Region, RegionForCreationDto>().ReverseMap();
             CreateMap<Address, AddressForCreationDto>().ReverseMap();
+
+            // course
+            CreateMap<CourseVideo, CourseVideoForCreationDto>().ReverseMap();
+            CreateMap<CourseTarget, CourseTargetForCreationDto>().ReverseMap();
+            CreateMap<CourseModule, CourseModuleForCreationDto>().ReverseMap();
+            CreateMap<Course, CourseForCreationDto>().ReverseMap();
+            CreateMap<CourseCategory, CourseCategoryForCreationDto>().ReverseMap();
             CreateMap<SavedCourse, SavedCourseForCreationDto>().ReverseMap();
             CreateMap<CourseRate, CourseRateForCreationDto>().ReverseMap();
             CreateMap<CourseComment, CourseCommentForCreationDto>().ReverseMap();
             CreateMap<Certificate, CertificateForCreationDto>().ReverseMap();
+            
+            // quiz
             CreateMap<QuizResult, QuizResultForCreationDto>().ReverseMap();
             CreateMap<Quiz, QuizForCreationDto>().ReverseMap();
             CreateMap<QuizContent, QuizContentForCreationDto>().ReverseMap();
             CreateMap<QuizAsset, QuizAssetForCreationDto>().ReverseMap();
             CreateMap<QuestionAnswer, QuestionAnswerForCreationDto>().ReverseMap();
             CreateMap<HashTag, HashTagForCreationDto>().ReverseMap();
-            CreateMap<CourseVideo, CourseVideoForCreationDto>().ReverseMap();
-            CreateMap<CourseTarget, CourseTargetForCreationDto>().ReverseMap();
-            CreateMap<CourseModule, CourseModuleForCreationDto>().ReverseMap();
-            CreateMap<Course, CourseForCreationDto>().ReverseMap();
-            CreateMap<CourseCategory, CourseCategoryForCreationDto>().ReverseMap();
+            
+            // another
             CreateMap<Attachment, AttachmentForCreationDto>().ReverseMap();
         }
 
