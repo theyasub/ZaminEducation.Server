@@ -397,6 +397,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-
-appsettings.json
-appsettings.Development.json
+src/ZaminEducation.Api/appsettings.json
+src/ZaminEducation.Api/appsettings.Development.json

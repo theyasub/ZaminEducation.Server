@@ -4,8 +4,6 @@ using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Service.Helpers;
 using Newtonsoft.Json;
 using Serilog;
-using ZaminEducation.Api;
-using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
 using ZaminEducation.Domain.Entities.Users;
@@ -13,24 +11,17 @@ using ZaminEducation.Domain.Entities.Users;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
 builder.Services.AddControllers();
+
+// Add db context
 builder.Services.AddDbContext<ZaminEducationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddSwaggerService();
-
-builder.Services.AddScoped<IRepository<User>, Repository<User>>();
-
-builder.Services.ConfigureJwt(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddCustomServices();
 
 // Serilog
 var logger = new LoggerConfiguration()
@@ -41,10 +32,9 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
 // Add custom services
-builder.Services.AddCustomServices();
-
 builder.Services.ConfigureJwt(builder.Configuration);
-
+builder.Services.AddSwaggerService();
+builder.Services.AddCustomServices();
 
 var app = builder.Build();
 
@@ -56,13 +46,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// get services
+// Set helpers
 EnvironmentHelper.WebRootPath = app.Services.GetService<IWebHostEnvironment>()?.WebRootPath;
 
 if (app.Services.GetService<IHttpContextAccessor>() != null)
     HttpContextHelper.Accessor = app.Services.GetRequiredService<IHttpContextAccessor>();
 
-// middlewares
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
