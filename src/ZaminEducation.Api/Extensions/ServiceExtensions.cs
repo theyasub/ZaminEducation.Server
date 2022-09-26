@@ -6,6 +6,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
+using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Services;
 
@@ -15,9 +16,15 @@ namespace ZaminEducation.Api
     {
         public static void AddCustomServices(this IServiceCollection services)
         {
-            services.AddScoped<IAttachmentService, AttachmentService>();
+            // repositories
             services.AddScoped<IRepository<Course>, Repository<Course>>();
+            services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
+            services.AddScoped<IRepository<User>, Repository<User>>();
+
+            // services
+            services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<ICourseService, CourseService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
@@ -45,9 +52,6 @@ namespace ZaminEducation.Api
 
                 };
             });
-            services.AddScoped<IAuthService, AuthService>();
-
-
         }
 
         public static void AddSwaggerService(this IServiceCollection services)
@@ -59,7 +63,6 @@ namespace ZaminEducation.Api
                 {
                     Name = "Authorization",
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
                 });
