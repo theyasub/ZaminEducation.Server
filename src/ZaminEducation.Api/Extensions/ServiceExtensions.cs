@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using System.Text;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
+using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Services;
@@ -14,6 +15,7 @@ namespace ZaminEducation.Api
     {
         public static void AddCustomServices(this IServiceCollection services)
         {
+            services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<IRepository<Course>, Repository<Course>>();
             services.AddScoped<ICourseService, CourseService>();
         }
