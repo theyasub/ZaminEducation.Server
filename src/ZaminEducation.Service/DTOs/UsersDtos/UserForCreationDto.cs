@@ -2,7 +2,7 @@
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 
-namespace ZaminEducation.Service.DTOs.UsersDtos
+namespace ZaminEducation.Service.DTOs.Users
 {
     public class UserForCreationDto
     {
@@ -18,7 +18,7 @@ namespace ZaminEducation.Service.DTOs.UsersDtos
         [Required, MinLength(5)]
         public string Password { get; set; }
 
-        public long Address { get; set; }
+        public long AddressId { get; set; }
 
         [MaxLength(200)]
         public string Bio { get; set; }
@@ -26,7 +26,7 @@ namespace ZaminEducation.Service.DTOs.UsersDtos
         [Required]
         public Gender Gender { get; set; }
 
-        public long Image { get; set; }
+        public long ImageId { get; set; }
 
         [Required]
         public UserRole Role { get; set; } = UserRole.User;

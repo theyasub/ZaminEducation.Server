@@ -1,7 +1,7 @@
-﻿using ZaminEducation.Service.DTOs.CoursesDtos;
-using ZaminEducation.Service.DTOs.UsersDtos;
+﻿using ZaminEducation.Service.DTOs.Courses;
+using ZaminEducation.Service.DTOs.Users;
 
-namespace ZaminEducation.Service.DTOs.QuizzesDtos
+namespace ZaminEducation.Service.DTOs.Quizzes
 {
     public class QuizResultForCreationDto
     {

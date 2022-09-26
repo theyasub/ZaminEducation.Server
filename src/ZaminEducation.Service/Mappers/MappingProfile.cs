@@ -5,10 +5,10 @@ using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Commons;
-using ZaminEducation.Service.DTOs.CoursesDtos;
-using ZaminEducation.Service.DTOs.QuizzesDtos;
-using ZaminEducation.Service.DTOs.UserCoursesDtos;
-using ZaminEducation.Service.DTOs.UsersDtos;
+using ZaminEducation.Service.DTOs.Courses;
+using ZaminEducation.Service.DTOs.Quizzes;
+using ZaminEducation.Service.DTOs.UserCourses;
+using ZaminEducation.Service.DTOs.Users;
 
 namespace ZaminEducation.Service.Mappers
 {
