@@ -5,9 +5,11 @@ namespace ZaminEducation.Api.Middlewares
     public class ZaminEducationExceptionMiddleware
     {
         private readonly RequestDelegate next;
-        public ZaminEducationExceptionMiddleware(RequestDelegate next)
+        private readonly ILogger<ZaminEducationExceptionMiddleware> logger;
+        public ZaminEducationExceptionMiddleware(RequestDelegate next, ILogger<ZaminEducationExceptionMiddleware> logger)
         {
             this.next = next;
+            this.logger = logger;
         }
 
         public async Task InvokeAsync(HttpContext context)
@@ -22,6 +24,9 @@ namespace ZaminEducation.Api.Middlewares
             }
             catch (Exception ex)
             {
+                //Log
+                logger.LogError(ex.ToString());
+                
                 await this.HandleException(context, 500, ex.Message);
             }
         }
