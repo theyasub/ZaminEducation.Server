@@ -4,6 +4,7 @@ using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.Exceptions;
+using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Interfaces;
 
@@ -41,8 +42,9 @@ public class AttachmentService : IAttachmentService
         {
             Name = fileName,
             Path = filePath,
-            CreatedBy = HttpContextHelper.UserId
         };
+
+        newAttachement.Create();
 
         newAttachement = await _repository.AddAsync(newAttachement);
         await _repository.SaveChangesAsync();
@@ -74,9 +76,7 @@ public class AttachmentService : IAttachmentService
         },
         true);
 
-        existAttachment.State = ItemState.Updated;
-        existAttachment.UpdatedBy = HttpContextHelper.UserId;
-        existAttachment.UpdatedAt = DateTime.UtcNow;
+        existAttachment.Update();
 
         existAttachment = _repository.Update(existAttachment);
         await _repository.SaveChangesAsync();
