@@ -6,6 +6,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
+using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Services;
@@ -20,11 +21,13 @@ namespace ZaminEducation.Api
             services.AddScoped<IRepository<Course>, Repository<Course>>();
             services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
             services.AddScoped<IRepository<User>, Repository<User>>();
+            services.AddScoped<IRepository<QuizResult>, Repository<QuizResult>>();
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IQuizResultService, QuizResultService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

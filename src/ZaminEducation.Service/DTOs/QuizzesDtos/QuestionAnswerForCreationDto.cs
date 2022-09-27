@@ -1,4 +1,4 @@
-﻿namespace ZaminEducation.Service.DTOs.QuizzesDtos
+﻿namespace ZaminEducation.Service.DTOs.Quizzes
 {
     public class QuestionAnswerForCreationDto
     {
@@ -8,6 +8,6 @@
 
         public long QuizId { get; set; }
 
-        public long Question { get; set; }
+        public long QuestionId { get; set; }
     }
 }

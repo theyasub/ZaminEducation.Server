@@ -1,6 +1,6 @@
 ﻿using ZaminEducation.Service.DTOs.Commons;
 
-namespace ZaminEducation.Service.DTOs.QuizzesDtos
+namespace ZaminEducation.Service.DTOs.Quizzes
 {
     public class QuizAssetForCreationDto
     {

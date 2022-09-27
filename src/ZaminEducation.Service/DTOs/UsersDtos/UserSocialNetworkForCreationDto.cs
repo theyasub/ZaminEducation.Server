@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ZaminEducation.Service.DTOs.UsersDtos
+namespace ZaminEducation.Service.DTOs.Users
 {
     public class UserSocialNetworkForCreationDto
     {

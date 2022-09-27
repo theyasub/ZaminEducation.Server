@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ZaminEducation.Service.DTOs.CoursesDtos
+namespace ZaminEducation.Service.DTOs.Courses
 {
     public class HashTagForCreationDto
     {

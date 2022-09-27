@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZaminEducation.Domain.Configurations
 {
-    public class PaginationParmas
+    public class PaginationParams
     {
         private const int _maxSize = 10;
         private int _pageSize;
