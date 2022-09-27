@@ -1,4 +1,4 @@
-﻿namespace ZaminEducation.Service.Interfaces
+﻿namespace ZaminEducation.Service.Interfaces.Commons
 {
     public interface IAuthService
     {

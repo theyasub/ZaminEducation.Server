@@ -5,9 +5,9 @@ using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Helpers;
-using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.Interfaces.Commons;
 
-namespace ZaminEducation.Service.Services;
+namespace ZaminEducation.Service.Services.Commons;
 
 public class AttachmentService : IAttachmentService
 {

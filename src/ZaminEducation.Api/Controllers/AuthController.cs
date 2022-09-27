@@ -2,7 +2,7 @@
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs;
-using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.Interfaces.Commons;
 
 namespace ZaminEducation.Api.Controllers
 {

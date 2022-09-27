@@ -2,9 +2,9 @@
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Service.Exceptions;
-using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.Interfaces.Courses;
 
-namespace ZaminEducation.Service.Services
+namespace ZaminEducation.Service.Services.Courses
 {
     public class CourseService : ICourseService
     {

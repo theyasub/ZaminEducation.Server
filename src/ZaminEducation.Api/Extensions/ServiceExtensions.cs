@@ -7,8 +7,10 @@ using ZaminEducation.Data.Repositories;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Users;
-using ZaminEducation.Service.Interfaces;
-using ZaminEducation.Service.Services;
+using ZaminEducation.Service.Interfaces.Commons;
+using ZaminEducation.Service.Interfaces.Courses;
+using ZaminEducation.Service.Services.Commons;
+using ZaminEducation.Service.Services.Courses;
 
 namespace ZaminEducation.Api
 {

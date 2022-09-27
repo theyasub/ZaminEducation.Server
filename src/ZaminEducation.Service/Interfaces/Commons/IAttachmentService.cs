@@ -2,7 +2,7 @@
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Service.DTOs.Commons;
 
-namespace ZaminEducation.Service.Interfaces;
+namespace ZaminEducation.Service.Interfaces.Commons;
 
 public interface IAttachmentService
 {
