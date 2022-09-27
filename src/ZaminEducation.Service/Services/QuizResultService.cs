@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Quizzes;
@@ -22,7 +17,7 @@ namespace ZaminEducation.Service.Services
             this.repository = repository;
         }
 
-        public async ValueTask<IEnumerable<QuizResult>> GetAllAsync
+        public IEnumerable<QuizResult> GetAll
             (Expression<Func<QuizResult, bool>> expression, PaginationParams @params)
         {
             var pagedList = repository.GetAll(expression, new string[] { "User", "Course" }, false).ToPageList(@params);
