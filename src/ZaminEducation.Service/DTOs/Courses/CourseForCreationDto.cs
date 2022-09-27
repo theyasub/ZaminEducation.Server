@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
-using ZaminEducation.Service.DTOs.UsersDtos;
+using ZaminEducation.Service.DTOs.Users;
 
-namespace ZaminEducation.Service.DTOs.CoursesDtos
+namespace ZaminEducation.Service.DTOs.Courses
 {
     public class CourseForCreationDto
     {
@@ -14,8 +14,6 @@ namespace ZaminEducation.Service.DTOs.CoursesDtos
         public string Description { get; set; }
 
         public long AuthorId { get; set; }
-
-        public int ViewCount { get; set; }
 
         public long ImageId { get; set; }
 
