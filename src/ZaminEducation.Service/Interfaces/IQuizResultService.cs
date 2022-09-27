@@ -7,6 +7,6 @@ namespace ZaminEducation.Service.Interfaces
     public interface IQuizResultService
     {
         ValueTask<QuizResult> GetAsync(Expression<Func<QuizResult, bool>> expression);
-        IEnumerable<QuizResult> GetAll(Expression<Func<QuizResult, bool>> expression, PaginationParams @params);
+        ValueTask<IEnumerable<QuizResult>> GetAllAsync(Expression<Func<QuizResult, bool>> expression, PaginationParams @params);
     }
 }

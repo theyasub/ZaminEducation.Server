@@ -10,7 +10,7 @@ namespace ZaminEducation.Service.Extensions
 {
     public static class CollectionExtension
     {
-        public static IEnumerable<T> ToPageList<T>(this IEnumerable<T> source, PaginationParams @params)
+        public static IQueryable<T> ToPageList<T>(this IQueryable<T> source, PaginationParams @params)
         {
             var metaData = new PaginationMetaData(source.Count(), @params);
 
