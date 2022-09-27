@@ -23,7 +23,7 @@ public class AttachmentService : IAttachmentService
         var file = await _repository.GetAsync(expression, null);
 
         if (file is null)
-            throw new ZaminEducationException(400, "Attachment not found");
+            throw new ZaminEducationException(404, "Attachment not found");
 
         FileHelper.Remove(file.Path);
 
@@ -65,7 +65,7 @@ public class AttachmentService : IAttachmentService
         var existAttachment = await _repository.GetAsync(a => a.Id == id, null);
 
         if (existAttachment is null)
-            throw new ZaminEducationException(400, "Attachment not found.");
+            throw new ZaminEducationException(404, "Attachment not found.");
 
         await FileHelper.SaveAsync(new()
         {
