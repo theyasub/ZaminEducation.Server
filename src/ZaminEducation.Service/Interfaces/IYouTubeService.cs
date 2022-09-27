@@ -11,7 +11,7 @@ namespace ZaminEducation.Service.Interfaces
         Task<bool> DeleteAsync(long id);
         Task<YouTubeVideo> UpdateAsync(long id, string link);
         Task<YouTubeVideo> GetAsync(Expression<Func<YouTubeVideo, bool>> expression);
-        Task<IEnumerable<YouTubeVideo>> GetAllAsync(PaginationParmas @params,
+        Task<IEnumerable<YouTubeVideo>> GetAllAsync(PaginationParams @params,
             Expression<Func<YouTubeVideo, bool>> expression);
         Task<long> AddToViewAsync(long id);
         Task<IEnumerable<string>> GetVideoLinksAsync(string playlistLink);

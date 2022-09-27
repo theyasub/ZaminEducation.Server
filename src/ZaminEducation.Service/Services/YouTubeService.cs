@@ -122,7 +122,7 @@ namespace ZaminEducation.Service.Services
         public async Task<YouTubeVideo> GetAsync(Expression<Func<YouTubeVideo, bool>> expression)
             => await repository.GetAsync(expression);
 
-        public async Task<IEnumerable<YouTubeVideo>> GetAllAsync(PaginationParmas @params,
+        public async Task<IEnumerable<YouTubeVideo>> GetAllAsync(PaginationParams @params,
             Expression<Func<YouTubeVideo, bool>> expression)
             => repository.GetAll(expression).ToPageList(@params);
 
