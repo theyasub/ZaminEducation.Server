@@ -8,11 +8,11 @@ namespace ZaminEducation.Domain.Configurations
 {
     public class PaginationMetaData
     {
-        public PaginationMetaData(int totalCount, PaginationParmas @parmas)
+        public PaginationMetaData(int totalCount, PaginationParams @params)
         {
             TotalCount = totalCount;
-            TotalPage = (int) Math.Ceiling(totalCount / (double) parmas.PageSize);
-            CurrentPage = parmas.PageIndex;
+            TotalPage = (int) Math.Ceiling(totalCount / (double) @params.PageSize);
+            CurrentPage = @params.PageIndex;
         }
         public int CurrentPage { get; set; }
         public int TotalCount { get; set; }

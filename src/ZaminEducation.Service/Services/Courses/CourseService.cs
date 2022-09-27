@@ -8,16 +8,16 @@ namespace ZaminEducation.Service.Services.Courses
 {
     public class CourseService : ICourseService
     {
-        private readonly IRepository<Course> courserRepository;
+        private readonly IRepository<Course> courseRepository;
 
         public CourseService(IRepository<Course> courserRepository)
         {
-            this.courserRepository = courserRepository;
+            this.courseRepository = courserRepository;
         }
 
         public async Task<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression)
         {
-            var course = await courserRepository.GetAsync(expression, new string[] { "Modules" });
+            var course = await courseRepository.GetAsync(expression, new string[] { "Modules" });
 
             if (course is null)
                 throw new ZaminEducationException(404, "Course not found");
@@ -27,7 +27,7 @@ namespace ZaminEducation.Service.Services.Courses
 
         public async Task<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression)
         {
-            var course = await courserRepository.GetAsync(expression, new string[] { "Targets" });
+            var course = await courseRepository.GetAsync(expression, new string[] { "Targets" });
 
             if (course is null)
                 throw new ZaminEducationException(404, "Course not found");
@@ -37,7 +37,7 @@ namespace ZaminEducation.Service.Services.Courses
 
         public async Task<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression)
         {
-            var course = await courserRepository.GetAsync(expression, new string[] { "Videos" });
+            var course = await courseRepository.GetAsync(expression, new string[] { "Videos" });
 
             if (course is null)
                 throw new ZaminEducationException(404, "Course not found");
