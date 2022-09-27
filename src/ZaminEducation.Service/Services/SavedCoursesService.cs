@@ -66,21 +66,5 @@ namespace ZaminEducation.Service.Services
 
             return result;
         }
-
-
-
-
-        //public async ValueTask<bool> RemoveAsync(Expression<Func<SavedCourse, bool>> expression)
-        //{
-        //    var result = await savedCourseRepository.GetAsync(expression, null);
-
-        //    if (result is null)
-        //        throw new ZaminEducationException(404, "Saved course not found");
-
-        //    savedCourseRepository.Delete(result);
-        //    await savedCourseRepository.SaveChangesAsync();
-
-        //    return true;
-        //}
     }
 }
