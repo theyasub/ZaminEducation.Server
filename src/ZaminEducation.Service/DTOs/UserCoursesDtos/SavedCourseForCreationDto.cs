@@ -1,7 +1,4 @@
-﻿using ZaminEducation.Service.DTOs.Courses;
-using ZaminEducation.Service.DTOs.Users;
-
-namespace ZaminEducation.Service.DTOs.UserCourses
+﻿namespace ZaminEducation.Service.DTOs.UserCourses
 {
     public class SavedCourseForCreationDto
     {

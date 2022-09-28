@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ZaminEducation.Domain.Enums;
-using ZaminEducation.Service.DTOs.Commons;
 
 namespace ZaminEducation.Service.DTOs.Users
 {
