@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZaminEducation.Service.DTOs.Commons;
+﻿using ZaminEducation.Service.DTOs.Commons;
 
 namespace ZaminEducation.Service.Helpers;
 

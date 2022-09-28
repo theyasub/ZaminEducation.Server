@@ -1,6 +1,4 @@
-﻿using ZaminEducation.Service.DTOs.Courses;
-
-namespace ZaminEducation.Service.DTOs.Quizzes
+﻿namespace ZaminEducation.Service.DTOs.Quizzes
 {
     public class QuizForCreationDto
     {

@@ -26,7 +26,7 @@ namespace ZaminEducation.Api.Middlewares
             {
                 //Log
                 logger.LogError(ex.ToString());
-                
+
                 await this.HandleException(context, 500, ex.Message);
             }
         }
