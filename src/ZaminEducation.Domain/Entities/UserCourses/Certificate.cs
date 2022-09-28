@@ -1,6 +1,6 @@
-
 using System.ComponentModel.DataAnnotations.Schema;
 using ZaminEducation.Domain.Commons;
+using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Users;
 
@@ -15,5 +15,10 @@ namespace ZaminEducation.Domain.Entities.UserCourses
 
         [ForeignKey(nameof(UserId))]
         public User User { get; set; }
+
+        public long ImageId { get; set; }
+
+        [ForeignKey(nameof(ImageId))]
+        public Attachment Image { get; set; }
     }
 }
