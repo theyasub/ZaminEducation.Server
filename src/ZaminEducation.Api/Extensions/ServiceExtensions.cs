@@ -22,12 +22,14 @@ namespace ZaminEducation.Api
             services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
             services.AddScoped<IRepository<User>, Repository<User>>();
             services.AddScoped<IRepository<QuizResult>, Repository<QuizResult>>();
+            services.AddScoped<IRepository<CourseVideo>, Repository<CourseVideo>>();
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<ICourseService, CourseService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IQuizResultService, QuizResultService>();
+            services.AddScoped<IYouTubeService, YouTubeService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

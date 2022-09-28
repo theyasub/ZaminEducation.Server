@@ -12,6 +12,6 @@
         public int TotalCount { get; set; }
         public int TotalPage { get; set; }
         public bool HasPrevious => CurrentPage > 1;
-        public bool HasNext => CurrentPage < TotalCount;
+        public bool HasNext => CurrentPage < TotalPage;
     }
 }

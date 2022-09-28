@@ -44,6 +44,5 @@ namespace ZaminEducation.Service.Mappers
             // another
             CreateMap<Attachment, AttachmentForCreationDto>().ReverseMap();
         }
-
     }
 }
