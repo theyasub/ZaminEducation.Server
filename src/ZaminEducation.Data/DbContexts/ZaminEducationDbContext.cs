@@ -35,7 +35,6 @@ namespace ZaminEducation.Data.DbContexts
         public virtual DbSet<Region> Regions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
-        public virtual DbSet<YouTubeVideo> YouTubeVideos { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

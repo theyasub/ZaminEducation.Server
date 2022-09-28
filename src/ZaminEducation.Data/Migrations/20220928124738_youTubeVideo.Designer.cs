@@ -12,8 +12,8 @@ using ZaminEducation.Data.DbContexts;
 namespace ZaminEducation.Data.Migrations
 {
     [DbContext(typeof(ZaminEducationDbContext))]
-    [Migration("20220926194440_youtubeModelMigration")]
-    partial class youtubeModelMigration
+    [Migration("20220928124738_youTubeVideo")]
+    partial class youTubeVideo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -231,7 +231,7 @@ namespace ZaminEducation.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("CourseId")
+                    b.Property<long?>("CourseId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("CourseModuleId")
@@ -249,12 +249,11 @@ namespace ZaminEducation.Data.Migrations
                     b.Property<long>("Length")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("State")
                         .HasColumnType("int");
+
+                    b.Property<string>("Thumbnail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasMaxLength(50)
@@ -265,6 +264,10 @@ namespace ZaminEducation.Data.Migrations
 
                     b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -309,55 +312,6 @@ namespace ZaminEducation.Data.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("HashTags");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.YouTubeVideo", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("CourseId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("Length")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Thumbnail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("ViewCount")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("YouTubeVideos");
                 });
 
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Quizzes.QuestionAnswer", b =>
@@ -987,9 +941,7 @@ namespace ZaminEducation.Data.Migrations
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
                         .WithMany("Videos")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.CourseModule", "CourseModule")
                         .WithMany("Videos")

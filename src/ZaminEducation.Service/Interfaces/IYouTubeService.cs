@@ -6,14 +6,14 @@ namespace ZaminEducation.Service.Interfaces
 {
     public interface IYouTubeService
     {
-        Task<YouTubeVideo> CreateAsync(string link, long courseId);
-        Task<IEnumerable<YouTubeVideo>> CreateRangeAsync(IEnumerable<string> links, long courseId);
-        Task<bool> DeleteAsync(long id);
-        Task<YouTubeVideo> UpdateAsync(long id, string link);
-        Task<YouTubeVideo> GetAsync(Expression<Func<YouTubeVideo, bool>> expression);
-        Task<IEnumerable<YouTubeVideo>> GetAllAsync(PaginationParams @params,
-            Expression<Func<YouTubeVideo, bool>> expression);
-        Task<long> AddToViewAsync(long id);
-        Task<IEnumerable<string>> GetVideoLinksAsync(string playlistLink);
+        ValueTask<CourseVideo> CreateAsync(string link, long id);
+        ValueTask<IEnumerable<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId);
+        ValueTask<bool> DeleteAsync(long youtubeId);
+        ValueTask<CourseVideo> UpdateAsync(long videoId, string link);
+        ValueTask<CourseVideo> GetAsync(Expression<Func<CourseVideo, bool>> expression);
+        ValueTask<IEnumerable<CourseVideo>> GetAllAsync(PaginationParams @params,
+            Expression<Func<CourseVideo, bool>> expression = null);
+        ValueTask<IEnumerable<string>> GetLinksAsync(string playlistLink);
+        ValueTask SetModuleIdAsync(long[] Ids, long courseId, long moduleId);
     }
 }

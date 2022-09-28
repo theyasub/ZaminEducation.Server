@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using ZaminEducation.Data.IRepositories;
@@ -8,102 +9,104 @@ using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
 
-#pragma warning disable
+
 namespace ZaminEducation.Service.Services
 {
     public class YouTubeService: IYouTubeService
     {
-        private readonly IRepository<YouTubeVideo> repository;
+        private readonly IRepository<CourseVideo> youtubeRepository;
+        private readonly IRepository<Course> courseRepository;
 
-        public YouTubeService(IRepository<YouTubeVideo> repository)
+        public YouTubeService(IRepository<CourseVideo> youtubeRepository, IRepository<Course> courseRepository)
         {
-            this.repository = repository;
+            this.youtubeRepository = youtubeRepository;
+            this.courseRepository = courseRepository;
         }
 
-        public async Task<YouTubeVideo> CreateAsync(string link, long courseId)
+        public async ValueTask<CourseVideo> CreateAsync(string link, long courseId)
         {
-            var course = await repository.GetAsync(course => course.Id == courseId);
+            var course = await courseRepository.GetAsync(course => course.Id == courseId);
 
             if (course is null)
                 throw new ZaminEducationException(404, "Course not found!");
 
             var video = await new YoutubeClient().Videos.GetAsync(YouTubeVideoIdExtractor(link));
 
-            var youtubeVideo = new YouTubeVideo
+            var youtubeVideo = new CourseVideo
             {
                 CourseId = courseId,
                 Thumbnail = video.Thumbnails.OrderByDescending(p => p.Resolution.Height).FirstOrDefault()?.Url,
                 Title = video.Title,
                 Url = video.Url,
-                ViewCount = 0,
                 Length = video.Duration!.Value.Minutes,
                 Description = video.Description
             };
 
-            youtubeVideo = await repository.AddAsync(youtubeVideo);
+            youtubeVideo = await youtubeRepository.AddAsync(youtubeVideo);
 
-            await repository.SaveChangesAsync();
+            await youtubeRepository.SaveChangesAsync();
 
             return youtubeVideo;
         }
 
-        public async Task<IEnumerable<YouTubeVideo>> CreateRangeAsync(IEnumerable<string> links, long courseId)
+        public async ValueTask<IEnumerable<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId)
         {
-            var result = new List<YouTubeVideo>();
+            IEnumerable<string> links = await GetLinksAsync(youtubePlaylist);
+
+            var videos = new List<CourseVideo>();
             var yt = new YoutubeClient();
 
             foreach (var link in links)
             {
                 var video = await yt.Videos.GetAsync(link);
 
-                var youtubeVideo = new YouTubeVideo
+                var youtubeVideo = new CourseVideo
                 {
                     CourseId = courseId,
                     Thumbnail = video.Thumbnails.OrderByDescending(p => p.Resolution.Height).FirstOrDefault()?.Url,
                     Title = video.Title,
                     Url = video.Url,
-                    ViewCount = 0,
                     Length = video.Duration!.Value.Minutes,
                     Description = video.Description
                 };
 
-                result.Add(await repository.AddAsync(youtubeVideo));
+                videos.Add(await youtubeRepository.AddAsync(youtubeVideo));
             }
 
-            await repository.SaveChangesAsync();
+            await youtubeRepository.SaveChangesAsync();
 
-            return result;
+            return videos;
         }
 
-        public async Task<bool> DeleteAsync(long id)
+
+        public async ValueTask<bool> DeleteAsync(long youtubeId)
         {
-            var existVideo = await repository.GetAsync(p => p.Id == id);
+            var existVideo = await youtubeRepository.GetAsync(p => p.Id == youtubeId);
 
             if (existVideo is null)
                 throw new ZaminEducationException(404, "Video not found!");
 
-            repository.Delete(existVideo);
+            youtubeRepository.Delete(existVideo);
 
-            await repository.SaveChangesAsync();
+            await youtubeRepository.SaveChangesAsync();
 
             return true;
         }
 
-        public async Task<YouTubeVideo> UpdateAsync(long id, string link)
+        public async ValueTask<CourseVideo> UpdateAsync(long courseId, string link)
         {
-            var existVideo = await repository.GetAsync(p => p.Id == id);
+            var existVideo = await youtubeRepository.GetAsync(p => p.Id == courseId);
 
             if (existVideo is null)
-                throw new ZaminEducationException(400, "Video not found!");
+                throw new ZaminEducationException(404, "Video not found!");
 
             var video = await new YoutubeClient().Videos.GetAsync(YouTubeVideoIdExtractor(link));
 
-            var youtubeVideo = new YouTubeVideo
+            var youtubeVideo = new CourseVideo
             {
                 Thumbnail = video.Thumbnails.OrderByDescending(p => p.Resolution.Height).FirstOrDefault()?.Url,
                 Title = video.Title,
                 Url = video.Url,
-                ViewCount = 0,
                 Length = video.Duration!.Value.Minutes,
                 Description = video.Description,
                 CourseId = existVideo.CourseId,
@@ -112,38 +115,31 @@ namespace ZaminEducation.Service.Services
                 Id = existVideo.Id
             };
 
-            youtubeVideo = repository.Update(youtubeVideo);
+            youtubeVideo = youtubeRepository.Update(youtubeVideo);
 
-            await repository.SaveChangesAsync();
+            await youtubeRepository.SaveChangesAsync();
 
             return youtubeVideo;
         }
 
-        public async Task<YouTubeVideo> GetAsync(Expression<Func<YouTubeVideo, bool>> expression)
-            => await repository.GetAsync(expression);
-
-        public async Task<IEnumerable<YouTubeVideo>> GetAllAsync(PaginationParams @params,
-            Expression<Func<YouTubeVideo, bool>> expression)
-            => repository.GetAll(expression).ToPageList(@params);
-
-        public async Task<long> AddToViewAsync(long id)
+        public async ValueTask<CourseVideo> GetAsync(Expression<Func<CourseVideo, bool>> expression)
         {
-            var existVideo = await repository.GetAsync(p => p.Id == id);
+            var video = await youtubeRepository.GetAsync(expression);
 
-            if (existVideo is null)
-                throw new ZaminEducationException(400, "Video not found!");
+            if (video is null)
+                throw new ZaminEducationException(404, "Video not found!");
 
-            existVideo.ViewCount++;
-
-            await repository.SaveChangesAsync();
-
-            return existVideo.ViewCount;
+            return video;
         }
 
-        public async Task<IEnumerable<string>> GetVideoLinksAsync(string playlistLink)
+        public async ValueTask<IEnumerable<CourseVideo>> GetAllAsync(PaginationParams @params,
+            Expression<Func<CourseVideo, bool>> expression = null)
+            => await youtubeRepository.GetAll(expression)?.ToPageList(@params).ToListAsync();
+
+        public async ValueTask<IEnumerable<string>> GetLinksAsync(string playlistLink)
         {
-            if (!playlistLink.Contains("list"))
-                throw new ZaminEducationException(400, "Invalid Playlist Url");
+            if (!playlistLink.Contains("list") || !IsCorrectYouTubeLink(playlistLink))
+                throw new ZaminEducationException(404, "Invalid Playlist Url");
 
             playlistLink = playlistLink.Split("list=")[1].Split("&")[0];
 
@@ -154,16 +150,44 @@ namespace ZaminEducation.Service.Services
             return videos.Select(p => p.Url);
         }
 
+        public async ValueTask SetModuleIdAsync(long[] Ids, long courseId, long moduleId)
+        {
+            foreach (long id in Ids)
+            {
+                var video = await youtubeRepository.GetAsync(yu => yu.CourseId == id && yu.Id == id);
+
+                if (video is not null)
+                    video.Id = moduleId;
+            }
+
+            await youtubeRepository.SaveChangesAsync();
+        }
+
         private string YouTubeVideoIdExtractor(string link)
         {
             // Samples
             // https://www.youtube.com/watch?v=9Pv0Q8zFGP0&ab_channel=NajotTa%27lim
             // https://www.youtube.com/watch?v=5IanQIwhA4E
 
-            if (!link.Contains("watch?"))
+            if (!IsCorrectYouTubeLink(link))
                 throw new ZaminEducationException(400, "Invalid Youtube link");
 
             return link.Split("&")[0].Split('=')[1];
+        }
+
+        private bool IsCorrectYouTubeLink(string link)
+        {
+            try
+            {
+                Uri uri = new Uri(link);
+
+                return uri.Host == "www.youtube.com" || uri.Host == "youtube.com" ||
+                        uri.Host == "www.youtu.be" || uri.Host == "youtu.be";
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
