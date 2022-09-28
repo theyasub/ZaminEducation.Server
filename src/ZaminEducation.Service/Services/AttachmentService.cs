@@ -18,9 +18,24 @@ public class AttachmentService : IAttachmentService
         _repository = repository;
     }
 
+    public async ValueTask<Attachment> CreateAsync(string fileName, string filePath)
+    {
+        var file = new Attachment()
+        {
+            Name = fileName,
+            Path = filePath,
+            CreatedBy = HttpContextHelper.UserId
+        };
+
+        file = await _repository.AddAsync(file);
+        await _repository.SaveChangesAsync();
+
+        return file;
+    }
+
     public async ValueTask<bool> DeleteAsync(Expression<Func<Attachment, bool>> expression)
     {
-        var file = await _repository.GetAsync(expression, null);
+        var file = await _repository.GetAsync(expression);
 
         if (file is null)
             throw new ZaminEducationException(400, "Attachment not found");
@@ -83,4 +98,6 @@ public class AttachmentService : IAttachmentService
 
         return existAttachment;
     }
+
+    
 }
