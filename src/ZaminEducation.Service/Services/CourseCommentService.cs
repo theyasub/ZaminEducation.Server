@@ -63,7 +63,7 @@ namespace ZaminEducation.Service.Services
             if (comment is null)
                 throw new ZaminEducationException(404, "Comment not found");
 
-            if(HttpContextHelper.UserRole == "Admin" || comment.UserId == HttpContextHelper.UserId)
+            if (HttpContextHelper.UserRole == "Admin" || comment.UserId == HttpContextHelper.UserId)
             {
                 courseCommentRepository.Delete(comment);
                 await courseCommentRepository.SaveChangesAsync();
@@ -124,5 +124,14 @@ namespace ZaminEducation.Service.Services
 
             return updatedComment;
         }
+
+        public async ValueTask<IEnumerable<CourseComment>> GetAllAsync(PaginationParams @params, string search)
+            => await courseCommentRepository.GetAll(includes: new string[] { "User", "Course" },
+                expression:
+                 cc => cc.Id.ToString() == search ||
+                 cc.User.FirstName == search ||
+                 cc.User.Username == search ||
+                 cc.Course.Name == search)?
+                    .ToPagedList(@params).ToListAsync();
     }
 }

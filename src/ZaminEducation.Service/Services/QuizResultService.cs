@@ -36,5 +36,13 @@ namespace ZaminEducation.Service.Services
 
             return existQuizResult;
         }
+
+        public async ValueTask<IEnumerable<QuizResult>> GetAllAsync(PaginationParams @params,
+           string search)
+               => await repository.GetAll(includes: new string[] { "Course" },
+                  expression: qz => qz.Id.ToString() == search ||
+                   qz.Course.Name == search)?
+                       .ToPagedList(@params).ToListAsync();
+
     }
 }

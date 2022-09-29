@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Commons;
-using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
@@ -99,5 +98,5 @@ public class AttachmentService : IAttachmentService
         return existAttachment;
     }
 
-    
+
 }

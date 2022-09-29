@@ -1,7 +1,10 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
+using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Service.Exceptions;
+using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Service.Services
@@ -44,5 +47,12 @@ namespace ZaminEducation.Service.Services
 
             return course.Videos;
         }
+
+        public async ValueTask<IEnumerable<Course>> GetAllAsync(PaginationParams @params,
+           string search)
+               => await courseRepository.GetAll(
+                   c => c.Id.ToString() == search ||
+                   c.Name == search)?
+                       .ToPagedList(@params).ToListAsync();
     }
 }
