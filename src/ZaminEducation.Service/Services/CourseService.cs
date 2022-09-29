@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
@@ -33,10 +33,7 @@ namespace ZaminEducation.Service.Services.Courses
         public async ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto)
         {
             Course course = await courseRepository.GetAsync(c =>
-                c.Name.Equals(courseForCreationDto.Name) &&
-                c.AuthorId.Equals(courseForCreationDto.AuthorId) &&
-                c.CategoryId.Equals(courseForCreationDto.CategoryId) &&
-                c.Level.Equals(courseForCreationDto.Level));
+                c.YouTubePlaylistLink.Equals(courseForCreationDto.YouTubePlaylistLink));
 
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
@@ -150,6 +147,13 @@ namespace ZaminEducation.Service.Services.Courses
 
             return course.Videos;
         }
+
+        public async ValueTask<IEnumerable<Course>> GetAllAsync(PaginationParams @params,
+           string search)
+               => await courseRepository.GetAll(
+                   c => c.Id.ToString() == search ||
+                   c.Name == search)?
+                       .ToPagedList(@params).ToListAsync();
 
         private double CalculateRates(IEnumerable<CourseRate> rates)
             => (double)rates.Sum(r => r.Value) / (double)rates.Count();

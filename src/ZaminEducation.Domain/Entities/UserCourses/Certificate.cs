@@ -17,7 +17,6 @@ namespace ZaminEducation.Domain.Entities.UserCourses
         public User User { get; set; }
 
         public long ImageId { get; set; }
-
         [ForeignKey(nameof(ImageId))]
         public Attachment Image { get; set; }
     }
