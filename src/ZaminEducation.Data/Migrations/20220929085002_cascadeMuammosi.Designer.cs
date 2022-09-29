@@ -12,8 +12,8 @@ using ZaminEducation.Data.DbContexts;
 namespace ZaminEducation.Data.Migrations
 {
     [DbContext(typeof(ZaminEducationDbContext))]
-    [Migration("20220925122726_CourseVideoMigration")]
-    partial class CourseVideoMigration
+    [Migration("20220929085002_cascadeMuammosi")]
+    partial class cascadeMuammosi
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -231,7 +231,7 @@ namespace ZaminEducation.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
 
-                    b.Property<long>("CourseId")
+                    b.Property<long?>("CourseId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("CourseModuleId")
@@ -249,12 +249,11 @@ namespace ZaminEducation.Data.Migrations
                     b.Property<long>("Length")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("State")
                         .HasColumnType("int");
+
+                    b.Property<string>("Thumbnail")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasMaxLength(50)
@@ -265,6 +264,10 @@ namespace ZaminEducation.Data.Migrations
 
                     b.Property<long?>("UpdatedBy")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -522,6 +525,9 @@ namespace ZaminEducation.Data.Migrations
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
+                    b.Property<long>("ImageId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("State")
                         .HasColumnType("int");
 
@@ -540,6 +546,8 @@ namespace ZaminEducation.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("ImageId");
 
                     b.HasIndex("UserId");
 
@@ -564,6 +572,9 @@ namespace ZaminEducation.Data.Migrations
 
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsReplied")
+                        .HasColumnType("bit");
 
                     b.Property<long?>("ParentId")
                         .HasColumnType("bigint");
@@ -938,9 +949,7 @@ namespace ZaminEducation.Data.Migrations
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
                         .WithMany("Videos")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.CourseModule", "CourseModule")
                         .WithMany("Videos")
@@ -1052,6 +1061,12 @@ namespace ZaminEducation.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("ZaminEducation.Domain.Entities.Users.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1063,6 +1078,8 @@ namespace ZaminEducation.Data.Migrations
                         .HasForeignKey("UserId1");
 
                     b.Navigation("Course");
+
+                    b.Navigation("Image");
 
                     b.Navigation("User");
                 });

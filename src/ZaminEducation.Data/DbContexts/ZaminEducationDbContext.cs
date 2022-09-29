@@ -1,5 +1,4 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Quizzes;
@@ -49,6 +48,12 @@ namespace ZaminEducation.Data.DbContexts
                 .WithMany()
                 .HasForeignKey(c => c.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Certificate>()
+                .HasOne(c => c.Image)
+                .WithMany()
+                .HasForeignKey(c => c.ImageId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<CourseComment>()
                 .HasOne(c => c.User)

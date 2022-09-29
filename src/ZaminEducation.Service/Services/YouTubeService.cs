@@ -43,9 +43,10 @@ namespace ZaminEducation.Service.Services
             };
 
             youtubeVideo = await youtubeRepository.AddAsync(youtubeVideo);
+            youtubeVideo.Create();
 
             await youtubeRepository.SaveChangesAsync();
-
+            
             return youtubeVideo;
         }
 
@@ -70,6 +71,7 @@ namespace ZaminEducation.Service.Services
                     Description = video.Description
                 };
 
+                youtubeVideo.Create();
                 videos.Add(await youtubeRepository.AddAsync(youtubeVideo));
             }
 
@@ -116,6 +118,7 @@ namespace ZaminEducation.Service.Services
             };
 
             youtubeVideo = youtubeRepository.Update(youtubeVideo);
+            youtubeVideo.Update();
 
             await youtubeRepository.SaveChangesAsync();
 
@@ -146,7 +149,7 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<IEnumerable<string>> GetLinksAsync(string playlistLink)
         {
-            if (!playlistLink.Contains("list") || !IsCorrectYouTubeLink(playlistLink))
+            if (!playlistLink.Contains("list") || !IsYouTubeLink(playlistLink))
                 throw new ZaminEducationException(404, "Invalid Playlist Url");
 
             playlistLink = playlistLink.Split("list=")[1].Split("&")[0];
@@ -177,7 +180,7 @@ namespace ZaminEducation.Service.Services
             // https://www.youtube.com/watch?v=9Pv0Q8zFGP0&ab_channel=NajotTa%27lim
             // https://www.youtube.com/watch?v=5IanQIwhA4E
 
-            if (!IsCorrectYouTubeLink(link))
+            if (!IsYouTubeLink(link))
                 throw new ZaminEducationException(400, "Invalid Youtube link");
 
             return link.Split("&")[0].Split('=')[1];
