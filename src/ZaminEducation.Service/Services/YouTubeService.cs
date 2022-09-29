@@ -12,7 +12,7 @@ using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Service.Services
 {
-    public class YouTubeService: IYouTubeService
+    public class YouTubeService : IYouTubeService
     {
         private readonly IRepository<CourseVideo> youtubeRepository;
         private readonly IRepository<Course> courseRepository;
@@ -138,6 +138,14 @@ namespace ZaminEducation.Service.Services
         public async ValueTask<IEnumerable<CourseVideo>> GetAllAsync(PaginationParams @params,
             Expression<Func<CourseVideo, bool>> expression = null)
             => await youtubeRepository.GetAll(expression)?.ToPagedList(@params).ToListAsync();
+
+
+        public async ValueTask<IEnumerable<CourseVideo>> GetAllAsync(PaginationParams @params,
+            string search)
+        => await youtubeRepository.GetAll(
+            cv => cv.Title == search ||
+            cv.Description == search)?
+                    .ToPagedList(@params).ToListAsync();
 
         public async ValueTask<IEnumerable<string>> GetLinksAsync(string playlistLink)
         {
