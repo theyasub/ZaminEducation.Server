@@ -36,6 +36,7 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddSwaggerService();
 builder.Services.AddCustomServices();
+builder.Services.AddHttpContextAccessor();
 
 //Convert  Api url name to dash case 
 builder.Services.AddControllers(options =>
