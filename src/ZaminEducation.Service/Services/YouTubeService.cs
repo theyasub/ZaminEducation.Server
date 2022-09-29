@@ -136,6 +136,14 @@ namespace ZaminEducation.Service.Services
             Expression<Func<CourseVideo, bool>> expression = null)
             => await youtubeRepository.GetAll(expression)?.ToPagedList(@params).ToListAsync();
 
+
+        public async ValueTask<IEnumerable<CourseVideo>> GetAllAsync(PaginationParams @params,
+            string search)
+        => await youtubeRepository.GetAll(
+            cv => cv.Title == search ||
+            cv.Description == search)?
+                    .ToPagedList(@params).ToListAsync();
+
         public async ValueTask<IEnumerable<string>> GetLinksAsync(string playlistLink)
         {
             if (!playlistLink.Contains("list") || !IsCorrectYouTubeLink(playlistLink))

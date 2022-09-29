@@ -1,20 +1,20 @@
-﻿using ZaminEducation.Service.Helpers;
-using ZaminEducation.Service.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Text;
-using ZaminEducation.Data.IRepositories;
-using ZaminEducation.Domain.Entities.Courses;
-using ZaminEducation.Service.Exceptions;
-using ZaminEducation.Domain.Entities.Users;
-using ZaminEducation.Domain.Entities.Commons;
-using ZaminEducation.Service.DTOs.UserCourses;
-using ZaminEducation.Domain.Configurations;
 using System.Linq.Expressions;
+using ZaminEducation.Data.IRepositories;
+using ZaminEducation.Domain.Configurations;
+using ZaminEducation.Domain.Entities.Commons;
+using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
-using ZaminEducation.Service.Extensions;
-using Microsoft.EntityFrameworkCore;
+using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
+using ZaminEducation.Service.DTOs.UserCourses;
+using ZaminEducation.Service.Exceptions;
+using ZaminEducation.Service.Extensions;
+using ZaminEducation.Service.Helpers;
+using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Service.Services
 {
@@ -25,9 +25,9 @@ namespace ZaminEducation.Service.Services
         private readonly IRepository<Course> courseRepository;
         private readonly IRepository<User> userRepository;
         private readonly IRepository<Certificate> certificateRepository;
-        public CertificateService(IAttachmentService attachmentService, 
-            IRepository<Course> courseRepository, 
-            IRepository<User> userRepository, 
+        public CertificateService(IAttachmentService attachmentService,
+            IRepository<Course> courseRepository,
+            IRepository<User> userRepository,
             IRepository<Certificate> certificateRepository)
         {
             this.attachmentService = attachmentService;
@@ -48,7 +48,7 @@ namespace ZaminEducation.Service.Services
             if (course is null)
                 throw new ZaminEducationException(404, "User not found");
 
-            var certifcate = await GenerateAsync(user.FirstName + " " + user.LastName, 
+            var certifcate = await GenerateAsync(user.FirstName + " " + user.LastName,
                 course.Name, certificateForCreation.Result.PassedPoint, certificateForCreation.Result.Percentage);
             var attachment = await attachmentService.CreateAsync(certifcate.fileName, certifcate.filePath);
 
@@ -64,7 +64,7 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<Certificate> GetAsync(Expression<Func<Certificate, bool>> expression)
         {
-            var certificate = await certificateRepository.GetAsync(expression, new string[] {"Attachment"} );
+            var certificate = await certificateRepository.GetAsync(expression, new string[] { "Attachment" });
 
             if (certificate is null)
                 throw new ZaminEducationException(404, "Certificate not found");
@@ -72,11 +72,11 @@ namespace ZaminEducation.Service.Services
             return certificate;
         }
 
-        private ValueTask<(string fileName, string filePath)> GenerateAsync(string fullName, string courseName, 
+        private ValueTask<(string fileName, string filePath)> GenerateAsync(string fullName, string courseName,
             string passedPoint, double percentage)
         {
             string filePath = Path.Combine(EnvironmentHelper.WebRootPath, "certificate.png");
-            
+
             Bitmap bitmap = new Bitmap(filePath);
 
             // determine the level
@@ -100,7 +100,7 @@ namespace ZaminEducation.Service.Services
             Font arialOfCourseName = new Font("Arial", 16, FontStyle.Italic);
             Font arialOfLevel = new Font("Arial", 25, FontStyle.Italic);
             Font arialOfPassedPoint = new Font("Arial", 10, FontStyle.Italic);
-            
+
             // draw text
             SizeF sizeOfName = graphics.MeasureString(fullName, arialOfName);
             SizeF sizeOfCourseName = graphics.MeasureString(courseName, arialOfCourseName);
@@ -115,7 +115,7 @@ namespace ZaminEducation.Service.Services
             string outputFileName = Guid.NewGuid().ToString("N") + ".png";
             string staticPath = Path.Combine(EnvironmentHelper.CertificatePath, outputFileName);
             string outputFilePath = Path.Combine(EnvironmentHelper.WebRootPath, staticPath);
-            
+
             bitmap.Save(outputFilePath, ImageFormat.Png);
 
             return ValueTask.FromResult((outputFileName, staticPath));
