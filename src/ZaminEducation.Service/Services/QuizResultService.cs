@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Expressions;
@@ -138,7 +138,6 @@ public class QuizResultService : IQuizResultService
                 Quiz = quizzes.FirstOrDefault(q => q.Id == userSelectionDto.QuizId)
             });
         }
-
         return results;
     }
 
