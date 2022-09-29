@@ -8,10 +8,8 @@ using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.Users;
-using ZaminEducation.Service.Interfaces.Commons;
-using ZaminEducation.Service.Interfaces.Courses;
-using ZaminEducation.Service.Services.Commons;
-using ZaminEducation.Service.Services.Courses;
+using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.Services;
 
 namespace ZaminEducation.Api
 {

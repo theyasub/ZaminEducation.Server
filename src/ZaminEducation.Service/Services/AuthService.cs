@@ -7,9 +7,9 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.Exceptions;
-using ZaminEducation.Service.Interfaces.Commons;
+using ZaminEducation.Service.Interfaces;
 
-namespace ZaminEducation.Service.Services.Commons
+namespace ZaminEducation.Service.Services
 {
     public class AuthService : IAuthService
     {
