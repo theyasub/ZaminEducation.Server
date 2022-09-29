@@ -10,7 +10,7 @@
             return extensions.Contains(extension.ToLower());
         }
 
-        public static bool NoMoreThanRequiredFileSize(this IFormFile file) =>
-             file.Length <= 1048576;
+        public static bool NoMoreThanRequiredFileSize(this IFormFile file, long size) =>
+             file.Length <= size;
     }
 }
