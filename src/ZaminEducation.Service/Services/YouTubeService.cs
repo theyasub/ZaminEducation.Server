@@ -12,7 +12,7 @@ using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Service.Services
 {
-    public class YouTubeService: IYouTubeService
+    public class YouTubeService : IYouTubeService
     {
         private readonly IRepository<CourseVideo> youtubeRepository;
         private readonly IRepository<Course> courseRepository;
