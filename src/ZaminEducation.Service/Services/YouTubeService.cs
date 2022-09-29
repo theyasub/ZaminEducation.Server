@@ -175,7 +175,7 @@ namespace ZaminEducation.Service.Services
             return link.Split("&")[0].Split('=')[1];
         }
 
-        private bool IsCorrectYouTubeLink(string link)
+        private bool IsYouTubeLink(string link)
         {
             try
             {
