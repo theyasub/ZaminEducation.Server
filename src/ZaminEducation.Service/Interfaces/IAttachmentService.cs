@@ -10,4 +10,5 @@ public interface IAttachmentService
     ValueTask<Attachment> UpdateAsync(long id, Stream stream);
     ValueTask<bool> DeleteAsync(Expression<Func<Attachment, bool>> expression);
     ValueTask<Attachment> GetAsync(Expression<Func<Attachment, bool>> expression);
+    ValueTask<Attachment> CreateAsync(string fileName, string filePath);
 }

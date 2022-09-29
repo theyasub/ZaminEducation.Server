@@ -34,7 +34,7 @@ namespace ZaminEducation.Service.Mappers
             CreateMap<Course, CourseViewModel>().ReverseMap();
             CreateMap<CourseComment, CourseCommentForCreationDto>().ReverseMap();
             CreateMap<Certificate, CertificateForCreationDto>().ReverseMap();
-            
+
             // quiz
             CreateMap<QuizResult, QuizResultForCreationDto>().ReverseMap();
             CreateMap<Quiz, QuizForCreationDto>().ReverseMap();
@@ -42,10 +42,9 @@ namespace ZaminEducation.Service.Mappers
             CreateMap<QuizAsset, QuizAssetForCreationDto>().ReverseMap();
             CreateMap<QuestionAnswer, QuestionAnswerForCreationDto>().ReverseMap();
             CreateMap<HashTag, HashTagForCreationDto>().ReverseMap();
-            
+
             // another
             CreateMap<Attachment, AttachmentForCreationDto>().ReverseMap();
         }
-
     }
 }

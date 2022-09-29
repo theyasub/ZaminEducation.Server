@@ -4,6 +4,7 @@ using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.Exceptions;
+using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Interfaces;
 
@@ -18,12 +19,27 @@ public class AttachmentService : IAttachmentService
         _repository = repository;
     }
 
+    public async ValueTask<Attachment> CreateAsync(string fileName, string filePath)
+    {
+        var file = new Attachment()
+        {
+            Name = fileName,
+            Path = filePath,
+            CreatedBy = HttpContextHelper.UserId
+        };
+
+        file = await _repository.AddAsync(file);
+        await _repository.SaveChangesAsync();
+
+        return file;
+    }
+
     public async ValueTask<bool> DeleteAsync(Expression<Func<Attachment, bool>> expression)
     {
-        var file = await _repository.GetAsync(expression, null);
+        var file = await _repository.GetAsync(expression);
 
         if (file is null)
-            throw new ZaminEducationException(400, "Attachment not found");
+            throw new ZaminEducationException(404, "Attachment not found");
 
         FileHelper.Remove(file.Path);
 
@@ -41,8 +57,9 @@ public class AttachmentService : IAttachmentService
         {
             Name = fileName,
             Path = filePath,
-            CreatedBy = HttpContextHelper.UserId
         };
+
+        newAttachement.Create();
 
         newAttachement = await _repository.AddAsync(newAttachement);
         await _repository.SaveChangesAsync();
@@ -65,7 +82,7 @@ public class AttachmentService : IAttachmentService
         var existAttachment = await _repository.GetAsync(a => a.Id == id, null);
 
         if (existAttachment is null)
-            throw new ZaminEducationException(400, "Attachment not found.");
+            throw new ZaminEducationException(404, "Attachment not found.");
 
         await FileHelper.SaveAsync(new()
         {
@@ -74,13 +91,13 @@ public class AttachmentService : IAttachmentService
         },
         true);
 
-        existAttachment.State = ItemState.Updated;
-        existAttachment.UpdatedBy = HttpContextHelper.UserId;
-        existAttachment.UpdatedAt = DateTime.UtcNow;
+        existAttachment.Update();
 
         existAttachment = _repository.Update(existAttachment);
         await _repository.SaveChangesAsync();
 
         return existAttachment;
     }
+
+    
 }

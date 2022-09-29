@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
-using ZaminEducation.Api;
-using ZaminEducation.Data.DbContexts;
-using ZaminEducation.Service.Helpers;
 using Newtonsoft.Json;
 using Serilog;
+using ZaminEducation.Api;
 using ZaminEducation.Api.Middlewares;
+using ZaminEducation.Data.DbContexts;
+using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Mappers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,8 +37,14 @@ builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddSwaggerService();
 builder.Services.AddCustomServices();
 
-var app = builder.Build();
+//Convert  Api url name to dash case 
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new RouteTokenTransformerConvention(
+                                 new ConfigureApiUrlName()));
+});
 
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
