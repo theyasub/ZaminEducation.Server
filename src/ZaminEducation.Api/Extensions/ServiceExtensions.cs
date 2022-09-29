@@ -10,7 +10,9 @@ using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.Interfaces.Courses;
 using ZaminEducation.Service.Services;
+using ZaminEducation.Service.Services.Courses;
 
 namespace ZaminEducation.Api
 {

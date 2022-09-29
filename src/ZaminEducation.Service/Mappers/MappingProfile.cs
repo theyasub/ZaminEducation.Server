@@ -9,6 +9,7 @@ using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.DTOs.Quizzes;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.DTOs.Users;
+using ZaminEducation.Service.ViewModels;
 
 namespace ZaminEducation.Service.Mappers
 {
@@ -30,6 +31,7 @@ namespace ZaminEducation.Service.Mappers
             CreateMap<CourseCategory, CourseCategoryForCreationDto>().ReverseMap();
             CreateMap<SavedCourse, SavedCourseForCreationDto>().ReverseMap();
             CreateMap<CourseRate, CourseRateForCreationDto>().ReverseMap();
+            CreateMap<Course, CourseViewModel>().ReverseMap();
             CreateMap<CourseComment, CourseCommentForCreationDto>().ReverseMap();
             CreateMap<Certificate, CertificateForCreationDto>().ReverseMap();
 

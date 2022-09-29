@@ -17,6 +17,7 @@ namespace ZaminEducation.Domain.Entities.Courses
 
         [MaxLength(100)]
         public string Description { get; set; }
+        public string YouTubePlaylistLink { get; set; }
 
         public long AuthorId { get; set; }
 
@@ -33,7 +34,7 @@ namespace ZaminEducation.Domain.Entities.Courses
         public long CategoryId { get; set; }
 
         [ForeignKey(nameof(CategoryId))]
-        public CourseCategory Category { get; set; }
+        public CourseCategory Category { get; set; } 
 
         public CourseLevel Level { get; set; }
 
