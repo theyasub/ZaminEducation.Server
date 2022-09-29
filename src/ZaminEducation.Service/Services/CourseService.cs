@@ -5,11 +5,10 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
-using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
-using ZaminEducation.Service.Helpers;
+using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Interfaces.Courses;
 using ZaminEducation.Service.ViewModels;
 
@@ -18,11 +17,16 @@ namespace ZaminEducation.Service.Services.Courses
     public class CourseService : ICourseService
     {
         private readonly IRepository<Course> courseRepository;
+        private readonly IYouTubeService youTubeService;
         private readonly IMapper mapper;
 
-        public CourseService(IRepository<Course> courseRepository, IMapper mapper)
+        public CourseService(
+            IRepository<Course> courseRepository,
+            IYouTubeService youTubeService, 
+            IMapper mapper)
         {
             this.courseRepository = courseRepository;
+            this.youTubeService = youTubeService;
             this.mapper = mapper;
         }
 
@@ -35,13 +39,17 @@ namespace ZaminEducation.Service.Services.Courses
                 c.Level.Equals(courseForCreationDto.Level));
 
             if (course is not null)
-                throw new ZaminEducationException(code: 400, message: "Course already exists");
+                throw new ZaminEducationException(400, "Course already exists");
             
             Course mappedCourse = mapper.Map<Course>(source: courseForCreationDto);
 
             Course entity = await courseRepository.AddAsync(entity: mappedCourse);
 
             await courseRepository.SaveChangesAsync();
+
+            entity.Videos = (ICollection<CourseVideo>) await youTubeService.CreateRangeAsync(
+                youtubePlaylist: courseForCreationDto.YouTubePlaylistLink,
+                courseId: entity.Id);
 
             return entity;
         }
@@ -51,7 +59,7 @@ namespace ZaminEducation.Service.Services.Courses
             Course course = await courseRepository.GetAsync(expression: expression);
 
             if (course is null)
-                throw new ZaminEducationException(code: 404, message: "Course not found");
+                throw new ZaminEducationException(404, "Course not found");
 
             courseRepository.Delete(entity: course);
 
@@ -68,7 +76,7 @@ namespace ZaminEducation.Service.Services.Courses
                 expression: expression, 
                 includes: new string[] {"Author", "Category", "Image", "Rates" },
                 isTracking: false)
-                .ToPageList(@params);
+                .ToPagedList(@params);
 
             return await pagedList.ToListAsync();
         }
@@ -80,7 +88,7 @@ namespace ZaminEducation.Service.Services.Courses
                 includes: new string[] { "Category", "Image", "Modules", "Targets", "Rates", "Videos" });
 
             if (course is null)
-                throw new ZaminEducationException(code: 404, message: "Course not found");
+                throw new ZaminEducationException(404, "Course not found");
 
             course.ViewCount++;
 
@@ -100,13 +108,11 @@ namespace ZaminEducation.Service.Services.Courses
             Course course = await courseRepository.GetAsync(expression: expression);
 
             if (course is null)
-                throw new ZaminEducationException(code: 404, message: "Course not found");
+                throw new ZaminEducationException(404, "Course not found");
 
             course = mapper.Map(courseForCreationDto, course);
 
-            course.UpdatedAt = DateTime.UtcNow;
-            course.UpdatedBy = HttpContextHelper.UserId;
-            course.State = ItemState.Updated;
+            course.Update();
 
             course = courseRepository.Update(entity: course);
 

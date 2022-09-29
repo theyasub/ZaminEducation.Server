@@ -16,6 +16,7 @@ namespace ZaminEducation.Domain.Entities.Courses
 
         [MaxLength(100)]
         public string Description { get; set; }
+        public string YouTubePlaylistLink { get; set; }
 
         public long AuthorId { get; set; }
 
