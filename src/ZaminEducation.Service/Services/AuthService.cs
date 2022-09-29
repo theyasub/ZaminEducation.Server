@@ -7,6 +7,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.Exceptions;
+using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Service.Services
@@ -25,7 +26,8 @@ namespace ZaminEducation.Service.Services
         public async Task<string> GenerateToken(string username, string password)
         {
             User user = await repository.GetAsync(u =>
-                u.Username == username && u.Password == password && u.State != ItemState.Deleted);
+                u.Username == username && u.Password.Equals(password.Encrypt()) && u.State != ItemState.Deleted);
+            
             if (user is null)
                 throw new ZaminEducationException(400, "Login or Password is incorrect");
 
@@ -45,6 +47,7 @@ namespace ZaminEducation.Service.Services
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescription);
+
             return tokenHandler.WriteToken(token);
         }
     }

@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ZaminEducation.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class cascadeMuammosi : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -159,6 +159,7 @@ namespace ZaminEducation.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CourseId = table.Column<long>(type: "bigint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
+                    ImageId = table.Column<long>(type: "bigint", nullable: false),
                     UserId1 = table.Column<long>(type: "bigint", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -169,6 +170,11 @@ namespace ZaminEducation.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Certificates", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Certificates_Attachments_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Attachments",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -178,6 +184,7 @@ namespace ZaminEducation.Data.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsReplied = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     CourseId = table.Column<long>(type: "bigint", nullable: false),
                     ParentId = table.Column<long>(type: "bigint", nullable: true),
@@ -304,12 +311,13 @@ namespace ZaminEducation.Data.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Link = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Thumbnail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Length = table.Column<long>(type: "bigint", nullable: false),
                     CourseModuleId = table.Column<long>(type: "bigint", nullable: false),
-                    CourseId = table.Column<long>(type: "bigint", nullable: false),
+                    CourseId = table.Column<long>(type: "bigint", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
@@ -329,8 +337,7 @@ namespace ZaminEducation.Data.Migrations
                         name: "FK_CourseVideos_Courses_CourseId",
                         column: x => x.CourseId,
                         principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -496,7 +503,8 @@ namespace ZaminEducation.Data.Migrations
                         name: "FK_QuizResults_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -580,6 +588,11 @@ namespace ZaminEducation.Data.Migrations
                 name: "IX_Certificates_CourseId",
                 table: "Certificates",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Certificates_ImageId",
+                table: "Certificates",
+                column: "ImageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Certificates_UserId",
@@ -755,7 +768,8 @@ namespace ZaminEducation.Data.Migrations
                 table: "Certificates",
                 column: "UserId",
                 principalTable: "Users",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Certificates_Users_UserId1",
@@ -827,6 +841,14 @@ namespace ZaminEducation.Data.Migrations
                 table: "Addresses");
 
             migrationBuilder.DropForeignKey(
+                name: "FK_Courses_Attachments_ImageId",
+                table: "Courses");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Users_Attachments_ImageId",
+                table: "Users");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Users_Courses_CourseId",
                 table: "Users");
 
@@ -876,6 +898,9 @@ namespace ZaminEducation.Data.Migrations
                 name: "Regions");
 
             migrationBuilder.DropTable(
+                name: "Attachments");
+
+            migrationBuilder.DropTable(
                 name: "Courses");
 
             migrationBuilder.DropTable(
@@ -886,9 +911,6 @@ namespace ZaminEducation.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Addresses");
-
-            migrationBuilder.DropTable(
-                name: "Attachments");
         }
     }
 }

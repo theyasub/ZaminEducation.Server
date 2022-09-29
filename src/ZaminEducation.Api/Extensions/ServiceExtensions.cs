@@ -33,6 +33,7 @@ namespace ZaminEducation.Api
             services.AddScoped<IQuizResultService, QuizResultService>();
             services.AddScoped<IYouTubeService, YouTubeService>();
             services.AddScoped<ICourseCommentService, CourseCommentService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

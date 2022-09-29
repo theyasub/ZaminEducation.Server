@@ -1062,7 +1062,7 @@ namespace ZaminEducation.Data.Migrations
                     b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ZaminEducation.Domain.Entities.Users.User", "User")
