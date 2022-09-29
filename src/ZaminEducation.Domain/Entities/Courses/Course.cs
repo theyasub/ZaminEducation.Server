@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using ZaminEducation.Domain.Commons;
 using ZaminEducation.Domain.Entities.Commons;
+using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
@@ -42,5 +43,6 @@ namespace ZaminEducation.Domain.Entities.Courses
         public virtual ICollection<CourseRate> Rates { get; set; }
         public virtual ICollection<User> Users { get; set; }
         public virtual ICollection<CourseVideo> Videos { get; set; }
+        public virtual ICollection<Quiz> Quizzes { get; set; }
     }
 }
