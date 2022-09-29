@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Service.DTOs.Commons;
@@ -28,6 +28,7 @@ public class AttachmentService : IAttachmentService
         };
 
         file = await _repository.AddAsync(file);
+        file.Create();
         await _repository.SaveChangesAsync();
 
         return file;
@@ -40,6 +41,13 @@ public class AttachmentService : IAttachmentService
         if (file is null)
             throw new ZaminEducationException(404, "Attachment not found");
 
+        // delete file from wwwroot
+        string fullPath = Path.Combine(EnvironmentHelper.WebRootPath, file.Path);
+
+        if (File.Exists(fullPath))
+            File.Delete(fullPath);
+
+        // datele database information
         FileHelper.Remove(file.Path);
 
         _repository.Delete(file);
@@ -48,18 +56,27 @@ public class AttachmentService : IAttachmentService
         return true;
     }
 
-    public async ValueTask<Attachment> DownloadAsync(AttachmentForCreationDto dto)
+    public async ValueTask<Attachment> UploadAsync(AttachmentForCreationDto dto)
     {
-        var (fileName, filePath) = await FileHelper.SaveAsync(dto);
+        // genarate file destination
+        string fileName = Guid.NewGuid().ToString("N") + "-" + dto.FileName;
+        string filePath = Path.Combine(EnvironmentHelper.AttachmentPath, fileName);
+
+        // copy image to the destination as stream
+        FileStream fileStream = File.OpenWrite(filePath);
+        await dto.Stream.CopyToAsync(fileStream);
+
+        // clear
+        await fileStream.FlushAsync();
+        fileStream.Close();
 
         var newAttachement = new Attachment()
         {
             Name = fileName,
-            Path = filePath,
+            Path = Path.Combine(EnvironmentHelper.FilePath, fileName),
         };
 
         newAttachement.Create();
-
         newAttachement = await _repository.AddAsync(newAttachement);
         await _repository.SaveChangesAsync();
 
@@ -83,20 +100,21 @@ public class AttachmentService : IAttachmentService
         if (existAttachment is null)
             throw new ZaminEducationException(404, "Attachment not found.");
 
-        await FileHelper.SaveAsync(new()
-        {
-            FileName = existAttachment.Name,
-            Stream = stream,
-        },
-        true);
+        string fileName = existAttachment.Path;
+        string filePath = Path.Combine(EnvironmentHelper.WebRootPath, fileName);
+
+        // copy image to the destination as stream
+        FileStream fileStream = File.OpenWrite(filePath);
+        await stream.CopyToAsync(fileStream);
+
+        // clear
+        await fileStream.FlushAsync();
+        fileStream.Close();
 
         existAttachment.Update();
-
         existAttachment = _repository.Update(existAttachment);
         await _repository.SaveChangesAsync();
 
         return existAttachment;
     }
-
-
 }

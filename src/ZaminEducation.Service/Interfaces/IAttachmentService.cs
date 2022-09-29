@@ -6,7 +6,7 @@ namespace ZaminEducation.Service.Interfaces;
 
 public interface IAttachmentService
 {
-    ValueTask<Attachment> DownloadAsync(AttachmentForCreationDto dto);
+    ValueTask<Attachment> UploadAsync(AttachmentForCreationDto dto);
     ValueTask<Attachment> UpdateAsync(long id, Stream stream);
     ValueTask<bool> DeleteAsync(Expression<Func<Attachment, bool>> expression);
     ValueTask<Attachment> GetAsync(Expression<Func<Attachment, bool>> expression);
