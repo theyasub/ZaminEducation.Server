@@ -59,7 +59,7 @@ namespace ZaminEducation.Service.Services
         {
             var certificates = certificateRepository.GetAll(expression, new string[] { "Attachment" });
 
-            return await certificates.Where(c => c.UserId.Equals(HttpContextHelper.UserId)).ToPageList(@params).ToListAsync();
+            return await certificates.Where(c => c.UserId.Equals(HttpContextHelper.UserId)).ToPagedList(@params).ToListAsync();
         }
 
         public async ValueTask<Certificate> GetAsync(Expression<Func<Certificate, bool>> expression)

@@ -21,7 +21,7 @@ namespace ZaminEducation.Service.Services
         public async ValueTask<IEnumerable<QuizResult>> GetAllAsync
             (Expression<Func<QuizResult, bool>> expression, PaginationParams @params)
         {
-            var pagedList = repository.GetAll(expression, new string[] { "User", "Course" }, false).ToPageList(@params);
+            var pagedList = repository.GetAll(expression, new string[] { "User", "Course" }, false).ToPagedList(@params);
 
             return await pagedList.ToListAsync();
 

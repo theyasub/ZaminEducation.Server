@@ -48,7 +48,7 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, Expression<Func<SavedCourse, bool>> expression = null)
         {
-            var pagedList = savedCourseRepository.GetAll(expression, new string[] { "Course", "User" }, false).ToPageList(@params);
+            var pagedList = savedCourseRepository.GetAll(expression, new string[] { "Course", "User" }, false).ToPagedList(@params);
             return await pagedList.ToListAsync();
         }
 
