@@ -19,12 +19,16 @@ namespace ZaminEducation.Api
         public static void AddCustomServices(this IServiceCollection services)
         {
             // repositories
-            services.AddScoped<IRepository<Course>, Repository<Course>>();
             services.AddScoped<IRepository<Attachment>, Repository<Attachment>>();
+            services.AddScoped<IRepository<Course>, Repository<Course>>();
             services.AddScoped<IRepository<User>, Repository<User>>();
             services.AddScoped<IRepository<QuizResult>, Repository<QuizResult>>();
             services.AddScoped<IRepository<CourseVideo>, Repository<CourseVideo>>();
             services.AddScoped<IRepository<CourseComment>, Repository<CourseComment>>();
+            services.AddScoped<IRepository<Certificate>, Repository<Certificate>>();
+            services.AddScoped<IRepository<SavedCourse>, Repository<SavedCourse>>();
+            services.AddScoped<IRepository<Quiz>, Repository<Quiz>>();
+            services.AddScoped<IRepository<QuestionAnswer>, Repository<QuestionAnswer>>();
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
@@ -34,6 +38,8 @@ namespace ZaminEducation.Api
             services.AddScoped<IYouTubeService, YouTubeService>();
             services.AddScoped<ICourseCommentService, CourseCommentService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICertificateService, CertificateService>();
+            services.AddScoped<ISavedCoursesService, SavedCoursesService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)
