@@ -83,21 +83,23 @@ namespace ZaminEducation.Service.Services
             if (user is null)
                 throw new ZaminEducationException(404, "User not found!");
 
-            user = await userRepository.GetAsync(u => u.Username == dto.Username &&
+            var alredyExistsUser = await userRepository.GetAsync(u => u.Username == dto.Username &&
                                                       u.Password == dto.Password.Encrypt() &&
                                                       u.State != ItemState.Deleted && u.Id != id);
             
-            if (user is not null)
+            if (alredyExistsUser is not null)
                 throw new ZaminEducationException(400, "Login or Password is incorrect!");
 
-            User newUser = mapper.Map(dto, user);
+            user = mapper.Map(dto, user);
 
-            newUser.Password = newUser.Password.Encrypt();
-            newUser.Update();
+            user.Password = user.Password.Encrypt();
+            user.Update();
+
+            userRepository.Update(user);
 
             await userRepository.SaveChangesAsync();
 
-            return newUser;
+            return user;
         }
     }
 }

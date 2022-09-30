@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZaminEducation.Data\ZaminEducation.Data.csproj" />
+    <ProjectReference Include="..\ZaminEducation.Domain\ZaminEducation.Domain.csproj" />
     <ProjectReference Include="..\ZaminEducation.Service\ZaminEducation.Service.csproj" />
   </ItemGroup>
 
