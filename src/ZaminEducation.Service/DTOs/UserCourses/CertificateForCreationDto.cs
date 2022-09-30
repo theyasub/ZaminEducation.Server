@@ -1,6 +1,3 @@
-using ZaminEducation.Service.DTOs.UserCoursesDtos;
-using ZaminEducation.Service.DTOs.Users;
-
 namespace ZaminEducation.Service.DTOs.UserCourses
 {
     public class CertificateForCreationDto

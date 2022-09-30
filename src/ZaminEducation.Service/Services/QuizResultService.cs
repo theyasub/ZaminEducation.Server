@@ -6,7 +6,6 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Service.DTOs.Quizzes;
-using ZaminEducation.Service.DTOs.QuizzesDtos;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;

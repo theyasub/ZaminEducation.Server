@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZaminEducation.Service.DTOs.UserCoursesDtos
+namespace ZaminEducation.Service.DTOs.UserCourses
 {
     public class CertificateResultDto
     {
