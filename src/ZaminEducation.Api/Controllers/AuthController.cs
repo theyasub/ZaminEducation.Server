@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Users;
+using ZaminEducation.Service.DTOs;
 using ZaminEducation.Service.DTOs.Users;
 using ZaminEducation.Service.Interfaces;
 
@@ -19,9 +20,12 @@ namespace ZaminEducation.Api.Controllers
 
         [HttpPost, Route("Login")]
         public async Task<IActionResult> Login(UserForLoginDTO dto)
-            => Ok(new
+        {
+            var token = await authService.GenerateToken(dto.Login, dto.Password);
+            return Ok(new
             {
-                toket = await authService.GenerateToken(dto.Login, dto.Password)
+                token
             });
+        }
     }
 }

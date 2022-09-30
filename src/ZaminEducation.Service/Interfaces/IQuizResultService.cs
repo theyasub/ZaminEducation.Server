@@ -2,6 +2,7 @@
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Service.DTOs.Quizzes;
+using ZaminEducation.Service.ViewModels.Quizzes;
 
 namespace ZaminEducation.Service.Interfaces
 {

@@ -10,6 +10,7 @@ using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.ViewModels.Quizzes;
 
 namespace ZaminEducation.Service.Services;
 
@@ -43,16 +44,15 @@ public class QuizResultService : IQuizResultService
     public async ValueTask<IEnumerable<QuizResult>> GetAllAsync
         (Expression<Func<QuizResult, bool>> expression, PaginationParams @params)
     {
-        var pagedList = _quizResultRepository.GetAll(expression, new string[] { "User", "Course" }, false)
-                                                               .ToPagedList(@params);
+        var pagedList = _quizResultRepository.GetAll(
+            expression, new string[] { "User", "Course" }, false).ToPagedList(@params);
 
         return await pagedList.ToListAsync();
-
-
     }
     public async ValueTask<QuizResult> GetAsync(Expression<Func<QuizResult, bool>> expression)
     {
-        var existQuizResult = await _quizResultRepository.GetAsync(expression, new string[] { "User", "Course" });
+        var existQuizResult = await _quizResultRepository.GetAsync(
+            expression, new string[] { "User", "Course" });
 
         if (existQuizResult is null)
             throw new ZaminEducationException(404, "QuizResult not found.");
