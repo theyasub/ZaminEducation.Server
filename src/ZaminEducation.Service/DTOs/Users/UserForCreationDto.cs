@@ -17,7 +17,7 @@ namespace ZaminEducation.Service.DTOs.Users
         [Required, MinLength(5)]
         public string Password { get; set; }
 
-        public long AddressId { get; set; }
+        public long? AddressId { get; set; }
 
         [MaxLength(200)]
         public string Bio { get; set; }
@@ -25,7 +25,7 @@ namespace ZaminEducation.Service.DTOs.Users
         [Required]
         public Gender Gender { get; set; }
 
-        public long ImageId { get; set; }
+        public long? ImageId { get; set; }
 
         [Required]
         public UserRole Role { get; set; } = UserRole.User;
