@@ -1,4 +1,4 @@
-﻿namespace ZaminEducation.Service.DTOs
+﻿namespace ZaminEducation.Service.DTOs.Users
 {
     public class UserForLoginDTO
     {

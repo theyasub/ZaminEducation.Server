@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Quizzes;
-using ZaminEducation.Service.DTOs.QuizzesDtos;
+using ZaminEducation.Service.DTOs.Quizzes;
 
 namespace ZaminEducation.Service.Interfaces
 {

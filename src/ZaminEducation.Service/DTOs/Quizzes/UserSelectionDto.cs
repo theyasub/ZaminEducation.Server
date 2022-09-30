@@ -1,4 +1,4 @@
-namespace ZaminEducation.Service.DTOs.QuizzesDtos
+namespace ZaminEducation.Service.DTOs.Quizzes
 {
     public class UserSelectionDto
     {
