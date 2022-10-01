@@ -2,13 +2,14 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Expressions;
-using ZaminEducation.Data.IRepositories;
+using ZaminEducation.Data.IRepositories; 
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Service.DTOs.Quizzes;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
+using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Service.Services;
@@ -43,8 +44,9 @@ public class QuizResultService : IQuizResultService
     public async ValueTask<IEnumerable<QuizResult>> GetAllAsync
         (Expression<Func<QuizResult, bool>> expression, PaginationParams @params)
     {
-        var pagedList = _quizResultRepository.GetAll(expression, new string[] { "User", "Course" }, false)
-                                                               .ToPagedList(@params);
+        var pagedList = _quizResultRepository.GetAll(
+            expression, new string[] { "User", "Course" }, false)
+                        .ToPagedList(@params);
 
         return await pagedList.ToListAsync();
 
@@ -52,7 +54,8 @@ public class QuizResultService : IQuizResultService
     }
     public async ValueTask<QuizResult> GetAsync(Expression<Func<QuizResult, bool>> expression)
     {
-        var existQuizResult = await _quizResultRepository.GetAsync(expression, new string[] { "User", "Course" });
+        var existQuizResult = await _quizResultRepository.GetAsync(
+                        expression, new string[] { "User", "Course" });
 
         if (existQuizResult is null)
             throw new ZaminEducationException(404, "QuizResult not found.");
@@ -72,15 +75,21 @@ public class QuizResultService : IQuizResultService
             await _certificateService.CreateAsync(new CertificateForCreationDto()
             {
                 CourseId = courseId,
-                UserId = 2
+                UserId = HttpContextHelper.UserId,
+                Result = new CertificateResultDto()
+                {
+                    PassedPoint = $"{countOfCorrectAnswers}/{dto.Count()}",
+                    Percentage = userResult
+                }
+                
             });
 
         // add result to database
         var quizResult = new QuizResultForCreationDto()
         {
             CourseId = courseId,
-            Percentage = GetTotalPersentage(dto.Count(), countOfCorrectAnswers),
-            UserId = 2
+            Percentage = userResult,
+            UserId = HttpContextHelper.UserId
         };
 
         await _quizResultRepository.AddAsync(_mapper.Map<QuizResult>(quizResult));
