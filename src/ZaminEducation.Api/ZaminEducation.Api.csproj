@@ -30,4 +30,8 @@
     <Folder Include="wwwroot\certificates\" />
   </ItemGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
 </Project>

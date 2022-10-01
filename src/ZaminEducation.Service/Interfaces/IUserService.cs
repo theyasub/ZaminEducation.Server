@@ -12,5 +12,7 @@ namespace ZaminEducation.Service.Interfaces
         ValueTask<User> GetAsync(Expression<Func<User, bool>> expression);
         ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null);
         ValueTask<bool> DeleteAsync(Expression<Func<User, bool>> expression);
+        ValueTask<User> GetInfoAsync();
+
     }
 }
