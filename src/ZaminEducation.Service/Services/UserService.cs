@@ -26,7 +26,7 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<User> CreateAsync(UserForCreationDto dto)
         {
-            var user = await userRepository.GetAsync(u => u.Username == dto.Username 
+            var user = await userRepository.GetAsync(u => u.Username == dto.Username
                                                             && u.State != ItemState.Deleted);
 
             if (user is not null)
@@ -60,14 +60,14 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null)
         {
-            var users = userRepository.GetAll(expression, new string[] {"Address", "Image"}, isTracking: false);
+            var users = userRepository.GetAll(expression, new string[] { "Address", "Image" }, isTracking: false);
 
             return await users.ToPagedList(@params).ToListAsync();
         }
 
         public async ValueTask<User> GetAsync(Expression<Func<User, bool>> expression)
         {
-            var user = await userRepository.GetAsync(expression, new string[] {"Address", "Image"});
+            var user = await userRepository.GetAsync(expression, new string[] { "Address", "Image" });
 
             if (user is null)
                 throw new ZaminEducationException(404, "User not found");
@@ -85,7 +85,7 @@ namespace ZaminEducation.Service.Services
             var alredyExistsUser = await userRepository.GetAsync(u => u.Username == dto.Username &&
                                                       u.Password == dto.Password.Encrypt() &&
                                                       u.State != ItemState.Deleted && u.Id != id);
-            
+
             if (alredyExistsUser is not null)
                 throw new ZaminEducationException(400, "Login or Password is incorrect!");
 

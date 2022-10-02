@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Expressions;
-using ZaminEducation.Data.IRepositories; 
+using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Service.DTOs.Quizzes;
@@ -28,7 +28,7 @@ public class QuizResultService : IQuizResultService
     private long courseId;
 
     public QuizResultService(IRepository<Quiz> quizRepository,
-        IRepository<QuestionAnswer> questionAnswerRepository, 
+        IRepository<QuestionAnswer> questionAnswerRepository,
         IMapper mapper, IConfiguration configuration,
         IRepository<QuizResult> quizResultRepository,
         ICertificateService certificateService)
@@ -81,7 +81,7 @@ public class QuizResultService : IQuizResultService
                     PassedPoint = $"{countOfCorrectAnswers}/{dto.Count()}",
                     Percentage = userResult
                 }
-                
+
             });
 
         // add result to database
@@ -118,7 +118,7 @@ public class QuizResultService : IQuizResultService
 
         string[] includes = new[] { "QuizContent", "Answers" };
         var quizzes = _quizRepository.GetAll(c => c.Id == courseId, includes);
-        
+
         if (quizzes.All(q => q.Id == quiz.Id))
             throw new ZaminEducationException(400, "Quiz must be belong to this course.");
 

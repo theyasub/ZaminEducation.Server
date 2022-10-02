@@ -42,7 +42,7 @@ namespace ZaminEducation.Service.Services
             var course = await courseService.GetAsync(c => c.Id == courseId);
 
             if (course is null)
-                throw new ZaminEducationException(400,"Bad request");
+                throw new ZaminEducationException(400, "Bad request");
 
             var content = mapper.Map<QuizContent>(questionDto);
             content.Create();
@@ -71,7 +71,7 @@ namespace ZaminEducation.Service.Services
                 throw new ZaminEducationException(400, "Bad request");
 
             answer = mapper.Map<QuestionAnswer>(dto);
-            answer.Create(); 
+            answer.Create();
 
             await answerRepository.AddAsync(answer);
             await answerRepository.SaveChangesAsync();
@@ -85,8 +85,8 @@ namespace ZaminEducation.Service.Services
             var content = await quizContentRepository.GetAsync(c => c.Id == dto.ContentId);
             var attachent = await attachmentService.GetAsync(a => a.Id == dto.FileId);
 
-            if(content is null && attachent is null)
-                throw new ZaminEducationException(400,"Bad request");
+            if (content is null && attachent is null)
+                throw new ZaminEducationException(400, "Bad request");
 
             var asset = mapper.Map<QuizAsset>(dto);
             asset.Create();
