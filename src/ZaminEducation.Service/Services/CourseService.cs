@@ -8,6 +8,7 @@ using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
+using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Interfaces.Courses;
 using ZaminEducation.Service.ViewModels;
@@ -18,15 +19,18 @@ namespace ZaminEducation.Service.Services.Courses
     {
         private readonly IRepository<Course> courseRepository;
         private readonly IYouTubeService youTubeService;
+        private readonly IRepository<CourseRate> courseRateRepository;
         private readonly IMapper mapper;
 
         public CourseService(
             IRepository<Course> courseRepository,
             IYouTubeService youTubeService,
+            IRepository<CourseRate> courseRateRepository,
             IMapper mapper)
         {
             this.courseRepository = courseRepository;
             this.youTubeService = youTubeService;
+            this.courseRateRepository = courseRateRepository;
             this.mapper = mapper;
         }
 
@@ -157,5 +161,55 @@ namespace ZaminEducation.Service.Services.Courses
 
         private double CalculateRates(IEnumerable<CourseRate> rates)
             => (double)rates.Sum(r => r.Value) / (double)rates.Count();
+
+        public async Task<CourseRate> RateCoure(long id, byte value)
+        {
+            var course = await courseRepository.GetAsync(c => c.Id == id);
+
+            if (course is null)
+                throw new ZaminEducationException(404, "Course not found");
+
+            var courseRate = await courseRateRepository.GetAsync(
+                                cr => cr.UserId == HttpContextHelper.UserId &&
+                                      cr.CourseId == id);
+
+            if(courseRate is not null)
+            {
+                courseRate.Value = value;
+                courseRate.Update();
+
+                await courseRateRepository.SaveChangesAsync();
+
+                return courseRate;
+            }
+
+            var newCourseRate = await courseRateRepository.AddAsync(new CourseRate()
+            {
+                Value = value,
+                CourseId = id,
+                UserId = (long)HttpContextHelper.UserId,
+                CreatedBy = HttpContextHelper.UserId
+            });
+            await courseRateRepository.SaveChangesAsync();
+
+            return newCourseRate;
+        }
+
+        public async Task<CourseRate> GetCourseRateOfUser(long id)
+        {
+            var course = await courseRepository.GetAsync(c => c.Id == id);
+
+            if (course is null)
+                throw new ZaminEducationException(404, "Course not found");
+
+            var existCourseRate = await courseRateRepository.GetAsync(
+                                    cr => cr.UserId == HttpContextHelper.UserId &&
+                                           cr.CourseId == id);
+
+            if (existCourseRate is null)
+                throw new ZaminEducationException(404, "CourseRate not found");
+
+            return existCourseRate;
+        }
     }
 }

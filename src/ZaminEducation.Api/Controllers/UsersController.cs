@@ -56,7 +56,7 @@ namespace ZaminEducation.Api.Controllers
         /// <returns>user</returns>
         /// <response code="400">if user data is not in the base</response>
         /// <response code="200">if user data have in database</response>
-        [HttpGet("{Id}")]
+        [HttpGet("{Id}"), Authorize(Roles = "User")]
         public async ValueTask<ActionResult<User>> GetAsync([FromRoute(Name = "Id")] long id) =>
             Ok(await userService.GetAsync(user => user.Id == id));
 

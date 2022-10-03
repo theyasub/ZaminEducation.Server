@@ -23,9 +23,6 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<CourseComment> AddAsync(long courseId, string message, long? parentId = null)
         {
-            if (HttpContextHelper.UserId is null)
-                throw new ZaminEducationException(401, "Unauthorized");
-
             var course = await courseRepository.GetAsync(c => c.Id == courseId);
 
             if (course == null)
@@ -105,9 +102,6 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<CourseComment> UpdateAsync(long id, string message)
         {
-            if (HttpContextHelper.UserId is null)
-                throw new ZaminEducationException(401, "Unauthorized");
-
             var existComment = await courseCommentRepository.GetAsync(cc => cc.Id == id);
 
             if (existComment is null)
