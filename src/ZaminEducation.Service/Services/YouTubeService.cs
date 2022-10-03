@@ -80,7 +80,6 @@ namespace ZaminEducation.Service.Services
             return videos;
         }
 
-
         public async ValueTask<bool> DeleteAsync(long youtubeId)
         {
             var existVideo = await youtubeRepository.GetAsync(p => p.Id == youtubeId);
@@ -138,7 +137,6 @@ namespace ZaminEducation.Service.Services
         public async ValueTask<IEnumerable<CourseVideo>> GetAllAsync(PaginationParams @params,
             Expression<Func<CourseVideo, bool>> expression = null)
             => await youtubeRepository.GetAll(expression)?.ToPagedList(@params).ToListAsync();
-
 
         public async ValueTask<IEnumerable<CourseVideo>> GetAllAsync(PaginationParams @params,
             string search)
