@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections;
-using System.Net.Mime;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Users;
@@ -70,7 +68,7 @@ namespace ZaminEducation.Api.Controllers
         /// <returns></returns>
         [HttpPut, Authorize]
         public async ValueTask<ActionResult<User>> UpdateAsync(long id,
-        [FromBody] UserForCreationDto dto) 
+        [FromBody] UserForCreationDto dto)
             => Ok(await userService.UpdateAsync(id, dto));
 
         /// <summary>
