@@ -162,7 +162,7 @@ namespace ZaminEducation.Service.Services.Courses
         private double CalculateRates(IEnumerable<CourseRate> rates)
             => (double)rates.Sum(r => r.Value) / (double)rates.Count();
 
-        public async Task<CourseRate> RateCoure(long id, byte value)
+        public async Task<CourseRate> Rate(long id, byte value)
         {
             var course = await courseRepository.GetAsync(c => c.Id == id);
 

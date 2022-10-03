@@ -18,7 +18,7 @@ namespace ZaminEducation.Service.Interfaces.Courses
         Task<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression);
         Task<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression);
         Task<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression);
-        Task<CourseRate> RateCoure(long id, byte value);
+        Task<CourseRate> Rate(long id, byte value);
         Task<CourseRate> GetCourseRateOfUser(long id);
     }
 }
