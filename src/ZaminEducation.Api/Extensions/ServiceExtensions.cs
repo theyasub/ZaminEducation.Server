@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
@@ -75,6 +76,10 @@ namespace ZaminEducation.Api
         {
             services.AddSwaggerGen(p =>
             {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                p.IncludeXmlComments(xmlPath);
+
                 p.ResolveConflictingActions(ad => ad.First());
                 p.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {

@@ -9,6 +9,7 @@ using ZaminEducation.Service.DTOs.Quizzes;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
+using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.ViewModels.Quizzes;
 
@@ -28,7 +29,7 @@ public class QuizResultService : IQuizResultService
     private long courseId;
 
     public QuizResultService(IRepository<Quiz> quizRepository,
-        IRepository<QuestionAnswer> questionAnswerRepository, 
+        IRepository<QuestionAnswer> questionAnswerRepository,
         IMapper mapper, IConfiguration configuration,
         IRepository<QuizResult> quizResultRepository,
         ICertificateService certificateService)
@@ -45,7 +46,8 @@ public class QuizResultService : IQuizResultService
         (Expression<Func<QuizResult, bool>> expression, PaginationParams @params)
     {
         var pagedList = _quizResultRepository.GetAll(
-            expression, new string[] { "User", "Course" }, false).ToPagedList(@params);
+            expression, new string[] { "User", "Course" }, false)
+                        .ToPagedList(@params);
 
         return await pagedList.ToListAsync();
     }
@@ -53,7 +55,7 @@ public class QuizResultService : IQuizResultService
     {
         var existQuizResult = await _quizResultRepository.GetAsync(
             expression, new string[] { "User", "Course" });
-
+            
         if (existQuizResult is null)
             throw new ZaminEducationException(404, "QuizResult not found.");
 
@@ -72,15 +74,21 @@ public class QuizResultService : IQuizResultService
             await _certificateService.CreateAsync(new CertificateForCreationDto()
             {
                 CourseId = courseId,
-                UserId = 2
+                UserId = HttpContextHelper.UserId,
+                Result = new CertificateResultDto()
+                {
+                    PassedPoint = $"{countOfCorrectAnswers}/{dto.Count()}",
+                    Percentage = userResult
+                }
+
             });
 
         // add result to database
         var quizResult = new QuizResultForCreationDto()
         {
             CourseId = courseId,
-            Percentage = GetTotalPersentage(dto.Count(), countOfCorrectAnswers),
-            UserId = 2
+            Percentage = userResult,
+            UserId = HttpContextHelper.UserId
         };
 
         await _quizResultRepository.AddAsync(_mapper.Map<QuizResult>(quizResult));
@@ -109,7 +117,7 @@ public class QuizResultService : IQuizResultService
 
         string[] includes = new[] { "QuizContent", "Answers" };
         var quizzes = _quizRepository.GetAll(c => c.Id == courseId, includes);
-        
+
         if (quizzes.All(q => q.Id == quiz.Id))
             throw new ZaminEducationException(400, "Quiz must be belong to this course.");
 

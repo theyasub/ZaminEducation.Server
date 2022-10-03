@@ -27,7 +27,7 @@ namespace ZaminEducation.Service.Services
         {
             User user = await repository.GetAsync(u =>
                 u.Username == username && u.Password.Equals(password.Encrypt()) && u.State != ItemState.Deleted);
-            
+
             if (user is null)
                 throw new ZaminEducationException(400, "Login or Password is incorrect");
 
