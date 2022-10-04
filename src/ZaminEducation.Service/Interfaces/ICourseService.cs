@@ -14,8 +14,9 @@ namespace ZaminEducation.Service.Interfaces.Courses
         ValueTask<IEnumerable<Course>> GetAllAsync(Expression<Func<Course, bool>> expression = null, PaginationParams @params = null);
         ValueTask<Course> UpdateAsync(Expression<Func<Course, bool>> expression, CourseForCreationDto courseForCreationDto);
         ValueTask<bool> DeleteAsync(Expression<Func<Course, bool>> expression);
-        Task<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression);
-        Task<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression);
-        Task<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression);
+        ValueTask<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression);
+        ValueTask<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression);
+        ValueTask<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression);
+        ValueTask<IEnumerable<Course>> SearchAsync(PaginationParams @params, string search);
     }
 }
