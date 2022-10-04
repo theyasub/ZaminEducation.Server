@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
+    using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
@@ -55,7 +55,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Set helpers
-EnvironmentHelper.WebRootPath = app.Services.GetService<IWebHostEnvironment>()?.WebRootPath;
+EnvironmentHelper.WebRootPath = app.Services.GetRequiredService<IWebHostEnvironment>()?.WebRootPath;
 
 if (app.Services.GetService<IHttpContextAccessor>() != null)
     HttpContextHelper.Accessor = app.Services.GetRequiredService<IHttpContextAccessor>();

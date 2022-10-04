@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Net.Mime;
+using ZaminEducation.Api.Extensions;
+using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Users;
 using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.Services;
 
 namespace ZaminEducation.Api.Controllers
 {
@@ -80,6 +84,15 @@ namespace ZaminEducation.Api.Controllers
         [HttpGet("Info"), Authorize]
         public async ValueTask<ActionResult<User>> GetInfoAsync()
             => Ok(await userService.GetInfoAsync());
+
+
+        /// <summary>
+        /// create attachment for user for all id
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost, Route("Attachments/{id}")]
+        public async Task<IActionResult> Attachment(long id, IFormFile formFile)
+            => Ok(await userService.AddAttachmentAsync(id, formFile.ToAttachmentOrDefault()));
 
     }
 }

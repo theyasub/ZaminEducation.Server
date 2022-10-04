@@ -5,6 +5,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
+using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Users;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
@@ -17,11 +18,12 @@ namespace ZaminEducation.Service.Services
     {
         private readonly IRepository<User> userRepository;
         private readonly IMapper mapper;
-
-        public UserService(IRepository<User> userRepository, IMapper mapper)
+        private readonly IAttachmentService attachmentService;
+        public UserService(IRepository<User> userRepository, IMapper mapper, IAttachmentService attachmentService)
         {
             this.userRepository = userRepository;
             this.mapper = mapper;
+            this.attachmentService = attachmentService;
         }
 
         public async ValueTask<User> CreateAsync(UserForCreationDto dto)
@@ -103,5 +105,22 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<User> GetInfoAsync()
             => await userRepository.GetAsync(u => u.Id == HttpContextHelper.UserId);
+
+        public async ValueTask<User> AddAttachmentAsync(long userId, AttachmentForCreationDto attachmentForCreationDto)
+        {
+            var attachment = await attachmentService.UploadAsync(attachmentForCreationDto);
+            
+            var user = await userRepository.GetAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new ZaminEducationException(404,"User not found");
+
+            user.ImageId = attachment.Id;
+
+            userRepository.Update(user);
+            await userRepository.SaveChangesAsync();
+
+            return user;
+        }
     }
 }

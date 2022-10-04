@@ -62,6 +62,9 @@ public class AttachmentService : IAttachmentService
         string fileName = Guid.NewGuid().ToString("N") + "-" + dto.FileName;
         string filePath = Path.Combine(EnvironmentHelper.AttachmentPath, fileName);
 
+        if (!Directory.Exists(EnvironmentHelper.AttachmentPath))
+            Directory.CreateDirectory(EnvironmentHelper.AttachmentPath);
+
         // copy image to the destination as stream
         FileStream fileStream = File.OpenWrite(filePath);
         await dto.Stream.CopyToAsync(fileStream);
