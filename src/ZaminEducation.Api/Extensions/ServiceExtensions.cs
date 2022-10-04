@@ -32,6 +32,7 @@ namespace ZaminEducation.Api
             services.AddScoped<IRepository<SavedCourse>, Repository<SavedCourse>>();
             services.AddScoped<IRepository<Quiz>, Repository<Quiz>>();
             services.AddScoped<IRepository<QuestionAnswer>, Repository<QuestionAnswer>>();
+            services.AddScoped<IRepository<CourseRate>, Repository<CourseRate>>();
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();

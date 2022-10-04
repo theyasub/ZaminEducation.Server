@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
+using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.ViewModels;
 
@@ -18,5 +19,7 @@ namespace ZaminEducation.Service.Interfaces.Courses
         ValueTask<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression);
         ValueTask<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression);
         ValueTask<IEnumerable<Course>> SearchAsync(PaginationParams @params, string search);
+        Task<CourseRate> Rate(long id, byte value);
+        Task<CourseRate> GetCourseRateOfUser(long id);
     }
 }
