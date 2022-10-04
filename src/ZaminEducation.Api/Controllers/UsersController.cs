@@ -47,18 +47,6 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
-<<<<<<< HEAD
-        /// <summary>
-        /// get one user information by id
-        /// </summary>
-        /// <param name="id">user id</param>
-        /// <returns>user</returns>
-        /// <response code="400">if user data is not in the base</response>
-        /// <response code="200">if user data have in database</response>
-        [HttpGet("{Id}"), Authorize(Roles = "User")]
-        public async ValueTask<ActionResult<User>> GetAsync([FromRoute(Name = "Id")] long id) =>
-            Ok(await userService.GetAsync(user => user.Id == id));
-=======
     /// <summary>
     /// get one user information by id
     /// </summary>
@@ -69,7 +57,6 @@ public class UsersController : BaseController
     [HttpGet("{Id}"), Authorize(Policy = "AllPolicy")]
     public async ValueTask<ActionResult<User>> GetAsync([FromRoute(Name = "Id")] long id) =>
         Ok(await userService.GetAsync(user => user.Id == id));
->>>>>>> 0d63f055ca0321dfc3d31e1edac6cc8221cc5b7a
 
     /// <summary>
     /// update user 
