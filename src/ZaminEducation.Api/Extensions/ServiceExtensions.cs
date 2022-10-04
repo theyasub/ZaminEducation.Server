@@ -7,6 +7,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
+using ZaminEducation.Domain.Entities.MainPages;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
@@ -33,6 +34,13 @@ namespace ZaminEducation.Api
             services.AddScoped<IRepository<Quiz>, Repository<Quiz>>();
             services.AddScoped<IRepository<QuestionAnswer>, Repository<QuestionAnswer>>();
             services.AddScoped<IRepository<CourseRate>, Repository<CourseRate>>();
+            services.AddScoped<IRepository<HomePage>, Repository<HomePage>>();
+            services.AddScoped<IRepository<HomePageHeader>, Repository<HomePageHeader>>();
+            services.AddScoped<IRepository<OfferedOpportunities>, Repository<OfferedOpportunities>>();
+            services.AddScoped<IRepository<InfoAboutProject>, Repository<InfoAboutProject>>();
+            services.AddScoped<IRepository<Reason>, Repository<Reason>>();
+            services.AddScoped<IRepository<SocialNetworks>, Repository<SocialNetworks>>();
+            services.AddScoped<IRepository<PhotoGalleryAttachment>, Repository<PhotoGalleryAttachment>>();
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
@@ -44,6 +52,7 @@ namespace ZaminEducation.Api
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ICertificateService, CertificateService>();
             services.AddScoped<ISavedCoursesService, SavedCoursesService>();
+            services.AddScoped<IHomePageService, HomePageService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

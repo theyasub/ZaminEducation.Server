@@ -1,6 +1,6 @@
 ﻿namespace ZaminEducation.Api.Extensions.Attributes
 {
-    public static class FormFileExtensions
+    public static class FormFileAttrebutes
     {
         public static bool IsValid(this IFormFile file)
         {
