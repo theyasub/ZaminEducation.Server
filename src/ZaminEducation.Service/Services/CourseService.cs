@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
@@ -22,7 +22,7 @@ namespace ZaminEducation.Service.Services.Courses
 
         public CourseService(
             IRepository<Course> courseRepository,
-            IYouTubeService youTubeService, 
+            IYouTubeService youTubeService,
             IMapper mapper)
         {
             this.courseRepository = courseRepository;
@@ -37,14 +37,14 @@ namespace ZaminEducation.Service.Services.Courses
 
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
-            
+
             Course mappedCourse = mapper.Map<Course>(source: courseForCreationDto);
 
             Course entity = await courseRepository.AddAsync(entity: mappedCourse);
 
             await courseRepository.SaveChangesAsync();
 
-            entity.Videos = (ICollection<CourseVideo>) await youTubeService.CreateRangeAsync(
+            entity.Videos = (ICollection<CourseVideo>)await youTubeService.CreateRangeAsync(
                 youtubePlaylist: courseForCreationDto.YouTubePlaylistLink,
                 courseId: entity.Id);
 
@@ -70,8 +70,8 @@ namespace ZaminEducation.Service.Services.Courses
             PaginationParams @params = null)
         {
             IQueryable<Course> pagedList = courseRepository.GetAll(
-                expression: expression, 
-                includes: new string[] {"Author", "Category", "Image", "Rates" },
+                expression: expression,
+                includes: new string[] { "Author", "Category", "Image", "Rates" },
                 isTracking: false)
                 .ToPagedList(@params);
 

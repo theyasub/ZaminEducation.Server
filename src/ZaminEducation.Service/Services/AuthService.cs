@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -27,7 +27,6 @@ namespace ZaminEducation.Service.Services
         {
             User user = await repository.GetAsync(u =>
                 u.Username == username && u.Password.Equals(password.Encrypt()) && u.State != ItemState.Deleted);
-            
 
             if (user is null)
                 throw new ZaminEducationException(400, "Login or Password is incorrect");

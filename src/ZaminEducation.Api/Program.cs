@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Serilog;
 using ZaminEducation.Api;
+using ZaminEducation.Api.Helpers;
 using ZaminEducation.Api.Middlewares;
 using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Service.Helpers;

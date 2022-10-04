@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -74,7 +74,7 @@ namespace ZaminEducation.Api.Controllers
         /// <returns></returns>
         [HttpPut, Authorize]
         public async ValueTask<ActionResult<User>> UpdateAsync(long id,
-        [FromBody] UserForCreationDto dto) 
+        [FromBody] UserForCreationDto dto)
             => Ok(await userService.UpdateAsync(id, dto));
 
         /// <summary>

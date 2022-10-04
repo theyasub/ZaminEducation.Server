@@ -1,5 +1,5 @@
 
-namespace ZaminEducation.Service.DTOs.Quizzes;
+namespace ZaminEducation.Service.ViewModels.Quizzes;
 
 public class UserQuizzesResultViewModel
 {

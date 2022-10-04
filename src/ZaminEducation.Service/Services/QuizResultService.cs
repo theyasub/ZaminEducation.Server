@@ -2,7 +2,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Linq.Expressions;
-using ZaminEducation.Data.IRepositories; 
+using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Service.DTOs.Quizzes;
@@ -11,6 +11,7 @@ using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Interfaces;
+using ZaminEducation.Service.ViewModels.Quizzes;
 
 namespace ZaminEducation.Service.Services;
 
@@ -28,7 +29,7 @@ public class QuizResultService : IQuizResultService
     private long courseId;
 
     public QuizResultService(IRepository<Quiz> quizRepository,
-        IRepository<QuestionAnswer> questionAnswerRepository, 
+        IRepository<QuestionAnswer> questionAnswerRepository,
         IMapper mapper, IConfiguration configuration,
         IRepository<QuizResult> quizResultRepository,
         ICertificateService certificateService)
@@ -49,14 +50,12 @@ public class QuizResultService : IQuizResultService
                         .ToPagedList(@params);
 
         return await pagedList.ToListAsync();
-
-
     }
     public async ValueTask<QuizResult> GetAsync(Expression<Func<QuizResult, bool>> expression)
     {
         var existQuizResult = await _quizResultRepository.GetAsync(
-                        expression, new string[] { "User", "Course" });
-
+            expression, new string[] { "User", "Course" });
+            
         if (existQuizResult is null)
             throw new ZaminEducationException(404, "QuizResult not found.");
 
@@ -81,7 +80,7 @@ public class QuizResultService : IQuizResultService
                     PassedPoint = $"{countOfCorrectAnswers}/{dto.Count()}",
                     Percentage = userResult
                 }
-                
+
             });
 
         // add result to database
@@ -118,7 +117,7 @@ public class QuizResultService : IQuizResultService
 
         string[] includes = new[] { "QuizContent", "Answers" };
         var quizzes = _quizRepository.GetAll(c => c.Id == courseId, includes);
-        
+
         if (quizzes.All(q => q.Id == quiz.Id))
             throw new ZaminEducationException(400, "Quiz must be belong to this course.");
 

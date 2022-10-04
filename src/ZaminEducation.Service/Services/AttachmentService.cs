@@ -23,12 +23,11 @@ public class AttachmentService : IAttachmentService
         var file = new Attachment()
         {
             Name = fileName,
-            Path = filePath,
-            CreatedBy = HttpContextHelper.UserId
+            Path = filePath
         };
+        file.Create();
 
         file = await _repository.AddAsync(file);
-        file.Create();
         await _repository.SaveChangesAsync();
 
         return file;
@@ -73,22 +72,12 @@ public class AttachmentService : IAttachmentService
         await fileStream.FlushAsync();
         fileStream.Close();
 
-        var newAttachement = new Attachment()
-        {
-            Name = fileName,
-            Path = Path.Combine(EnvironmentHelper.FilePath, fileName),
-        };
-
-        newAttachement.Create();
-        newAttachement = await _repository.AddAsync(newAttachement);
-        await _repository.SaveChangesAsync();
-
-        return newAttachement;
+        return await CreateAsync(fileName, Path.Combine(EnvironmentHelper.FilePath, fileName));
     }
 
     public async ValueTask<Attachment> GetAsync(Expression<Func<Attachment, bool>> expression)
     {
-        var existAttachement = await _repository.GetAsync(expression, null);
+        var existAttachement = await _repository.GetAsync(expression);
 
         if (existAttachement is null)
             throw new ZaminEducationException(404, "Attachment not found.");

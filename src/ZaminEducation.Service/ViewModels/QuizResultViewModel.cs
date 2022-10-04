@@ -1,6 +1,6 @@
 using ZaminEducation.Domain.Entities.Quizzes;
 
-namespace ZaminEducation.Service.DTOs.Quizzes;
+namespace ZaminEducation.Service.ViewModels.Quizzes;
 
 public class QuizResultViewModel
 {
