@@ -11,5 +11,6 @@ namespace ZaminEducation.Service.Interfaces
         ValueTask<CourseComment> GetAsync(long id);
         ValueTask<CourseComment> UpdateAsync(long id, string message);
         ValueTask<IEnumerable<CourseComment>> GetRepliedComments(long Id);
+        ValueTask<IEnumerable<CourseComment>> SearchAsync(PaginationParams @params, string search);
     }
 }

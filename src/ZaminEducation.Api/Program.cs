@@ -6,6 +6,7 @@ using ZaminEducation.Api;
 using ZaminEducation.Api.Helpers;
 using ZaminEducation.Api.Middlewares;
 using ZaminEducation.Data.DbContexts;
+using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.Helpers;
 using ZaminEducation.Service.Mappers;
 
@@ -20,6 +21,25 @@ builder.Services.AddControllers();
 // Add db context
 builder.Services.AddDbContext<ZaminEducationDbContext>(option =>
     option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AllPolicy", policy => policy.RequireRole(
+        Enum.GetName(UserRole.Admin),
+        Enum.GetName(UserRole.Mentor),
+        Enum.GetName(UserRole.User)));
+
+    options.AddPolicy("MentorPolicy", policy => policy.RequireRole(
+        Enum.GetName(UserRole.Admin),
+        Enum.GetName(UserRole.Mentor)));
+
+    options.AddPolicy("UserPolicy", policy => policy.RequireRole(
+        Enum.GetName(UserRole.Admin),
+        Enum.GetName(UserRole.User)));
+
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole(
+        Enum.GetName(UserRole.Admin)));
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

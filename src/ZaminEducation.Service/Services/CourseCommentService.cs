@@ -15,7 +15,9 @@ namespace ZaminEducation.Service.Services
         private readonly IRepository<CourseComment> courseCommentRepository;
         private readonly IRepository<Course> courseRepository;
 
-        public CourseCommentService(IRepository<CourseComment> courseCommentRepository, IRepository<Course> courseRepository)
+        public CourseCommentService(
+            IRepository<CourseComment> courseCommentRepository,
+            IRepository<Course> courseRepository)
         {
             this.courseCommentRepository = courseCommentRepository;
             this.courseRepository = courseRepository;
@@ -23,9 +25,6 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<CourseComment> AddAsync(long courseId, string message, long? parentId = null)
         {
-            if (HttpContextHelper.UserId is null)
-                throw new ZaminEducationException(401, "Unauthorized");
-
             var course = await courseRepository.GetAsync(c => c.Id == courseId);
 
             if (course == null)
@@ -76,7 +75,8 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<IEnumerable<CourseComment>> GetAllAsync(PaginationParams @params, long courseId)
         {
-            var comments = courseCommentRepository.GetAll(cc => cc.CourseId == courseId && cc.ParentId == null).ToPagedList(@params);
+            var comments =
+                courseCommentRepository.GetAll(cc => cc.CourseId == courseId && cc.ParentId == null).ToPagedList(@params);
 
             return await comments.ToListAsync();
         }
@@ -105,9 +105,6 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<CourseComment> UpdateAsync(long id, string message)
         {
-            if (HttpContextHelper.UserId is null)
-                throw new ZaminEducationException(401, "Unauthorized");
-
             var existComment = await courseCommentRepository.GetAsync(cc => cc.Id == id);
 
             if (existComment is null)
@@ -125,7 +122,7 @@ namespace ZaminEducation.Service.Services
             return updatedComment;
         }
 
-        public async ValueTask<IEnumerable<CourseComment>> GetAllAsync(PaginationParams @params, string search)
+        public async ValueTask<IEnumerable<CourseComment>> SearchAsync(PaginationParams @params, string search)
             => await courseCommentRepository.GetAll(includes: new string[] { "User", "Course" },
                 expression:
                  cc => cc.Id.ToString() == search ||
