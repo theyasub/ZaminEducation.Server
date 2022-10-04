@@ -1,5 +1,10 @@
-﻿using AutoMapper;
+﻿using AngleSharp.Common;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
+using ZaminEducation.Data.Repositories;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Service.DTOs.Quizzes;
 using ZaminEducation.Service.Exceptions;
@@ -95,6 +100,40 @@ namespace ZaminEducation.Service.Services
             await quizAssetRepository.SaveChangesAsync();
 
             return asset;
+        }
+
+        public async ValueTask<IEnumerable<Quiz>> GetAllAsync(
+            Expression<Func<Quiz, bool>> expression, int count)
+        {
+            var quizzes = quizRepository.GetAll(expression).ToList();
+
+            if (quizzes.Count() >= count)   
+            {
+                var lastIndex = quizzes.Count();
+                
+                Quiz[] shuffledQuizzes = new Quiz[count];
+
+                int n = 0;
+
+                while (n < count)
+                {
+                rand:
+                    var randomIndex = new Random().Next(0, lastIndex);
+
+                    if (shuffledQuizzes.Contains(shuffledQuizzes[randomIndex]))
+                        goto rand;
+
+                    shuffledQuizzes[n++] = quizzes[randomIndex];
+                }
+                return shuffledQuizzes;
+            }
+            return quizzes;
+        }
+
+        public async ValueTask<Quiz> GetAsync(long quizId)
+        {
+            return await quizRepository.GetAll(q => q.Id == quizId)
+                .FirstOrDefaultAsync();
         }
     }
 }

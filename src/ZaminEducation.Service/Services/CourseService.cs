@@ -122,7 +122,7 @@ namespace ZaminEducation.Service.Services.Courses
             return course;
         }
 
-        public async Task<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression)
+        public async ValueTask<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression)
         {
             var course = await courseRepository.GetAsync(expression, new string[] { "Modules" });
 
@@ -132,7 +132,7 @@ namespace ZaminEducation.Service.Services.Courses
             return course.Modules;
         }
 
-        public async Task<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression)
+        public async ValueTask<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression)
         {
             var course = await courseRepository.GetAsync(expression, new string[] { "Targets" });
 
@@ -142,7 +142,7 @@ namespace ZaminEducation.Service.Services.Courses
             return course.Targets;
         }
 
-        public async Task<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression)
+        public async ValueTask<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression)
         {
             var course = await courseRepository.GetAsync(expression, new string[] { "Videos" });
 
@@ -152,7 +152,7 @@ namespace ZaminEducation.Service.Services.Courses
             return course.Videos;
         }
 
-        public async ValueTask<IEnumerable<Course>> GetAllAsync(PaginationParams @params,
+        public async ValueTask<IEnumerable<Course>> SearchAsync(PaginationParams @params,
            string search)
                => await courseRepository.GetAll(
                    c => c.Id.ToString() == search ||
