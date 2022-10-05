@@ -9,6 +9,6 @@ namespace ZaminEducation.Service.Interfaces
     {
         ValueTask<SavedCourse> GetAsync(Expression<Func<SavedCourse, bool>> expression = null);
         ValueTask<bool> AddRemoveAsync(SavedCourseForCreationDto dto);
-        ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, Expression<Func<SavedCourse, bool>> expression = null);
+        ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, Expression<Func<SavedCourse, bool>> expression = null, string search = null);
     }
 }

@@ -72,15 +72,4 @@ public class CourseCommentController : BaseController
     [HttpGet("repliedcomment{id}")]
     public async ValueTask<IActionResult> GetRepliedComments(long id) =>
         Ok(await this.courseCommentService.GetRepliedComments(id));
-
-    /// <summary>
-    /// Search comments
-    /// </summary>
-    /// <param name="params"></param>
-    /// <param name="search"></param>
-    /// <returns></returns>
-    [HttpGet("search")]
-    public async ValueTask<IActionResult> SearchAsync(
-        PaginationParams @params, string search) =>
-            Ok(await this.courseCommentService.SearchAsync(@params, search));
 }

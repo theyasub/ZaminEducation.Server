@@ -79,7 +79,8 @@ namespace ZaminEducation.Service.Services.Courses
 
         public async ValueTask<IEnumerable<Course>> GetAllAsync(
             PaginationParams @params,
-            Expression<Func<Course, bool>> expression = null)
+            Expression<Func<Course, bool>> expression = null,
+            string search = null)
         {
             IQueryable<Course> pagedList = courseRepository.GetAll(
                 expression: expression,
@@ -87,7 +88,15 @@ namespace ZaminEducation.Service.Services.Courses
                 isTracking: false)
                 .ToPagedList(@params);
 
-            return await pagedList.ToListAsync();
+            return !string.IsNullOrEmpty(search)
+                ? pagedList.Where(
+                    c => c.Name == search ||
+                    c.Author.FirstName == search ||
+                    c.Author.LastName == search ||
+                    c.Author.Username == search ||
+                    c.Description.Contains(search) ||
+                    c.Category.Name == search)
+                : await pagedList.ToListAsync();
         }
 
         public async ValueTask<CourseViewModel> GetAsync(Expression<Func<Course, bool>> expression)
@@ -164,12 +173,7 @@ namespace ZaminEducation.Service.Services.Courses
             return course.Videos;
         }
 
-        public async ValueTask<IEnumerable<Course>> SearchAsync(PaginationParams @params,
-           string search)
-               => await courseRepository.GetAll(
-                   c => c.Id.ToString() == search ||
-                   c.Name == search)?
-                       .ToPagedList(@params).ToListAsync();
+
 
         private double CalculateRates(IEnumerable<CourseRate> rates)
             => (double)rates.Sum(r => r.Value) / (double)rates.Count();
@@ -185,7 +189,7 @@ namespace ZaminEducation.Service.Services.Courses
                                 cr => cr.UserId == HttpContextHelper.UserId &&
                                       cr.CourseId == id);
 
-            if(courseRate is not null)
+            if (courseRate is not null)
             {
                 courseRate.Value = value;
                 courseRate.Update();
