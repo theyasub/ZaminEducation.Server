@@ -6,7 +6,9 @@ using System.Net.Mime;
 using ZaminEducation.Api.Extensions;
 using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Domain.Configurations;
+using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
+using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.DTOs.Users;
 using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Services;
@@ -16,9 +18,11 @@ namespace ZaminEducation.Api.Controllers;
 public class UsersController : BaseController
 {
     private readonly IUserService userService;
-    public UsersController(IUserService userService)
+    private readonly ISavedCoursesService savedCoursesService;
+    public UsersController(IUserService userService, ISavedCoursesService savedCoursesService)
     {
         this.userService = userService;
+        this.savedCoursesService = savedCoursesService;
     }
 
     /// <summary>
@@ -31,6 +35,15 @@ public class UsersController : BaseController
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async ValueTask<ActionResult<User>> CreateAsync(UserForCreationDto dto) =>
         Ok(await userService.CreateAsync(dto));
+
+    /// <summary>
+    /// Toggle saved course
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    [HttpPost("saved-course")]
+    public async ValueTask<ActionResult<SavedCourse>> ToggleAsync(SavedCourseForCreationDto dto) =>
+        Ok(await savedCoursesService.ToggleAsync(dto));
 
     /// <summary>
     /// delete user by id (for only admins)
@@ -52,6 +65,17 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
+    /// <summary>
+    /// Get all saved courses of users
+    /// </summary>
+    /// <param name="params"></param>
+    /// <returns></returns>
+    [HttpGet("saved-course")]
+    public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
+        [FromQuery] PaginationParams @params) =>
+            Ok(await savedCoursesService.GetAllAsync(@params));
+
+
     [HttpPost("Change/Password"), Authorize(Policy = "AllPolicy")]
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
@@ -63,7 +87,7 @@ public class UsersController : BaseController
     /// <returns>user</returns>
     /// <response code="400">if user data is not in the base</response>
     /// <response code="200">if user data have in database</response>
-    [HttpGet("{id}"), Authorize(Roles  = "AllPolicy")]
+    [HttpGet("{id}"), Authorize("AllPolicy")]
     public async ValueTask<ActionResult<User>> GetAsync([FromRoute]long id) =>
         Ok(await userService.GetAsync(user => user.Id == id));
 
@@ -90,7 +114,7 @@ public class UsersController : BaseController
     /// create attachment for user for all id
     /// </summary>
     /// <returns></returns>
-    [HttpPost("attachments/{id}"), Authorize(Roles = "UserPolicy")]
+    [HttpPost("attachments/{id}"), Authorize("UserPolicy")]
     public async Task<IActionResult> Attachment(long id, IFormFile formFile)
         => Ok(await userService.AddAttachmentAsync(id, formFile.ToAttachmentOrDefault()));
 }
