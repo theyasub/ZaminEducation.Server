@@ -46,10 +46,14 @@ namespace ZaminEducation.Service.Services
             return true;
         }
 
-        public async ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, Expression<Func<SavedCourse, bool>> expression = null)
+        public async ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, Expression<Func<SavedCourse, bool>> expression = null, string search = null)
         {
             var pagedList = savedCourseRepository.GetAll(expression, new string[] { "Course", "User" }, false).ToPagedList(@params);
-            return await pagedList.ToListAsync();
+
+            return !string.IsNullOrEmpty(search)
+                ? await pagedList.Where(sc => sc.Course.Name == search ||
+                    sc.Course.Category.Name == search).ToListAsync()
+                : (IEnumerable<SavedCourse>)await pagedList.ToListAsync();
         }
 
         public async ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params,

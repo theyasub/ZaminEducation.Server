@@ -60,11 +60,16 @@ namespace ZaminEducation.Service.Services
             return true;
         }
 
-        public async ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null)
+        public async ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null, string search = null)
         {
             var users = userRepository.GetAll(expression, new string[] { "Address", "Image" }, isTracking: false);
 
-            return await users.ToPagedList(@params).ToListAsync();
+            return !string.IsNullOrEmpty(search)
+                ? await users.Where(u => u.FirstName == search ||
+                        u.LastName == search ||
+                        u.Username == search ||
+                        u.Bio.Contains(search)).ToPagedList(@params).ToListAsync()
+                : (IEnumerable<User>)await users.ToPagedList(@params).ToListAsync();
         }
 
         public async ValueTask<User> GetAsync(Expression<Func<User, bool>> expression)
@@ -109,11 +114,11 @@ namespace ZaminEducation.Service.Services
         public async ValueTask<User> AddAttachmentAsync(long userId, AttachmentForCreationDto attachmentForCreationDto)
         {
             var attachment = await attachmentService.UploadAsync(attachmentForCreationDto);
-            
+
             var user = await userRepository.GetAsync(u => u.Id == userId);
 
             if (user == null)
-                throw new ZaminEducationException(404,"User not found");
+                throw new ZaminEducationException(404, "User not found");
 
             user.ImageId = attachment.Id;
 

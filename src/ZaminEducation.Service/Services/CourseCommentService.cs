@@ -73,12 +73,19 @@ namespace ZaminEducation.Service.Services
             return false;
         }
 
-        public async ValueTask<IEnumerable<CourseComment>> GetAllAsync(PaginationParams @params, long courseId)
+        public async ValueTask<IEnumerable<CourseComment>> GetAllAsync(PaginationParams @params, long courseId, string search = null)
         {
             var comments =
-                courseCommentRepository.GetAll(cc => cc.CourseId == courseId && cc.ParentId == null).ToPagedList(@params);
+                courseCommentRepository.GetAll(cc => cc.CourseId == courseId && cc.ParentId == null,
+                    new string[] { "User", "Course" }).ToPagedList(@params);
 
-            return await comments.ToListAsync();
+            return !string.IsNullOrEmpty(search)
+                ? await comments.Where(cc => cc.Id.ToString() == search ||
+                 cc.User.FirstName == search ||
+                 cc.User.LastName == search ||
+                 cc.User.Username == search ||
+                 cc.Text.Contains(search)).ToListAsync()
+                : (IEnumerable<CourseComment>)await comments.ToListAsync();
         }
 
         public async ValueTask<CourseComment> GetAsync(long id)
@@ -121,14 +128,5 @@ namespace ZaminEducation.Service.Services
 
             return updatedComment;
         }
-
-        public async ValueTask<IEnumerable<CourseComment>> SearchAsync(PaginationParams @params, string search)
-            => await courseCommentRepository.GetAll(includes: new string[] { "User", "Course" },
-                expression:
-                 cc => cc.Id.ToString() == search ||
-                 cc.User.FirstName == search ||
-                 cc.User.Username == search ||
-                 cc.Course.Name == search)?
-                    .ToPagedList(@params).ToListAsync();
     }
 }
