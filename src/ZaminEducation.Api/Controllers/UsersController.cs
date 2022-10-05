@@ -91,5 +91,4 @@ public class UsersController : BaseController
         public async Task<IActionResult> Attachment(long id, IFormFile formFile)
             => Ok(await userService.AddAttachmentAsync(id, formFile.ToAttachmentOrDefault()));
 
-    }
 }
