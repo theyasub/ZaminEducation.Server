@@ -4,7 +4,7 @@ using ZaminEducation.Domain.Entities.Courses;
 
 namespace ZaminEducation.Domain.Entities.MainPages;
 
-public class HomePage : Auditable  
+public class HomePage : Auditable
 {
     public long HomePageHeaderId { get; set; }
     public HomePageHeader HomePageHeader { get; set; }
@@ -16,12 +16,14 @@ public class HomePage : Auditable
     [NotMapped]
     public IEnumerable<Course> PopularCourses { get; set; }
 
+    [ForeignKey(nameof(OpportunitiesOffered))]
     public long OfferedOpportunitiesId { get; set; }
     public OfferedOpportunities OpportunitiesOffered { get; set; }
 
     public long PhotoGalleryId { get; set; }
     public PhotoGallery PhotoGallery { get; set; }
 
+    [ForeignKey(nameof(SocialNetworks))]
     public long SocialNetworksId { get; set; }
     public SocialNetworks SocialNetworks { get; set; }
 

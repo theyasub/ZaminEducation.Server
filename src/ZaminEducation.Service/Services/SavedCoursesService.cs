@@ -53,7 +53,7 @@ namespace ZaminEducation.Service.Services
             return !string.IsNullOrEmpty(search)
                 ? await pagedList.Where(sc => sc.Course.Name == search ||
                     sc.Course.Category.Name == search).ToListAsync()
-                : (IEnumerable<SavedCourse>)await pagedList.ToListAsync();
+                : await pagedList.ToListAsync();
         }
 
         public async ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params,

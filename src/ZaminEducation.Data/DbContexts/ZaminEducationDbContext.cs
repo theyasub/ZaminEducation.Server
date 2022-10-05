@@ -121,6 +121,20 @@ namespace ZaminEducation.Data.DbContexts
                 .Navigation(o => o.Opportunities)
                     .AutoInclude();
 
+            modelBuilder.Entity<HomePage>()
+                .HasOne(h => h.InfoAboutProject)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HomePage>()
+                .HasOne(h => h.OpportunitiesOffered)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<HomePage>()
+                .HasOne(h => h.SocialNetworks)
+                .WithOne()
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
