@@ -21,7 +21,7 @@ public class CourseController : BaseController
     /// <param name="courseDto"></param>
     /// <returns></returns>
     [HttpPost]
-    public async ValueTask<IActionResult> CreateAsync(CourseForCreationDto courseDto) 
+    public async ValueTask<IActionResult> CreateAsync([FromForm] CourseForCreationDto courseDto) 
         => Ok(await this.courseService.CreateAsync(courseDto));
 
     /// <summary>
@@ -50,7 +50,7 @@ public class CourseController : BaseController
     /// <param name="courseDto"></param>
     /// <returns></returns>
     [HttpPut("{id}")]
-    public async ValueTask<IActionResult> UpdateAsync(long id, [FromBody] CourseForCreationDto courseDto) 
+    public async ValueTask<IActionResult> UpdateAsync(long id, [FromForm] CourseForCreationDto courseDto) 
         => Ok(await this.courseService.UpdateAsync(course => course.Id.Equals(id), courseDto));
 
     /// <summary>
