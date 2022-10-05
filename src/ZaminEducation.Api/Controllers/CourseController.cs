@@ -6,7 +6,7 @@ using ZaminEducation.Service.Interfaces.Courses;
 
 namespace ZaminEducation.Api.Controllers;
 
-[Authorize(Policy = "AdminPolicy")]
+//[Authorize(Policy = "AdminPolicy")]
 public class CourseController : BaseController
 {
     private readonly ICourseService courseService;
@@ -23,6 +23,10 @@ public class CourseController : BaseController
     [HttpPost]
     public async ValueTask<IActionResult> CreateAsync([FromForm] CourseForCreationDto courseDto) 
         => Ok(await this.courseService.CreateAsync(courseDto));
+
+    [HttpPost("link")]
+    public async ValueTask<IActionResult> GenerateLinkAsync(long courseId)
+        => Ok(await this.courseService.GenerateLinkAsync(courseId));
 
     /// <summary>
     /// Select all of course

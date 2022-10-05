@@ -11,6 +11,7 @@ namespace ZaminEducation.Service.Interfaces.Courses
     public interface ICourseService
     {
         ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto);
+        ValueTask<string> GenerateLinkAsync(long courseId);
         ValueTask<CourseViewModel> GetAsync(Expression<Func<Course, bool>> expression);
         ValueTask<IEnumerable<Course>> GetAllAsync(PaginationParams @params, Expression<Func<Course, bool>> expression = null);
         ValueTask<Course> UpdateAsync(Expression<Func<Course, bool>> expression, CourseForCreationDto courseForCreationDto);
