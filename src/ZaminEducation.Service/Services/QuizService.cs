@@ -102,12 +102,12 @@ namespace ZaminEducation.Service.Services
         public async ValueTask<IEnumerable<Quiz>> GetAllAsync(
             Expression<Func<Quiz, bool>> expression, int count)
         {
-            var quizzes = quizRepository.GetAll(expression).ToList();
+            var quizzes = await quizRepository.GetAll(expression).ToListAsync();
 
-            if (quizzes.Count() >= count)   
+            if (quizzes.Count() >= count)
             {
                 var lastIndex = quizzes.Count();
-                
+
                 Quiz[] shuffledQuizzes = new Quiz[count];
 
                 int n = 0;
@@ -142,8 +142,8 @@ namespace ZaminEducation.Service.Services
             QuizForCreationDto quizForCreationDto,
             QuizContentForCreationDto questionDto)
         {
-            var quizexists = 
-                await quizRepository.GetAsync(q => q.Id.Equals(quizId) 
+            var quizexists =
+                await quizRepository.GetAsync(q => q.Id.Equals(quizId)
                     && q.CourseId.Equals(quizForCreationDto.CourseId));
 
             if (quizexists is null)
