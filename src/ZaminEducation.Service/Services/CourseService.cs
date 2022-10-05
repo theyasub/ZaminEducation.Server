@@ -70,8 +70,8 @@ namespace ZaminEducation.Service.Services.Courses
         }
 
         public async ValueTask<IEnumerable<Course>> GetAllAsync(
-            Expression<Func<Course, bool>> expression = null,
-            PaginationParams @params = null)
+            PaginationParams @params,
+            Expression<Func<Course, bool>> expression = null)
         {
             IQueryable<Course> pagedList = courseRepository.GetAll(
                 expression: expression,
