@@ -104,7 +104,6 @@ public class AttachmentService : IAttachmentService
         fileStream.Close();
 
         existAttachment.Update();
-        existAttachment = _repository.Update(existAttachment);
         await _repository.SaveChangesAsync();
 
         return existAttachment;

@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
+using ZaminEducation.Domain.Entities.MainPages;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Courses;
+using ZaminEducation.Service.DTOs.HomePage;
 using ZaminEducation.Service.DTOs.Quizzes;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.DTOs.Users;
@@ -45,6 +47,11 @@ namespace ZaminEducation.Service.Mappers
 
             // another
             CreateMap<Attachment, AttachmentForCreationDto>().ReverseMap();
+            CreateMap<HomePage, HomePageHeaderForCreationDto>().ReverseMap();
+            CreateMap<InfoAboutProject, InfoAboutProjectForCreationDto>().ReverseMap();
+            CreateMap<OfferedOpportunities, OfferedOpportunitesForCreationDto>().ReverseMap();
+            CreateMap<Reason, ReasonForCreationDto>().ReverseMap();
+            CreateMap<SocialNetworks, SocialNetworksForCreationDto>().ReverseMap();
         }
     }
 }
