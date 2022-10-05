@@ -122,5 +122,25 @@ namespace ZaminEducation.Service.Services
 
             return user;
         }
+
+        public async ValueTask<User> ChangePasswordAsync(UserForChangePassword dto)
+        {
+            User existUser = await userRepository.GetAsync(user => user.Username == dto.Username);
+
+            if (existUser is null)
+                throw new Exception("This Username is not exists");
+
+            else if (dto.NewPassword != dto.ComfirmPassword)
+                throw new Exception("New password and comfirm password is not equal");
+
+
+            else if (existUser.Password != dto.OldPassword.Encrypt())
+                throw new Exception("Password is incorrect!");
+
+            existUser.Password = dto.NewPassword.Encrypt();
+            await userRepository.SaveChangesAsync();
+
+            return existUser;
+        }
     }
 }

@@ -52,6 +52,10 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
+    [HttpPost("Change/Password"), Authorize(Policy = "AllPolicy")]
+    public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
+        Ok(await userService.ChangePasswordAsync(dto));
+
     /// <summary>
     /// get one user information by id
     /// </summary>

@@ -14,6 +14,7 @@ namespace ZaminEducation.Service.Interfaces
         ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null);
         ValueTask<bool> DeleteAsync(Expression<Func<User, bool>> expression);
         ValueTask<User> GetInfoAsync();
+        ValueTask<User> ChangePasswordAsync(UserForChangePassword dto);
         ValueTask<User> AddAttachmentAsync(long id, AttachmentForCreationDto attachmentForCreationDto);
 
     }
