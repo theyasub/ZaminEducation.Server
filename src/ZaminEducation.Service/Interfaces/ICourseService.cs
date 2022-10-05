@@ -12,7 +12,7 @@ namespace ZaminEducation.Service.Interfaces.Courses
     {
         ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto);
         ValueTask<CourseViewModel> GetAsync(Expression<Func<Course, bool>> expression);
-        ValueTask<IEnumerable<Course>> GetAllAsync(Expression<Func<Course, bool>> expression = null, PaginationParams @params = null);
+        ValueTask<IEnumerable<Course>> GetAllAsync(PaginationParams @params, Expression<Func<Course, bool>> expression = null);
         ValueTask<Course> UpdateAsync(Expression<Func<Course, bool>> expression, CourseForCreationDto courseForCreationDto);
         ValueTask<bool> DeleteAsync(Expression<Func<Course, bool>> expression);
         ValueTask<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression);
