@@ -41,6 +41,7 @@ namespace ZaminEducation.Api
             services.AddScoped<IRepository<Reason>, Repository<Reason>>();
             services.AddScoped<IRepository<SocialNetworks>, Repository<SocialNetworks>>();
             services.AddScoped<IRepository<PhotoGalleryAttachment>, Repository<PhotoGalleryAttachment>>();
+            services.AddScoped<IRepository<ReferralLink>, Repository<ReferralLink>>();
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
