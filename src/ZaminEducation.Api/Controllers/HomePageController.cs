@@ -30,12 +30,11 @@ namespace ZaminEducation.Api.Controllers
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPut("deader/{id}")]
+        [HttpPatch("header")]
         public async ValueTask<ActionResult<bool>> UpdateHomePageHeaderAsync(
-            [FromRoute] long id,
             [FromForm] HomePageHeaderForCreationDto dto)
         {
-            return Ok(await _homePageService.UpdateHeaderAsync(id, dto));
+            return Ok(await _homePageService.UpdateHeaderAsync(dto));
         }
 
         /// <summary>
@@ -44,25 +43,24 @@ namespace ZaminEducation.Api.Controllers
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPut("opportunity/{id}")]
+        [HttpPatch("opportunity")]
         public async ValueTask<ActionResult<bool>> UpdateOpportityAsync(
-            [FromRoute] long id,
-            [FromForm] OfferedOpportunitesForCreationDto dto)
+             [FromForm] OfferedOpportunitesForCreationDto dto)
         {
-            return Ok(await _homePageService.UpdateOpportinutyAsync(id, dto));
+            return Ok(await _homePageService.UpdateOpportinutyAsync(dto));
         }
 
         /// <summary>
         /// Update photo gallery section images
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="file"></param>
+        /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPut("attachment/{id}")]
+        [HttpPatch("image/{id}")]
         public async ValueTask<ActionResult<bool>> UpdateGalleryImagesAsync(
-            [FromRoute]long id, [FromForm] IFormFile file)
+            [FromRoute]long id, [FromForm] ImageForCreationDto dto)
         {
-            return Ok(await _homePageService.UpdatePhotoGalleryAsync(id, file));
+            return Ok(await _homePageService.UpdatePhotoGalleryAsync(id, dto));
         }
 
         /// <summary>
@@ -71,12 +69,11 @@ namespace ZaminEducation.Api.Controllers
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPut("about-us/{id}")]
+        [HttpPatch("about-us")]
         public async ValueTask<ActionResult<bool>> UpdateProjectAboutInfoAsync(
-            [FromRoute]long id,
             [FromForm] InfoAboutProjectForCreationDto dto)
         {
-            return Ok(await _homePageService.UpdateProjectAboutInfoAsync(id, dto));
+            return Ok(await _homePageService.UpdateProjectAboutInfoAsync(dto));
         }
 
         /// <summary>
@@ -85,7 +82,7 @@ namespace ZaminEducation.Api.Controllers
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPut("opportunity-reason/{id}")]
+        [HttpPatch("opportunity-reason/{id}")]
         public async ValueTask<ActionResult<bool>> UpdateOpportunityReasonAsync(
             [FromRoute]long id, ReasonForCreationDto dto)
         {
@@ -98,11 +95,10 @@ namespace ZaminEducation.Api.Controllers
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        [HttpPut("social-network/{id}")]
-        public async ValueTask<ActionResult<bool>> UpdateSocialNetworksAsync(
-            [FromRoute]long id, SocialNetworksForCreationDto dto)
+        [HttpPatch("social-network")]
+        public async ValueTask<ActionResult<bool>> UpdateSocialNetworksAsync(SocialNetworksForCreationDto dto)
         {
-            return Ok(await _homePageService.UpdateSocialNetwordAsync(id, dto));
+            return Ok(await _homePageService.UpdateSocialNetwordAsync(dto));
         }
     }
 }

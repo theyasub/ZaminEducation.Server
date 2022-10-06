@@ -15,5 +15,5 @@ public class HomePageHeaderForCreationDto
     [RegularExpression("^(https?\\:\\/\\/)?(www\\.youtube\\.com|youtu\\.be)\\/.+$")]
     public string YouTubeVideoLink { get; set; }
 
-    public IFormFile FormFile { get; set; }
+    public IFormFile File { get; set; }
 }
