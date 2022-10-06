@@ -77,8 +77,8 @@ public class UsersController : BaseController
     /// <returns></returns>
     [HttpGet("saved-course")]
     public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
-        [FromQuery] PaginationParams @params) =>
-            Ok(await savedCoursesService.GetAllAsync(@params));
+        [FromQuery] PaginationParams @params,string search) =>
+            Ok(await savedCoursesService.GetAllAsync(@params,search:search));
 
 
     [HttpPost("Change/Password"), Authorize(Policy = "AllPolicy")]
