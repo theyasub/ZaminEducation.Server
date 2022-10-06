@@ -133,11 +133,10 @@ namespace ZaminEducation.Service.Services
             User existUser = await userRepository.GetAsync(user => user.Username == dto.Username);
 
             if (existUser is null)
-                throw new Exception("This Username is not exists");
+                throw new Exception("This Username does not exist");
 
             else if (dto.NewPassword != dto.ComfirmPassword)
-                throw new Exception("New password and comfirm password is not equal");
-
+                throw new Exception("New password and comfirm password are not equal");
 
             else if (existUser.Password != dto.OldPassword.Encrypt())
                 throw new Exception("Password is incorrect!");
