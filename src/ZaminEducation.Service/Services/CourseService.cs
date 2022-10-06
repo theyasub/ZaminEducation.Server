@@ -17,9 +17,10 @@ namespace ZaminEducation.Service.Services.Courses
 {
     public class CourseService : ICourseService
     {
-        private readonly IRepository<Course> courseRepository;
         private readonly IYouTubeService youTubeService;
+        private readonly IRepository<Course> courseRepository;
         private readonly IRepository<CourseRate> courseRateRepository;
+        private readonly IRepository<ReferralLink> referralLinkRepository;
         private readonly IAttachmentService attachmentService;
         private readonly IMapper mapper;
 
@@ -28,13 +29,14 @@ namespace ZaminEducation.Service.Services.Courses
             IYouTubeService youTubeService,
             IRepository<CourseRate> courseRateRepository,
             IAttachmentService attachmentService,
-            IMapper mapper)
+            IMapper mapper, IRepository<ReferralLink> referralLinkRepository)
         {
             this.courseRepository = courseRepository;
             this.youTubeService = youTubeService;
             this.courseRateRepository = courseRateRepository;
             this.attachmentService = attachmentService;
             this.mapper = mapper;
+            this.referralLinkRepository = referralLinkRepository;
         }
 
         public async ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto)
@@ -61,6 +63,33 @@ namespace ZaminEducation.Service.Services.Courses
                 courseId: entity.Id);
 
             return entity;
+        }
+
+        public async ValueTask<string> GenerateLinkAsync(long courseId)
+        {
+            var linkExists = await referralLinkRepository.GetAsync(
+                l => l.CourseId == courseId &&
+                l.UserId == (long)HttpContextHelper.UserId && l.State != Domain.Enums.ItemState.Deleted);
+
+
+            if (linkExists is null)
+            {
+                string generatedLink = string.Concat(Guid.NewGuid().ToString());
+
+                ReferralLink link = new ReferralLink()
+                {
+                    CourseId = courseId,
+                    UserId = (long)HttpContextHelper.UserId,
+                    GeneratedLink = generatedLink
+                };
+
+                await referralLinkRepository.AddAsync(link);
+                await referralLinkRepository.SaveChangesAsync();
+
+                return generatedLink;
+            }
+
+            return linkExists.GeneratedLink;
         }
 
         public async ValueTask<bool> DeleteAsync(Expression<Func<Course, bool>> expression)

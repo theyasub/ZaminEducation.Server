@@ -35,6 +35,7 @@ namespace ZaminEducation.Data.DbContexts
         public virtual DbSet<Region> Regions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
+        public virtual DbSet<ReferralLink> ReferralLinks { get; set; }
 
         public virtual DbSet<HomePage> HomePages { get; set; }
         public virtual DbSet<HomePageHeader> HomePageHeaders { get; set; }
