@@ -42,7 +42,7 @@ namespace ZaminEducation.Api
             services.AddScoped<IHomePageRepository, HomePageRepository>();
             services.AddScoped<IRepository<ReferralLink>, Repository<ReferralLink>>();
             services.AddScoped<IRepository<CourseCategory>, Repository<CourseCategory>>();
-            
+
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<ICourseService, CourseService>();
@@ -71,7 +71,7 @@ namespace ZaminEducation.Api
             })
             .AddJwtBearer(options =>
             {
-                    options.TokenValidationParameters = new TokenValidationParameters
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = false,
@@ -88,7 +88,7 @@ namespace ZaminEducation.Api
         {
             services.AddSwaggerGen(p =>
             {
-                var xmlFile = $"{ Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 p.IncludeXmlComments(xmlPath);
 
