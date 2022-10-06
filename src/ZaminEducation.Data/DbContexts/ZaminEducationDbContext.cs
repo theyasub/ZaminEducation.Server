@@ -36,16 +36,6 @@ namespace ZaminEducation.Data.DbContexts
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
 
-        public virtual DbSet<HomePage> HomePages { get; set; }
-        public virtual DbSet<HomePageHeader> HomePageHeaders { get; set; }
-        public virtual DbSet<InfoAboutProject> InfoAboutProjects { get; set; }
-        public virtual DbSet<OfferedOpportunities> OfferedOpportunities { get; set; }
-        public virtual DbSet<PhotoGallery> PhotoGalleries { get; set; }
-        public virtual DbSet<Reason> Reasons { get; set; }
-        public virtual DbSet<SocialNetworks> SocialNetworks { get; set; }
-        public virtual DbSet<PhotoGalleryAttachment> PhotoGalleryAttachments { get; set; }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Address>()
@@ -116,10 +106,6 @@ namespace ZaminEducation.Data.DbContexts
                 .HasOne(c => c.Author)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<OfferedOpportunities>()
-                .Navigation(o => o.Opportunities)
-                    .AutoInclude();
 
         }
     }

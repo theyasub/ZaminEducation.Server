@@ -9,7 +9,6 @@ public class SocialNetworksForCreationDto
 
     public string FacebookLink { get; set; }
 
-    [RegularExpression("")]
     public string InstagrammLink { get; set; }
     public string TelegramLink { get; set; }
 
