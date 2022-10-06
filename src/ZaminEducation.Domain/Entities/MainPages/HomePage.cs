@@ -5,7 +5,7 @@ using ZaminEducation.Domain.Entities.Courses;
 
 namespace ZaminEducation.Domain.Entities.MainPages;
 
-public class HomePage : Auditable  
+public class HomePage : Auditable
 {
     public HomePageHeader HomePageHeader { get; set; }
 
