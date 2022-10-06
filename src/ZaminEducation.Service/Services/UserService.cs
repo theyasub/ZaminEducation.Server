@@ -82,16 +82,15 @@ namespace ZaminEducation.Service.Services
             return user;
         }
 
-        public async ValueTask<User> UpdateAsync(long id, UserForCreationDto dto)
+        public async ValueTask<User> UpdateAsync(long id, UserForUpdateDto dto)
         {
             var user = await userRepository.GetAsync(u => u.Id == id && u.State != ItemState.Deleted);
 
             if (user is null)
                 throw new ZaminEducationException(404, "User not found!");
 
-            var alredyExistsUser = await userRepository.GetAsync(u => u.Username == dto.Username &&
-                                                      u.Password == dto.Password.Encrypt() &&
-                                                      u.State != ItemState.Deleted && u.Id != id);
+            var alredyExistsUser = await userRepository.GetAsync(u => u.Username == dto.Username 
+                                                                    && u.State != ItemState.Deleted && u.Id != id);
 
             if (alredyExistsUser is not null)
                 throw new ZaminEducationException(400, "Login or Password is incorrect!");
