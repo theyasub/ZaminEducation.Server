@@ -38,11 +38,12 @@ namespace ZaminEducation.Api
             services.AddScoped<IRepository<HomePageHeader>, Repository<HomePageHeader>>();
             services.AddScoped<IRepository<OfferedOpportunities>, Repository<OfferedOpportunities>>();
             services.AddScoped<IRepository<InfoAboutProject>, Repository<InfoAboutProject>>();
-            services.AddScoped<IRepository<Reason>, Repository<Reason>>();
             services.AddScoped<IRepository<SocialNetworks>, Repository<SocialNetworks>>();
+            services.AddScoped<IHomePageRepository, HomePageRepository>();
             services.AddScoped<IRepository<PhotoGalleryAttachment>, Repository<PhotoGalleryAttachment>>();
             services.AddScoped<IRepository<ReferralLink>, Repository<ReferralLink>>();
             services.AddScoped<IRepository<CourseCategory>, Repository<CourseCategory>>();
+            
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
             services.AddScoped<ICourseService, CourseService>();
@@ -71,7 +72,7 @@ namespace ZaminEducation.Api
             })
             .AddJwtBearer(options =>
             {
-                options.TokenValidationParameters = new TokenValidationParameters
+                    options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = false,

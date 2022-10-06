@@ -37,16 +37,6 @@ namespace ZaminEducation.Data.DbContexts
         public virtual DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
         public virtual DbSet<ReferralLink> ReferralLinks { get; set; }
 
-        public virtual DbSet<HomePage> HomePages { get; set; }
-        public virtual DbSet<HomePageHeader> HomePageHeaders { get; set; }
-        public virtual DbSet<InfoAboutProject> InfoAboutProjects { get; set; }
-        public virtual DbSet<OfferedOpportunities> OfferedOpportunities { get; set; }
-        public virtual DbSet<PhotoGallery> PhotoGalleries { get; set; }
-        public virtual DbSet<Reason> Reasons { get; set; }
-        public virtual DbSet<SocialNetworks> SocialNetworks { get; set; }
-        public virtual DbSet<PhotoGalleryAttachment> PhotoGalleryAttachments { get; set; }
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Address>()
@@ -118,24 +108,6 @@ namespace ZaminEducation.Data.DbContexts
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<OfferedOpportunities>()
-                .Navigation(o => o.Opportunities)
-                    .AutoInclude();
-
-            modelBuilder.Entity<HomePage>()
-                .HasOne(h => h.InfoAboutProject)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<HomePage>()
-                .HasOne(h => h.OpportunitiesOffered)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<HomePage>()
-                .HasOne(h => h.SocialNetworks)
-                .WithOne()
-                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }
