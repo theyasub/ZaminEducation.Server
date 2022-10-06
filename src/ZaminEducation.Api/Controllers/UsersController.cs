@@ -32,6 +32,11 @@ public class UsersController : BaseController
     public async ValueTask<ActionResult<User>> CreateAsync(UserForCreationDto dto) =>
         Ok(await userService.CreateAsync(dto));
 
+
+    [HttpPut("change/role"), Authorize(Roles = "SuperAdmin")]
+    public async ValueTask<ActionResult<User>> ChangeRoleAsync(long userId, byte roleId)
+        => Ok(await userService.ChangeRoleAsync(userId, roleId));
+
     /// <summary>
     /// delete user
     /// Toggle saved course
@@ -72,7 +77,11 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params,string search) =>
             Ok(await savedCoursesService.GetAllAsync(@params,search:search));
 
-
+    /// <summary>
+    /// update password
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
     [HttpPost("change/password"), Authorize(Policy = "AllPolicy")]
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
@@ -84,7 +93,8 @@ public class UsersController : BaseController
     /// <returns>user</returns>
     /// <response code="400">if user data is not in the base</response>
     /// <response code="200">if user data have in database</response>
-    [HttpGet("{id}"), Authorize("AllPolicy")]
+    //[HttpGet("{id}"), Authorize("AllPolicy")]
+    [HttpGet("{id}")]
     public async ValueTask<ActionResult<User>> GetAsync([FromRoute]long id) =>
         Ok(await userService.GetAsync(user => user.Id == id));
 

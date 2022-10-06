@@ -4,6 +4,7 @@ namespace ZaminEducation.Domain.Enums
     {
         User,
         Admin,
-        Mentor
+        Mentor,
+        SuperAdmin
     }
 }
