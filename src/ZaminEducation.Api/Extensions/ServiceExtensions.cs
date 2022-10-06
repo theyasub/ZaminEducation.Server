@@ -40,7 +40,7 @@ namespace ZaminEducation.Api
             services.AddScoped<IRepository<InfoAboutProject>, Repository<InfoAboutProject>>();
             services.AddScoped<IRepository<SocialNetworks>, Repository<SocialNetworks>>();
             services.AddScoped<IHomePageRepository, HomePageRepository>();
-            services.AddScoped<IRepository<PhotoGalleryAttachment>, Repository<PhotoGalleryAttachment>>();
+            //services.AddScoped<IRepository<PhotoGalleryAttachment>, Repository<PhotoGalleryAttachment>>();
             services.AddScoped<IRepository<ReferralLink>, Repository<ReferralLink>>();
             services.AddScoped<IRepository<CourseCategory>, Repository<CourseCategory>>();
             

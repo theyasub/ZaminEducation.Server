@@ -19,6 +19,7 @@ namespace ZaminEducation.Service.Services
         private readonly IRepository<User> userRepository;
         private readonly IMapper mapper;
         private readonly IAttachmentService attachmentService;
+
         public UserService(IRepository<User> userRepository, IMapper mapper, IAttachmentService attachmentService)
         {
             this.userRepository = userRepository;
@@ -89,12 +90,6 @@ namespace ZaminEducation.Service.Services
             if (user is null)
                 throw new ZaminEducationException(404, "User not found!");
 
-            var alredyExistsUser = await userRepository.GetAsync(u => u.Username == dto.Username 
-                                                                    && u.State != ItemState.Deleted && u.Id != id);
-
-            if (alredyExistsUser is not null)
-                throw new ZaminEducationException(400, "Login or Password is incorrect!");
-
             user = mapper.Map(dto, user);
 
             user.Password = user.Password.Encrypt();
@@ -144,6 +139,25 @@ namespace ZaminEducation.Service.Services
             await userRepository.SaveChangesAsync();
 
             return existUser;
+        }
+
+        public async ValueTask<User> ChangeRoleAsync(long userId, byte roleId)
+        {
+            var account = await userRepository.GetAsync(u => u.Id == userId
+                                    && u.State != ItemState.Deleted && u.Role != UserRole.SuperAdmin);
+
+            if (account is null)
+                throw new ZaminEducationException(404, "User not found");
+
+            if (roleId != 1 && roleId != 2)
+                throw new ZaminEducationException(404, "Such role does not exist");
+
+            account.Role = (UserRole)roleId;
+            account.Update();
+
+            await userRepository.SaveChangesAsync();
+
+            return account;
         }
     }
 }
