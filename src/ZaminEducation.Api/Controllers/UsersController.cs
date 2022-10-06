@@ -62,14 +62,6 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
-    
-    /// <summary>
-    /// update password
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    [HttpPost("password"), Authorize("AllPolicy")]
-
     /// <summary>
     /// Get all saved courses of users
     /// </summary>
@@ -81,8 +73,7 @@ public class UsersController : BaseController
             Ok(await savedCoursesService.GetAllAsync(@params,search:search));
 
 
-    [HttpPost("Change/Password"), Authorize(Policy = "AllPolicy")]
-
+    [HttpPost("change/password"), Authorize(Policy = "AllPolicy")]
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
 
