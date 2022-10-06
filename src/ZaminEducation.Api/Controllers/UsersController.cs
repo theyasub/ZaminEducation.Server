@@ -67,7 +67,7 @@ public class UsersController : BaseController
     /// </summary>
     /// <param name="params"></param>
     /// <returns></returns>
-    [HttpGet("saved-course")]
+    [HttpGet("saved-course"),Authorize]
     public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
         [FromQuery] PaginationParams @params,string search) =>
             Ok(await savedCoursesService.GetAllAsync(@params,search:search));

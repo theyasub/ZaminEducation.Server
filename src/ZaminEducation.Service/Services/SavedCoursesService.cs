@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
+using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.UserCourses;
@@ -17,12 +18,14 @@ namespace ZaminEducation.Service.Services
     {
         private readonly IRepository<SavedCourse> savedCourseRepository;
         private readonly IRepository<User> userRepository;
+        private readonly IRepository<Course> courseRepository;
         private readonly IMapper mapper;
 
-        public SavedCoursesService(IRepository<SavedCourse> savedCourseRepository, IMapper mapper, IRepository<User> userRepository)
+        public SavedCoursesService(IRepository<SavedCourse> savedCourseRepository, IMapper mapper, IRepository<User> userRepository, IRepository<Course> courseRepository)
         {
             this.savedCourseRepository = savedCourseRepository;
             this.mapper = mapper;
+            this.courseRepository = courseRepository;
             this.userRepository = userRepository;
         }
 
@@ -34,25 +37,28 @@ namespace ZaminEducation.Service.Services
         /// <returns></returns>
         public async ValueTask<bool> ToggleAsync(SavedCourseForCreationDto dto)
         {
-            var result = await savedCourseRepository.GetAsync(p => p.CourseId == dto.CourseId);
             var existsUser = await userRepository.GetAsync(x => x.Id == dto.UserId);
+            var existsCourse = await courseRepository.GetAsync(c => c.Id == dto.CourseId);
 
+            if (existsCourse is null)
+                throw new ZaminEducationException(404, "Course not found");
             if (existsUser is null)
-            {
                 throw new ZaminEducationException(404, "User not found");
-            }
+            if(dto.UserId != HttpContextHelper.UserId)
+                throw new ZaminEducationException(403, "Forbidden");
+            
+
+            var result = await savedCourseRepository.GetAsync(p => p.CourseId == dto.CourseId
+                && p.UserId == dto.UserId);
+
             if (result is not null)
             {
                 savedCourseRepository.Delete(result);
                 await savedCourseRepository.SaveChangesAsync();
                 return false;
             }
-            else
-            {
-                throw new ZaminEducationException(404, "Saved course not found");
-            }
-
             var newSavedCourse = mapper.Map<SavedCourse>(dto);
+            newSavedCourse.Create();
             newSavedCourse = await savedCourseRepository.AddAsync(newSavedCourse);
             await savedCourseRepository.SaveChangesAsync();
 
