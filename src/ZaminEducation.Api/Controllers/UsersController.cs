@@ -32,13 +32,17 @@ public class UsersController : BaseController
     public async ValueTask<ActionResult<User>> CreateAsync(UserForCreationDto dto) =>
         Ok(await userService.CreateAsync(dto));
 
-
+    /// <summary>
+    /// Update role 
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="roleId"></param>
+    /// <returns></returns>
     [HttpPut("change/role"), Authorize(Roles = "SuperAdmin")]
     public async ValueTask<ActionResult<User>> ChangeRoleAsync(long userId, byte roleId)
         => Ok(await userService.ChangeRoleAsync(userId, roleId));
 
     /// <summary>
-    /// delete user
     /// Toggle saved course
     /// </summary>
     /// <param name="dto"></param>
@@ -67,28 +71,22 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
-    
+    /// <summary>
+    /// get all saved courses of users
+    /// </summary>
+    /// <param name="params"></param>
+    /// <returns></returns>
+    [HttpGet("saved-course"),Authorize]
+    public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
+        [FromQuery] PaginationParams @params,string search) =>
+            Ok(await savedCoursesService.GetAllAsync(@params,search:search));
+
     /// <summary>
     /// update password
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    //[HttpPost("password"), Authorize("AllPolicy")]
-
-    /// <summary>
-    /// Get all saved courses of users
-    /// </summary>
-    /// <param name="params"></param>
-    /// <returns></returns>
-    [HttpGet("saved-course")]
-    public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
-        [FromQuery] PaginationParams @params) =>
-            Ok(await savedCoursesService.GetAllAsync(@params));
-
-
-    //[HttpPost("Change/Password"), Authorize(Policy = "AllPolicy")]
-    [HttpPost("Change/Password")]
-
+    [HttpPost("change/password"), Authorize(Policy = "AllPolicy")]
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
 
