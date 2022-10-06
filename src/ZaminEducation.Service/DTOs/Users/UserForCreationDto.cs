@@ -25,11 +25,6 @@ namespace ZaminEducation.Service.DTOs.Users
         [Required]
         public Gender Gender { get; set; }
 
-        public long? ImageId { get; set; }
-
-        [Required]
-        public UserRole Role { get; set; } = UserRole.User;
-
         public DateTime? DateOfBirth { get; set; }
     }
 }

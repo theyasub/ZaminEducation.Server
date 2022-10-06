@@ -1,10 +1,7 @@
-﻿using AngleSharp.Common;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Linq.Expressions;
 using ZaminEducation.Data.IRepositories;
-using ZaminEducation.Data.Repositories;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Service.DTOs.Quizzes;
 using ZaminEducation.Service.Exceptions;
@@ -105,12 +102,12 @@ namespace ZaminEducation.Service.Services
         public async ValueTask<IEnumerable<Quiz>> GetAllAsync(
             Expression<Func<Quiz, bool>> expression, int count)
         {
-            var quizzes = quizRepository.GetAll(expression).ToList();
+            var quizzes = await quizRepository.GetAll(expression).ToListAsync();
 
-            if (quizzes.Count() >= count)   
+            if (quizzes.Count() >= count)
             {
                 var lastIndex = quizzes.Count();
-                
+
                 Quiz[] shuffledQuizzes = new Quiz[count];
 
                 int n = 0;
@@ -132,8 +129,101 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<Quiz> GetAsync(long quizId)
         {
-            return await quizRepository.GetAll(q => q.Id == quizId)
-                .FirstOrDefaultAsync();
+            var quiz = await quizRepository.GetAsync(q => q.Id == quizId, new string[] { "Answers" });
+
+            if (quiz is null)
+                throw new ZaminEducationException(404, "Quiz not found");
+
+            return quiz;
+        }
+
+        public async ValueTask<Quiz> UpdateAsync(
+            long quizId,
+            QuizForCreationDto quizForCreationDto,
+            QuizContentForCreationDto questionDto)
+        {
+            var quizexists =
+                await quizRepository.GetAsync(q => q.Id.Equals(quizId)
+                    && q.CourseId.Equals(quizForCreationDto.CourseId));
+
+            if (quizexists is null)
+                throw new ZaminEducationException(404, "Quiz not found");
+
+            var content = mapper.Map<QuizContent>(questionDto);
+            content.Update();
+
+            content = quizContentRepository.Update(content);
+
+            var quiz = mapper.Map<Quiz>(quizForCreationDto);
+            quiz.QuestionId = content.Id;
+            quiz.CourseId = quizForCreationDto.CourseId;
+            quiz.Update();
+
+            quizRepository.Update(quiz);
+            await quizRepository.SaveChangesAsync();
+
+            return quiz;
+        }
+
+        public async ValueTask<QuestionAnswer> UpdateAnswerAsync(
+            long answerId,
+            QuestionAnswerForCreationDto answerForCreationDto)
+        {
+            var quiz = await quizRepository.GetAsync(q => q.Id == answerForCreationDto.QuizId);
+            if (quiz is null)
+                throw new ZaminEducationException(404, "Quiz not found");
+
+            var quizContent = await quizContentRepository.GetAsync(qc => qc.Id.Equals(answerForCreationDto.ContentId));
+            if (quizContent is null)
+                throw new ZaminEducationException(404, "Quiz content not found");
+
+            var answer = await answerRepository.GetAsync(a => a.Id.Equals(answerId));
+            if (answer is null)
+                throw new ZaminEducationException(404, "Answer not found");
+
+            answer = mapper.Map<QuestionAnswer>(answerForCreationDto);
+            answer.Update();
+
+            answerRepository.Update(answer);
+            await answerRepository.SaveChangesAsync();
+
+            return answer;
+        }
+
+        public async ValueTask<bool> DeleteAnswerAsync(Expression<Func<QuestionAnswer, bool>> expression)
+        {
+            var answer = await answerRepository.GetAsync(expression);
+            if (answer is null)
+                throw new ZaminEducationException(404, "Answer not found");
+
+            answerRepository.Delete(answer);
+            await answerRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async ValueTask<bool> DeleteAsync(Expression<Func<Quiz, bool>> expression)
+        {
+            var quiz = await quizRepository.GetAsync(expression);
+            if (quiz is null)
+                throw new ZaminEducationException(404, "Quiz not found");
+
+            quizRepository.Delete(quiz);
+            await quizRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async ValueTask<bool> DeleteAssetAsync(Expression<Func<QuizAsset, bool>> expression)
+        {
+            var asset = await quizAssetRepository.GetAsync(expression);
+            if (asset is null)
+                throw new ZaminEducationException(404, "Quiz asset not found");
+
+            quizAssetRepository.Delete(asset);
+            await quizAssetRepository.SaveChangesAsync();
+
+            return true;
         }
     }
 }

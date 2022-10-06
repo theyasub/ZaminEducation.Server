@@ -5,6 +5,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
+using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Users;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
@@ -17,11 +18,12 @@ namespace ZaminEducation.Service.Services
     {
         private readonly IRepository<User> userRepository;
         private readonly IMapper mapper;
-
-        public UserService(IRepository<User> userRepository, IMapper mapper)
+        private readonly IAttachmentService attachmentService;
+        public UserService(IRepository<User> userRepository, IMapper mapper, IAttachmentService attachmentService)
         {
             this.userRepository = userRepository;
             this.mapper = mapper;
+            this.attachmentService = attachmentService;
         }
 
         public async ValueTask<User> CreateAsync(UserForCreationDto dto)
@@ -58,11 +60,16 @@ namespace ZaminEducation.Service.Services
             return true;
         }
 
-        public async ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null)
+        public async ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null, string search = null)
         {
             var users = userRepository.GetAll(expression, new string[] { "Address", "Image" }, isTracking: false);
 
-            return await users.ToPagedList(@params).ToListAsync();
+            return !string.IsNullOrEmpty(search)
+                ? await users.Where(u => u.FirstName == search ||
+                        u.LastName == search ||
+                        u.Username == search ||
+                        u.Bio.Contains(search)).ToPagedList(@params).ToListAsync()
+                : (IEnumerable<User>)await users.ToPagedList(@params).ToListAsync();
         }
 
         public async ValueTask<User> GetAsync(Expression<Func<User, bool>> expression)
@@ -103,5 +110,42 @@ namespace ZaminEducation.Service.Services
 
         public async ValueTask<User> GetInfoAsync()
             => await userRepository.GetAsync(u => u.Id == HttpContextHelper.UserId);
+
+        public async ValueTask<User> AddAttachmentAsync(long userId, AttachmentForCreationDto attachmentForCreationDto)
+        {
+            var attachment = await attachmentService.UploadAsync(attachmentForCreationDto);
+
+            var user = await userRepository.GetAsync(u => u.Id == userId);
+
+            if (user == null)
+                throw new ZaminEducationException(404, "User not found");
+
+            user.ImageId = attachment.Id;
+
+            userRepository.Update(user);
+            await userRepository.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async ValueTask<User> ChangePasswordAsync(UserForChangePassword dto)
+        {
+            User existUser = await userRepository.GetAsync(user => user.Username == dto.Username);
+
+            if (existUser is null)
+                throw new Exception("This Username is not exists");
+
+            else if (dto.NewPassword != dto.ComfirmPassword)
+                throw new Exception("New password and comfirm password is not equal");
+
+
+            else if (existUser.Password != dto.OldPassword.Encrypt())
+                throw new Exception("Password is incorrect!");
+
+            existUser.Password = dto.NewPassword.Encrypt();
+            await userRepository.SaveChangesAsync();
+
+            return existUser;
+        }
     }
 }

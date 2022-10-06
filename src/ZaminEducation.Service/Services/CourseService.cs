@@ -17,21 +17,26 @@ namespace ZaminEducation.Service.Services.Courses
 {
     public class CourseService : ICourseService
     {
-        private readonly IRepository<Course> courseRepository;
         private readonly IYouTubeService youTubeService;
+        private readonly IRepository<Course> courseRepository;
         private readonly IRepository<CourseRate> courseRateRepository;
+        private readonly IRepository<ReferralLink> referralLinkRepository;
+        private readonly IAttachmentService attachmentService;
         private readonly IMapper mapper;
 
         public CourseService(
             IRepository<Course> courseRepository,
             IYouTubeService youTubeService,
             IRepository<CourseRate> courseRateRepository,
-            IMapper mapper)
+            IAttachmentService attachmentService,
+            IMapper mapper, IRepository<ReferralLink> referralLinkRepository)
         {
             this.courseRepository = courseRepository;
             this.youTubeService = youTubeService;
             this.courseRateRepository = courseRateRepository;
+            this.attachmentService = attachmentService;
             this.mapper = mapper;
+            this.referralLinkRepository = referralLinkRepository;
         }
 
         public async ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto)
@@ -42,8 +47,13 @@ namespace ZaminEducation.Service.Services.Courses
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
 
+            var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
+            var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
+
             Course mappedCourse = mapper.Map<Course>(source: courseForCreationDto);
 
+            mappedCourse.ImageId = attachment.Id;
+            mappedCourse.Create();
             Course entity = await courseRepository.AddAsync(entity: mappedCourse);
 
             await courseRepository.SaveChangesAsync();
@@ -53,6 +63,33 @@ namespace ZaminEducation.Service.Services.Courses
                 courseId: entity.Id);
 
             return entity;
+        }
+
+        public async ValueTask<string> GenerateLinkAsync(long courseId)
+        {
+            var linkExists = await referralLinkRepository.GetAsync(
+                l => l.CourseId == courseId &&
+                l.UserId == (long)HttpContextHelper.UserId && l.State != Domain.Enums.ItemState.Deleted);
+
+
+            if (linkExists is null)
+            {
+                string generatedLink = string.Concat(Guid.NewGuid().ToString());
+
+                ReferralLink link = new ReferralLink()
+                {
+                    CourseId = courseId,
+                    UserId = (long)HttpContextHelper.UserId,
+                    GeneratedLink = generatedLink
+                };
+
+                await referralLinkRepository.AddAsync(link);
+                await referralLinkRepository.SaveChangesAsync();
+
+                return generatedLink;
+            }
+
+            return linkExists.GeneratedLink;
         }
 
         public async ValueTask<bool> DeleteAsync(Expression<Func<Course, bool>> expression)
@@ -70,8 +107,9 @@ namespace ZaminEducation.Service.Services.Courses
         }
 
         public async ValueTask<IEnumerable<Course>> GetAllAsync(
+            PaginationParams @params,
             Expression<Func<Course, bool>> expression = null,
-            PaginationParams @params = null)
+            string search = null)
         {
             IQueryable<Course> pagedList = courseRepository.GetAll(
                 expression: expression,
@@ -79,7 +117,15 @@ namespace ZaminEducation.Service.Services.Courses
                 isTracking: false)
                 .ToPagedList(@params);
 
-            return await pagedList.ToListAsync();
+            return !string.IsNullOrEmpty(search)
+                ? pagedList.Where(
+                    c => c.Name == search ||
+                    c.Author.FirstName == search ||
+                    c.Author.LastName == search ||
+                    c.Author.Username == search ||
+                    c.Description.Contains(search) ||
+                    c.Category.Name == search)
+                : await pagedList.ToListAsync();
         }
 
         public async ValueTask<CourseViewModel> GetAsync(Expression<Func<Course, bool>> expression)
@@ -111,8 +157,12 @@ namespace ZaminEducation.Service.Services.Courses
             if (course is null)
                 throw new ZaminEducationException(404, "Course not found");
 
+            var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
+            var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
+
             course = mapper.Map(courseForCreationDto, course);
 
+            course.ImageId = attachment.Id;
             course.Update();
 
             course = courseRepository.Update(entity: course);
@@ -152,12 +202,7 @@ namespace ZaminEducation.Service.Services.Courses
             return course.Videos;
         }
 
-        public async ValueTask<IEnumerable<Course>> SearchAsync(PaginationParams @params,
-           string search)
-               => await courseRepository.GetAll(
-                   c => c.Id.ToString() == search ||
-                   c.Name == search)?
-                       .ToPagedList(@params).ToListAsync();
+
 
         private double CalculateRates(IEnumerable<CourseRate> rates)
             => (double)rates.Sum(r => r.Value) / (double)rates.Count();
@@ -173,7 +218,7 @@ namespace ZaminEducation.Service.Services.Courses
                                 cr => cr.UserId == HttpContextHelper.UserId &&
                                       cr.CourseId == id);
 
-            if(courseRate is not null)
+            if (courseRate is not null)
             {
                 courseRate.Value = value;
                 courseRate.Update();
