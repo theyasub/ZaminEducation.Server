@@ -14,7 +14,7 @@ namespace ZaminEducation.Test.Unit.Services
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
             UserForCreationDto inputUser = randomUser;
             UserForCreationDto expectedUser = inputUser.DeepClone();
-            UserForCreationDto inputUserForUpdate = inputUser.DeepClone();
+            UserForUpdateDto inputUserForUpdate = mapper.Map<UserForUpdateDto>(expectedUser);
             inputUserForUpdate.LastName = Faker.Name.Last();
             // when
             User actualUser = await userService.CreateAsync(inputUser);
