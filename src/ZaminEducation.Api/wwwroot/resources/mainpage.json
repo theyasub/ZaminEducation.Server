@@ -1,0 +1,101 @@
+{
+  "HomePageHeader": {
+    "Image": {
+      "Id": 1,
+      "Name": "header.svg",
+      "Path": "resources\\header.svg"
+    },
+    "YouTubeVideoLink": "https://youtu.be/BKdrYOXwBDY",
+    "Title": "Zamin Ta’lim platformasi orqali kelajak kasbini o’rganing!",
+    "Description": "Biz sizga eng yuqori darajadagi kasblarni zamonaviy metodika asosida o’rgatamiz va o’z sohangiz mutaxassisi bo’lishingizga ko’maklashamiz"
+  },
+  "InfoAboutProject": {
+    "Image": {
+      "Id": 1,
+      "Name": "aboutus.svg",
+      "Path": "resources\\aboutus.svg"
+    },
+    "Title": "Zamin Education haqida qisqacha",
+    "Description": "“Zamin Education” loyihasining ilk sinov-tajriba o‘quv jarayoni Muhammad Al-Xorazmiy nomidagi axborot-texnologiyalarini chuqurlashtirib o‘rgatishga ixtisoslashgan maktabda amalga oshirilmoqda."
+  },
+  "OpportunitiesOffered": {
+    "Reasons": [
+      {
+        "Id": 1,
+        "Title": "Istalgan joydan va istalgan vaqtda o’rganish imkoniyati",
+        "Description": "Platforma istalgan vaqtda yangi davr kasblarini oson o'rganish imkonini beradi."
+      },
+      {
+        "Id": 2,
+        "Title": "Barcha qurilgalardan foydalanib bilim oling",
+        "Description": "Bizning platformaga telefon, planshet, kompyuterlar orqali kira olasiz"
+      },
+      {
+        "Id": 3,
+        "Title": "Istalgan joydan va istalgan vaqtda o’rganish imkoniyati",
+        "Description": "Platforma istalgan vaqtda yangi davr kasblarini oson o'rganish imkonini beradi."
+      },
+      {
+        "Id": 4,
+        "Title": "Barcha qurilgalardan foydalanib bilim oling",
+        "Description": "Bizning platformaga telefon, planshet, kompyuterlar orqali kira olasiz"
+      }
+    ],
+    "Image": {
+      "Id": 1,
+      "Name": "projectinfo.png",
+      "Path": "resources\\projectinfo.png"
+    },
+    "Title": "Nima uchun Zamin Ta’lim",
+    "Description": "Sizda ham shu fikr paydo bo’ldimi? Hozir sizga qisqacha tushuntiramiz"
+  },
+  "PhotoGallery": {
+    "Photos": [
+      {
+        "Id": 1,
+        "Name": "photogallery1.png",
+        "Path": "resources\\photogallery1.png"
+      },
+      {
+        "Id": 2,
+        "Name": "photogallery2.png",
+        "Path": "resources\\photogallery2.png"
+      },
+      {
+        "Id": 3,
+        "Name": "photogallery3.png",
+        "Path": "resources\\photogallery3.png"
+      },
+      {
+        "Id": 4,
+        "Name": "photogallery4.png",
+        "Path": "resources\\photogallery4.png"
+      },
+      {
+        "Id": 5,
+        "Name": "photogallery5.png",
+        "Path": "resources\\photogallery5.png"
+      },
+      {
+        "Id": 6,
+        "Name": "photogallery6.png",
+        "Path": "resources\\photogallery6.png"
+      }
+    ],
+    "Title": "Foto Galereya",
+    "Description": "Bizning kundalik faoliyatlarimiz haqida ushbu media bilan tanishing"
+  },
+  "SocialNetworks": {
+    "EmailLink": "info@digitalgeneration.uz",
+    "FacebookLink": "string",
+    "InstagrammLink": "string",
+    "TelegramLink": "string",
+    "YouTubeLink": "string"
+  },
+  "Id": 1,
+  "CreatedAt": "2022-10-05T11:45:35.642Z",
+  "UpdatedAt": "2022-10-05T17:48:22.494793Z",
+  "UpdatedBy": null,
+  "CreatedBy": 0,
+  "State": 1
+}

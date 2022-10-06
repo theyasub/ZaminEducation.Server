@@ -1,25 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC481027-5BE4-4A0F-94BC-FBD4447C3777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaminEducation.Api", "src\ZaminEducation.Api\ZaminEducation.Api.csproj", "{DCE4820B-EBAA-4A6D-A8BE-419885F7DF1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZaminEducation.Api", "src\ZaminEducation.Api\ZaminEducation.Api.csproj", "{DCE4820B-EBAA-4A6D-A8BE-419885F7DF1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaminEducation.Data", "src\ZaminEducation.Data\ZaminEducation.Data.csproj", "{B35D4743-DC32-424D-9EE0-43DE986B586E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZaminEducation.Data", "src\ZaminEducation.Data\ZaminEducation.Data.csproj", "{B35D4743-DC32-424D-9EE0-43DE986B586E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaminEducation.Domain", "src\ZaminEducation.Domain\ZaminEducation.Domain.csproj", "{BF5876D9-339C-4379-92C8-5B2659B23D5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZaminEducation.Domain", "src\ZaminEducation.Domain\ZaminEducation.Domain.csproj", "{BF5876D9-339C-4379-92C8-5B2659B23D5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZaminEducation.Service", "src\ZaminEducation.Service\ZaminEducation.Service.csproj", "{6C36F056-244F-4240-AB23-DE952F6BCB9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZaminEducation.Service", "src\ZaminEducation.Service\ZaminEducation.Service.csproj", "{6C36F056-244F-4240-AB23-DE952F6BCB9B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5947F63A-1C9A-4C81-BF84-F8F738F94F18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZaminEducation.Test.Unit", "Tests\ZaminEducation.Service.Unit\ZaminEducation.Test.Unit.csproj", "{40D9E4D9-7819-48DC-9C76-E77EB906C462}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DCE4820B-EBAA-4A6D-A8BE-419885F7DF1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -38,11 +39,22 @@ Global
 		{6C36F056-244F-4240-AB23-DE952F6BCB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C36F056-244F-4240-AB23-DE952F6BCB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C36F056-244F-4240-AB23-DE952F6BCB9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40D9E4D9-7819-48DC-9C76-E77EB906C462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40D9E4D9-7819-48DC-9C76-E77EB906C462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40D9E4D9-7819-48DC-9C76-E77EB906C462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40D9E4D9-7819-48DC-9C76-E77EB906C462}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DCE4820B-EBAA-4A6D-A8BE-419885F7DF1D} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
 		{B35D4743-DC32-424D-9EE0-43DE986B586E} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
 		{BF5876D9-339C-4379-92C8-5B2659B23D5F} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
 		{6C36F056-244F-4240-AB23-DE952F6BCB9B} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
+		{40D9E4D9-7819-48DC-9C76-E77EB906C462} = {5947F63A-1C9A-4C81-BF84-F8F738F94F18}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {74B4CB6C-6660-42CF-9A03-ED278EBC4D09}
 	EndGlobalSection
 EndGlobal
