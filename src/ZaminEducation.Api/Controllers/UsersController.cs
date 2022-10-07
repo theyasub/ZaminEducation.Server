@@ -7,6 +7,7 @@ using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.DTOs.Users;
+using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Api.Controllers;
@@ -62,14 +63,6 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
-    
-    /// <summary>
-    /// update password
-    /// </summary>
-    /// <param name="dto"></param>
-    /// <returns></returns>
-    [HttpPost("password"), Authorize("AllPolicy")]
-
     /// <summary>
     /// Get all saved courses of users
     /// </summary>
@@ -80,9 +73,12 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await savedCoursesService.GetAllAsync(@params));
 
-
-    [HttpPost("Change/Password"), Authorize(Policy = "AllPolicy")]
-
+    /// <summary>
+    /// update password
+    /// </summary>
+    /// <param name="dto"></param>
+    /// <returns></returns>
+    [HttpPost("password"), Authorize("AllPolicy")]
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
 
