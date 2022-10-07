@@ -12,8 +12,8 @@ using ZaminEducation.Data.DbContexts;
 namespace ZaminEducation.Data.Migrations
 {
     [DbContext(typeof(ZaminEducationDbContext))]
-    [Migration("20221005164404_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20221007012313_ZCApplicantMigration")]
+    partial class ZCApplicantMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -317,359 +317,6 @@ namespace ZaminEducation.Data.Migrations
                     b.ToTable("HashTags");
                 });
 
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.HomePage", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("HomePageHeaderId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("InfoAboutProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("InfoAboutProjectId1")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("OfferedOpportunitiesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("OfferedOpportunitiesId1")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PhotoGalleryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("SocialNetworksId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("SocialNetworksId1")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HomePageHeaderId")
-                        .IsUnique();
-
-                    b.HasIndex("InfoAboutProjectId")
-                        .IsUnique();
-
-                    b.HasIndex("InfoAboutProjectId1")
-                        .IsUnique()
-                        .HasFilter("[InfoAboutProjectId1] IS NOT NULL");
-
-                    b.HasIndex("OfferedOpportunitiesId")
-                        .IsUnique();
-
-                    b.HasIndex("OfferedOpportunitiesId1")
-                        .IsUnique()
-                        .HasFilter("[OfferedOpportunitiesId1] IS NOT NULL");
-
-                    b.HasIndex("PhotoGalleryId")
-                        .IsUnique();
-
-                    b.HasIndex("SocialNetworksId")
-                        .IsUnique();
-
-                    b.HasIndex("SocialNetworksId1")
-                        .IsUnique()
-                        .HasFilter("[SocialNetworksId1] IS NOT NULL");
-
-                    b.ToTable("HomePages");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.HomePageHeader", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("ImageId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("YouTubeVideoLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
-
-                    b.ToTable("HomePageHeaders");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.InfoAboutProject", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("ImageId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ImageId");
-
-                    b.ToTable("InfoAboutProjects");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.OfferedOpportunities", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("AttachmentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttachmentId");
-
-                    b.ToTable("OfferedOpportunities");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.PhotoGallery", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PhotoGalleries");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.PhotoGalleryAttachment", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("AttachmentId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("PhotoGalleryId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AttachmentId");
-
-                    b.HasIndex("PhotoGalleryId");
-
-                    b.ToTable("PhotoGalleryAttachments");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.Reason", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("OfferedOpportunitiesId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OfferedOpportunitiesId");
-
-                    b.ToTable("Reasons");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.SocialNetworks", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("EmailLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FacebookLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("InstagrammLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("State")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TelegramLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("YouTubeLink")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SocialNetworks");
-                });
-
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Quizzes.QuestionAnswer", b =>
                 {
                     b.Property<long>("Id")
@@ -864,6 +511,37 @@ namespace ZaminEducation.Data.Migrations
                     b.ToTable("QuizResults");
                 });
 
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.user.ZCApplicantDirection", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ZCApplicantDirections");
+                });
+
             modelBuilder.Entity("ZaminEducation.Domain.Entities.UserCourses.Certificate", b =>
                 {
                     b.Property<long>("Id")
@@ -1001,6 +679,47 @@ namespace ZaminEducation.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("CourseRates");
+                });
+
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.UserCourses.ReferralLink", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<long>("CourseId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("GeneratedLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ReferralLinks");
                 });
 
             modelBuilder.Entity("ZaminEducation.Domain.Entities.UserCourses.SavedCourse", b =>
@@ -1248,6 +967,101 @@ namespace ZaminEducation.Data.Migrations
                     b.ToTable("UserSocialNetworks");
                 });
 
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicant", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("AccesToUseMedia")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("DirectoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("UserRole")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DirectoryId");
+
+                    b.ToTable("ZCApplicants");
+                });
+
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicantAsset", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FileId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ZCApplicantAssets");
+                });
+
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.Course", b =>
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Users.User", "Author")
@@ -1257,7 +1071,7 @@ namespace ZaminEducation.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.CourseCategory", "Category")
-                        .WithMany()
+                        .WithMany("Courses")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1327,124 +1141,6 @@ namespace ZaminEducation.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.HomePage", b =>
-                {
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.HomePageHeader", "HomePageHeader")
-                        .WithOne("HomePage")
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "HomePageHeaderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.InfoAboutProject", "InfoAboutProject")
-                        .WithOne()
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "InfoAboutProjectId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.InfoAboutProject", null)
-                        .WithOne("HomePage")
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "InfoAboutProjectId1");
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.OfferedOpportunities", "OpportunitiesOffered")
-                        .WithOne()
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "OfferedOpportunitiesId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.OfferedOpportunities", null)
-                        .WithOne("HomePage")
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "OfferedOpportunitiesId1");
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.PhotoGallery", "PhotoGallery")
-                        .WithOne("HomePage")
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "PhotoGalleryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.SocialNetworks", "SocialNetworks")
-                        .WithOne()
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "SocialNetworksId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.SocialNetworks", null)
-                        .WithOne("HomePage")
-                        .HasForeignKey("ZaminEducation.Domain.Entities.MainPages.HomePage", "SocialNetworksId1");
-
-                    b.Navigation("HomePageHeader");
-
-                    b.Navigation("InfoAboutProject");
-
-                    b.Navigation("OpportunitiesOffered");
-
-                    b.Navigation("PhotoGallery");
-
-                    b.Navigation("SocialNetworks");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.HomePageHeader", b =>
-                {
-                    b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.InfoAboutProject", b =>
-                {
-                    b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Image");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.OfferedOpportunities", b =>
-                {
-                    b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "Attachment")
-                        .WithMany()
-                        .HasForeignKey("AttachmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attachment");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.PhotoGalleryAttachment", b =>
-                {
-                    b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "Attachment")
-                        .WithMany()
-                        .HasForeignKey("AttachmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.PhotoGallery", "PhotoGallery")
-                        .WithMany("Photos")
-                        .HasForeignKey("PhotoGalleryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attachment");
-
-                    b.Navigation("PhotoGallery");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.Reason", b =>
-                {
-                    b.HasOne("ZaminEducation.Domain.Entities.MainPages.OfferedOpportunities", "OfferedOpportunities")
-                        .WithMany("Opportunities")
-                        .HasForeignKey("OfferedOpportunitiesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OfferedOpportunities");
                 });
 
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Quizzes.QuestionAnswer", b =>
@@ -1606,6 +1302,25 @@ namespace ZaminEducation.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.UserCourses.ReferralLink", b =>
+                {
+                    b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ZaminEducation.Domain.Entities.Users.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ZaminEducation.Domain.Entities.UserCourses.SavedCourse", b =>
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
@@ -1687,6 +1402,36 @@ namespace ZaminEducation.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicant", b =>
+                {
+                    b.HasOne("ZaminEducation.Domain.Entities.user.ZCApplicantDirection", "Directory")
+                        .WithMany()
+                        .HasForeignKey("DirectoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Directory");
+                });
+
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicantAsset", b =>
+                {
+                    b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "File")
+                        .WithMany()
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ZaminEducation.Domain.Entities.Users.ZCApplicant", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("File");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.Course", b =>
                 {
                     b.Navigation("HashTags");
@@ -1704,38 +1449,14 @@ namespace ZaminEducation.Data.Migrations
                     b.Navigation("Videos");
                 });
 
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.CourseCategory", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.CourseModule", b =>
                 {
                     b.Navigation("Videos");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.HomePageHeader", b =>
-                {
-                    b.Navigation("HomePage");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.InfoAboutProject", b =>
-                {
-                    b.Navigation("HomePage");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.OfferedOpportunities", b =>
-                {
-                    b.Navigation("HomePage");
-
-                    b.Navigation("Opportunities");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.PhotoGallery", b =>
-                {
-                    b.Navigation("HomePage");
-
-                    b.Navigation("Photos");
-                });
-
-            modelBuilder.Entity("ZaminEducation.Domain.Entities.MainPages.SocialNetworks", b =>
-                {
-                    b.Navigation("HomePage");
                 });
 
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Quizzes.Quiz", b =>
