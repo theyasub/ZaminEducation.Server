@@ -16,6 +16,6 @@ namespace ZaminEducation.Service.Interfaces
         ValueTask<User> GetInfoAsync();
         ValueTask<User> ChangePasswordAsync(UserForChangePassword dto);
         ValueTask<User> AddAttachmentAsync(long id, AttachmentForCreationDto attachmentForCreationDto);
-
+        ValueTask<User> ChangeRoleAsync(long userId, byte roleId);
     }
 }

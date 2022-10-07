@@ -34,7 +34,16 @@ public class UsersController : BaseController
         Ok(await userService.CreateAsync(dto));
 
     /// <summary>
-    /// delete user
+    /// Update role 
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="roleId"></param>
+    /// <returns></returns>
+    [HttpPut("change/role"), Authorize(Roles = "SuperAdmin")]
+    public async ValueTask<ActionResult<User>> ChangeRoleAsync(long userId, byte roleId)
+        => Ok(await userService.ChangeRoleAsync(userId, roleId));
+
+    /// <summary>
     /// Toggle saved course
     /// </summary>
     /// <param name="dto"></param>
@@ -64,14 +73,14 @@ public class UsersController : BaseController
             Ok(await userService.GetAllAsync(@params));
 
     /// <summary>
-    /// Get all saved courses of users
+    /// get all saved courses of users
     /// </summary>
     /// <param name="params"></param>
     /// <returns></returns>
-    [HttpGet("saved-course")]
+    [HttpGet("saved-course"),Authorize]
     public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
-        [FromQuery] PaginationParams @params) =>
-            Ok(await savedCoursesService.GetAllAsync(@params));
+        [FromQuery] PaginationParams @params,string search) =>
+            Ok(await savedCoursesService.GetAllAsync(@params,search:search));
 
     /// <summary>
     /// update password
