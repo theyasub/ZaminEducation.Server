@@ -43,10 +43,10 @@ namespace ZaminEducation.Api
             services.AddScoped<IHomePageRepository, HomePageRepository>();
             services.AddScoped<IRepository<ReferralLink>, Repository<ReferralLink>>();
             services.AddScoped<IRepository<CourseCategory>, Repository<CourseCategory>>();
+            services.AddScoped<IRepository<CourseModule>, Repository<CourseModule>>();
             services.AddScoped<IRepository<ZCApplicant>, Repository<ZCApplicant>>();
             services.AddScoped<IRepository<ZCApplicantAsset>, Repository<ZCApplicantAsset>>();
             services.AddScoped<IRepository<ZCApplicantDirection>, Repository<ZCApplicantDirection>>();
-
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
@@ -60,6 +60,7 @@ namespace ZaminEducation.Api
             services.AddScoped<ISavedCoursesService, SavedCoursesService>();
             services.AddScoped<IHomePageService, HomePageService>();
             services.AddScoped<ICourseCategoryService, CourseCategoryService>();
+            services.AddScoped<ICourseModuleService, CourseModuleService>();
             services.AddScoped<IZCApplicantAssetService, ZCApplicantAssetService>();
             services.AddScoped<IZCApplicantService, ZCApplicantService>();
             services.AddScoped<IZCApplicantDirectionService, ZCApplicantDirectionService>();

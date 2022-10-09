@@ -26,7 +26,7 @@ namespace ZaminEducation.Domain.Entities.Courses
 
         public int ViewCount { get; set; }
 
-        public long ImageId { get; set; }
+        public long? ImageId { get; set; }
 
         [ForeignKey(nameof(ImageId))]
         public Attachment Image { get; set; }

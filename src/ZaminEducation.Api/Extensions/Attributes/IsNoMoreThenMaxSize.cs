@@ -15,7 +15,7 @@ namespace ZaminEducation.Api.Extensions.Attributes
         {
             if ((value as IFormFile).Length <= size)
                 return ValidationResult.Success;
-            return new ValidationResult($"file should be no more then {size} bytes");
+            return new ValidationResult($"File should be no more then {size} bytes");
         }
     }
 }
