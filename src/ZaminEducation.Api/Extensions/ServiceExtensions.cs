@@ -42,6 +42,7 @@ namespace ZaminEducation.Api
             services.AddScoped<IHomePageRepository, HomePageRepository>();
             services.AddScoped<IRepository<ReferralLink>, Repository<ReferralLink>>();
             services.AddScoped<IRepository<CourseCategory>, Repository<CourseCategory>>();
+            services.AddScoped<IRepository<CourseModule>, Repository<CourseModule>>();
 
             // services
             services.AddScoped<IAttachmentService, AttachmentService>();
@@ -55,6 +56,7 @@ namespace ZaminEducation.Api
             services.AddScoped<ISavedCoursesService, SavedCoursesService>();
             services.AddScoped<IHomePageService, HomePageService>();
             services.AddScoped<ICourseCategoryService, CourseCategoryService>();
+            services.AddScoped<ICourseModuleService, CourseModuleService>();
         }
 
         public static void ConfigureJwt(this IServiceCollection services, IConfiguration configuration)

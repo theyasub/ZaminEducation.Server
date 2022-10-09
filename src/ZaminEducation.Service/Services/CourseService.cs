@@ -5,6 +5,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
+using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
@@ -21,6 +22,7 @@ namespace ZaminEducation.Service.Services.Courses
         private readonly IRepository<Course> courseRepository;
         private readonly IRepository<CourseRate> courseRateRepository;
         private readonly IRepository<ReferralLink> referralLinkRepository;
+        private readonly ICourseModuleService courseModuleService;
         private readonly IAttachmentService attachmentService;
         private readonly IMapper mapper;
 
@@ -29,7 +31,9 @@ namespace ZaminEducation.Service.Services.Courses
             IYouTubeService youTubeService,
             IRepository<CourseRate> courseRateRepository,
             IAttachmentService attachmentService,
-            IMapper mapper, IRepository<ReferralLink> referralLinkRepository)
+            IMapper mapper,
+            IRepository<ReferralLink> referralLinkRepository,
+            ICourseModuleService courseModuleService)
         {
             this.courseRepository = courseRepository;
             this.youTubeService = youTubeService;
@@ -37,6 +41,7 @@ namespace ZaminEducation.Service.Services.Courses
             this.attachmentService = attachmentService;
             this.mapper = mapper;
             this.referralLinkRepository = referralLinkRepository;
+            this.courseModuleService = courseModuleService;
         }
 
         public async ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto)
@@ -47,20 +52,33 @@ namespace ZaminEducation.Service.Services.Courses
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
 
-            var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
-            var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
+            long? attachmentId = null;
+            if (courseForCreationDto.Image is not null)
+            {
+                var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
+                var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
+                attachmentId = attachment.Id;
+            }
 
             Course mappedCourse = mapper.Map<Course>(source: courseForCreationDto);
 
-            mappedCourse.ImageId = attachment.Id;
+            mappedCourse.ImageId = attachmentId;
             mappedCourse.Create();
+
             Course entity = await courseRepository.AddAsync(entity: mappedCourse);
 
             await courseRepository.SaveChangesAsync();
 
+            var courseModule = await this.courseModuleService.CreateAsync(new CourseModuleForCreationDto()
+            {
+                Name = courseForCreationDto.ModuleName,
+                CourseId = entity.Id
+            });
+
             entity.Videos = (ICollection<CourseVideo>)await youTubeService.CreateRangeAsync(
                 youtubePlaylist: courseForCreationDto.YouTubePlaylistLink,
-                courseId: entity.Id);
+                courseId: entity.Id,
+                courseModuleId: courseModule.Id);
 
             return entity;
         }
@@ -157,12 +175,16 @@ namespace ZaminEducation.Service.Services.Courses
             if (course is null)
                 throw new ZaminEducationException(404, "Course not found");
 
-            var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
-            var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
-
+            long? attachmentId = null;
+            if (courseForCreationDto.Image is not null)
+            {
+                var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
+                var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
+                attachmentId = attachment.Id;
+            }
             course = mapper.Map(courseForCreationDto, course);
 
-            course.ImageId = attachment.Id;
+            course.ImageId = attachmentId;
             course.Update();
 
             course = courseRepository.Update(entity: course);
@@ -170,6 +192,25 @@ namespace ZaminEducation.Service.Services.Courses
             await courseRepository.SaveChangesAsync();
 
             return course;
+        }
+
+        public async ValueTask<CourseViewModel> AddAttachmentAsync(long courseId, AttachmentForCreationDto dto)
+        {
+            Course entity = await this.courseRepository.GetAsync(c => c.Id.Equals(courseId));
+
+            if (entity is null)
+                throw new ZaminEducationException(404, "Course not found");
+
+            var attachment = await this.attachmentService.UploadAsync(dto);
+
+            entity.ImageId = attachment.Id;
+            entity.Update();
+
+            this.courseRepository.Update(entity);
+
+            await this.courseRepository.SaveChangesAsync();
+
+            return this.mapper.Map<CourseViewModel>(entity);
         }
 
         public async ValueTask<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression)
@@ -201,8 +242,6 @@ namespace ZaminEducation.Service.Services.Courses
 
             return course.Videos;
         }
-
-
 
         private double CalculateRates(IEnumerable<CourseRate> rates)
             => (double)rates.Sum(r => r.Value) / (double)rates.Count();

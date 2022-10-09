@@ -19,6 +19,7 @@ namespace ZaminEducation.Service.DTOs.Courses
         public long CategoryId { get; set; }
 
         public string YouTubePlaylistLink { get; set; }
+        public string ModuleName { get; set; }
 
         [Required]
         public CourseLevel Level { get; set; }
