@@ -3,6 +3,7 @@ using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.MainPages;
 using ZaminEducation.Domain.Entities.Quizzes;
+using ZaminEducation.Domain.Entities.user;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Commons;
@@ -54,6 +55,8 @@ namespace ZaminEducation.Service.Mappers
             CreateMap<SocialNetworks, SocialNetworksForCreationDto>().ReverseMap();
             CreateMap<User, UserForUpdateDto>().ReverseMap();
             CreateMap<UserForCreationDto, UserForUpdateDto>().ReverseMap();
+            CreateMap<ZCApplicant, ZCApplicantForCreationDto>().ReverseMap();
+            CreateMap<ZCApplicantDirection,ZCApplicantDirectionForCreationDto>().ReverseMap();   
         }
     }
 }

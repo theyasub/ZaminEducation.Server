@@ -1,11 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ZaminEducation.Data.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class ZCApplicantMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -44,25 +44,6 @@ namespace ZaminEducation.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CourseCategories", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PhotoGalleries",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhotoGalleries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,16 +89,12 @@ namespace ZaminEducation.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SocialNetworks",
+                name: "ZCApplicantDirections",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    EmailLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    FacebookLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    InstagrammLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TelegramLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    YouTubeLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
@@ -126,117 +103,7 @@ namespace ZaminEducation.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SocialNetworks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "HomePageHeaders",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageId = table.Column<long>(type: "bigint", nullable: false),
-                    YouTubeVideoLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HomePageHeaders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_HomePageHeaders_Attachments_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Attachments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "InfoAboutProjects",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageId = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InfoAboutProjects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_InfoAboutProjects_Attachments_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Attachments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OfferedOpportunities",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    AttachmentId = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OfferedOpportunities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_OfferedOpportunities_Attachments_AttachmentId",
-                        column: x => x.AttachmentId,
-                        principalTable: "Attachments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PhotoGalleryAttachments",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PhotoGalleryId = table.Column<long>(type: "bigint", nullable: false),
-                    AttachmentId = table.Column<long>(type: "bigint", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PhotoGalleryAttachments", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PhotoGalleryAttachments_Attachments_AttachmentId",
-                        column: x => x.AttachmentId,
-                        principalTable: "Attachments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PhotoGalleryAttachments_PhotoGalleries_PhotoGalleryId",
-                        column: x => x.PhotoGalleryId,
-                        principalTable: "PhotoGalleries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_ZCApplicantDirections", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -303,19 +170,20 @@ namespace ZaminEducation.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "HomePages",
+                name: "ZCApplicants",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    HomePageHeaderId = table.Column<long>(type: "bigint", nullable: false),
-                    InfoAboutProjectId = table.Column<long>(type: "bigint", nullable: false),
-                    OfferedOpportunitiesId = table.Column<long>(type: "bigint", nullable: false),
-                    PhotoGalleryId = table.Column<long>(type: "bigint", nullable: false),
-                    SocialNetworksId = table.Column<long>(type: "bigint", nullable: false),
-                    InfoAboutProjectId1 = table.Column<long>(type: "bigint", nullable: true),
-                    OfferedOpportunitiesId1 = table.Column<long>(type: "bigint", nullable: true),
-                    SocialNetworksId1 = table.Column<long>(type: "bigint", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FatherName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserRole = table.Column<int>(type: "int", nullable: false),
+                    DirectoryId = table.Column<long>(type: "bigint", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ParentPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AccesToUseMedia = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
@@ -324,73 +192,42 @@ namespace ZaminEducation.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_HomePages", x => x.Id);
+                    table.PrimaryKey("PK_ZCApplicants", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HomePages_HomePageHeaders_HomePageHeaderId",
-                        column: x => x.HomePageHeaderId,
-                        principalTable: "HomePageHeaders",
+                        name: "FK_ZCApplicants_ZCApplicantDirections_DirectoryId",
+                        column: x => x.DirectoryId,
+                        principalTable: "ZCApplicantDirections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HomePages_InfoAboutProjects_InfoAboutProjectId",
-                        column: x => x.InfoAboutProjectId,
-                        principalTable: "InfoAboutProjects",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_HomePages_InfoAboutProjects_InfoAboutProjectId1",
-                        column: x => x.InfoAboutProjectId1,
-                        principalTable: "InfoAboutProjects",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_HomePages_OfferedOpportunities_OfferedOpportunitiesId",
-                        column: x => x.OfferedOpportunitiesId,
-                        principalTable: "OfferedOpportunities",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_HomePages_OfferedOpportunities_OfferedOpportunitiesId1",
-                        column: x => x.OfferedOpportunitiesId1,
-                        principalTable: "OfferedOpportunities",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_HomePages_PhotoGalleries_PhotoGalleryId",
-                        column: x => x.PhotoGalleryId,
-                        principalTable: "PhotoGalleries",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HomePages_SocialNetworks_SocialNetworksId",
-                        column: x => x.SocialNetworksId,
-                        principalTable: "SocialNetworks",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_HomePages_SocialNetworks_SocialNetworksId1",
-                        column: x => x.SocialNetworksId1,
-                        principalTable: "SocialNetworks",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Reasons",
+                name: "ZCApplicantAssets",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    OfferedOpportunitiesId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    FileId = table.Column<long>(type: "bigint", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
                     CreatedBy = table.Column<long>(type: "bigint", nullable: true),
-                    State = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    State = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reasons", x => x.Id);
+                    table.PrimaryKey("PK_ZCApplicantAssets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reasons_OfferedOpportunities_OfferedOpportunitiesId",
-                        column: x => x.OfferedOpportunitiesId,
-                        principalTable: "OfferedOpportunities",
+                        name: "FK_ZCApplicantAssets_Attachments_FileId",
+                        column: x => x.FileId,
+                        principalTable: "Attachments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ZCApplicantAssets_ZCApplicants_UserId",
+                        column: x => x.UserId,
+                        principalTable: "ZCApplicants",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -754,6 +591,38 @@ namespace ZaminEducation.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReferralLinks",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GeneratedLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    CourseId = table.Column<long>(type: "bigint", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    CreatedBy = table.Column<long>(type: "bigint", nullable: true),
+                    State = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReferralLinks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReferralLinks_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ReferralLinks_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SavedCourses",
                 columns: table => new
                 {
@@ -922,82 +791,6 @@ namespace ZaminEducation.Data.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HomePageHeaders_ImageId",
-                table: "HomePageHeaders",
-                column: "ImageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_HomePageHeaderId",
-                table: "HomePages",
-                column: "HomePageHeaderId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_InfoAboutProjectId",
-                table: "HomePages",
-                column: "InfoAboutProjectId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_InfoAboutProjectId1",
-                table: "HomePages",
-                column: "InfoAboutProjectId1",
-                unique: true,
-                filter: "[InfoAboutProjectId1] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_OfferedOpportunitiesId",
-                table: "HomePages",
-                column: "OfferedOpportunitiesId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_OfferedOpportunitiesId1",
-                table: "HomePages",
-                column: "OfferedOpportunitiesId1",
-                unique: true,
-                filter: "[OfferedOpportunitiesId1] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_PhotoGalleryId",
-                table: "HomePages",
-                column: "PhotoGalleryId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_SocialNetworksId",
-                table: "HomePages",
-                column: "SocialNetworksId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomePages_SocialNetworksId1",
-                table: "HomePages",
-                column: "SocialNetworksId1",
-                unique: true,
-                filter: "[SocialNetworksId1] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_InfoAboutProjects_ImageId",
-                table: "InfoAboutProjects",
-                column: "ImageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OfferedOpportunities_AttachmentId",
-                table: "OfferedOpportunities",
-                column: "AttachmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PhotoGalleryAttachments_AttachmentId",
-                table: "PhotoGalleryAttachments",
-                column: "AttachmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PhotoGalleryAttachments_PhotoGalleryId",
-                table: "PhotoGalleryAttachments",
-                column: "PhotoGalleryId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_QuestionAnswers_ContentId",
                 table: "QuestionAnswers",
                 column: "ContentId");
@@ -1043,9 +836,14 @@ namespace ZaminEducation.Data.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reasons_OfferedOpportunitiesId",
-                table: "Reasons",
-                column: "OfferedOpportunitiesId");
+                name: "IX_ReferralLinks_CourseId",
+                table: "ReferralLinks",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ReferralLinks_UserId",
+                table: "ReferralLinks",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Regions_ParentId",
@@ -1081,6 +879,21 @@ namespace ZaminEducation.Data.Migrations
                 name: "IX_UserSocialNetworks_UserId",
                 table: "UserSocialNetworks",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ZCApplicantAssets_FileId",
+                table: "ZCApplicantAssets",
+                column: "FileId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ZCApplicantAssets_UserId",
+                table: "ZCApplicantAssets",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ZCApplicants_DirectoryId",
+                table: "ZCApplicants",
+                column: "DirectoryId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Certificates_Courses_CourseId",
@@ -1198,12 +1011,6 @@ namespace ZaminEducation.Data.Migrations
                 name: "HashTags");
 
             migrationBuilder.DropTable(
-                name: "HomePages");
-
-            migrationBuilder.DropTable(
-                name: "PhotoGalleryAttachments");
-
-            migrationBuilder.DropTable(
                 name: "QuestionAnswers");
 
             migrationBuilder.DropTable(
@@ -1213,7 +1020,7 @@ namespace ZaminEducation.Data.Migrations
                 name: "QuizResults");
 
             migrationBuilder.DropTable(
-                name: "Reasons");
+                name: "ReferralLinks");
 
             migrationBuilder.DropTable(
                 name: "SavedCourses");
@@ -1222,28 +1029,22 @@ namespace ZaminEducation.Data.Migrations
                 name: "UserSocialNetworks");
 
             migrationBuilder.DropTable(
+                name: "ZCApplicantAssets");
+
+            migrationBuilder.DropTable(
                 name: "CourseModules");
-
-            migrationBuilder.DropTable(
-                name: "HomePageHeaders");
-
-            migrationBuilder.DropTable(
-                name: "InfoAboutProjects");
-
-            migrationBuilder.DropTable(
-                name: "SocialNetworks");
-
-            migrationBuilder.DropTable(
-                name: "PhotoGalleries");
 
             migrationBuilder.DropTable(
                 name: "Quizzes");
 
             migrationBuilder.DropTable(
-                name: "OfferedOpportunities");
+                name: "ZCApplicants");
 
             migrationBuilder.DropTable(
                 name: "QuizContents");
+
+            migrationBuilder.DropTable(
+                name: "ZCApplicantDirections");
 
             migrationBuilder.DropTable(
                 name: "Regions");
