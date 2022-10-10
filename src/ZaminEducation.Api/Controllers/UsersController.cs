@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZaminEducation.Api.Extensions;
 using ZaminEducation.Api.Extensions.Attributes;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.UserCourses;
@@ -72,18 +71,15 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
-<<<<<<< HEAD
-=======
     /// <summary>
     /// get all saved courses of users
     /// </summary>
     /// <param name="params"></param>
     /// <returns></returns>
-    [HttpGet("saved-course"),Authorize]
+    [HttpGet("saved-course"), Authorize]
     public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
-        [FromQuery] PaginationParams @params,string search) =>
-            Ok(await savedCoursesService.GetAllAsync(@params,search:search));
->>>>>>> 817a090bb08bc760e67a10aa78ec7bb8850efd63
+        [FromQuery] PaginationParams @params, string search) =>
+            Ok(await savedCoursesService.GetAllAsync(@params, search: search));
 
     /// <summary>
     /// update password
