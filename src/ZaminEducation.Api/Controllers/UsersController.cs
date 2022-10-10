@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ZaminEducation.Api.Extensions;
 using ZaminEducation.Api.Extensions.Attributes;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.UserCourses;
@@ -77,10 +76,10 @@ public class UsersController : BaseController
     /// </summary>
     /// <param name="params"></param>
     /// <returns></returns>
-    [HttpGet("saved-course"),Authorize]
+    [HttpGet("saved-course"), Authorize]
     public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
-        [FromQuery] PaginationParams @params,string search) =>
-            Ok(await savedCoursesService.GetAllAsync(@params,search:search));
+        [FromQuery] PaginationParams @params, string search) =>
+            Ok(await savedCoursesService.GetAllAsync(@params, search: search));
 
     /// <summary>
     /// update password
@@ -99,7 +98,7 @@ public class UsersController : BaseController
     /// <response code="400">if user data is not in the base</response>
     /// <response code="200">if user data have in database</response>
     [HttpGet("{id}"), Authorize("AllPolicy")]
-    public async ValueTask<ActionResult<User>> GetAsync([FromRoute]long id) =>
+    public async ValueTask<ActionResult<User>> GetAsync([FromRoute] long id) =>
         Ok(await userService.GetAsync(user => user.Id == id));
 
     /// <summary>
@@ -110,7 +109,7 @@ public class UsersController : BaseController
     /// <returns></returns>
     [HttpPut, Authorize("AllPolicy")]
     public async ValueTask<ActionResult<User>> UpdateAsync(
-        long id, [FromBody] UserForUpdateDto dto) => 
+        long id, [FromBody] UserForUpdateDto dto) =>
             Ok(await userService.UpdateAsync(id, dto));
 
     /// <summary>

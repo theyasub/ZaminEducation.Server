@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Users;
 
-namespace ZaminEducation.Test.Unit.Services
+namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {
         [Fact]
         public async Task ShoulDeleteUserById()
         {
+            //given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
             UserForCreationDto inputUser = randomUser;
             UserForCreationDto expectedUser = inputUser.DeepClone();
@@ -31,6 +32,7 @@ namespace ZaminEducation.Test.Unit.Services
         [Fact]
         public async Task ShoulDeleteUserByUserName()
         {
+            //given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
             UserForCreationDto inputUser = randomUser;
             UserForCreationDto expectedUser = inputUser.DeepClone();
