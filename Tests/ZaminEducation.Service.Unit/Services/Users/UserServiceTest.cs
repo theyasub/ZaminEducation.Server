@@ -15,7 +15,7 @@ using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Mappers;
 using ZaminEducation.Service.Services;
 
-namespace ZaminEducation.Test.Unit.Services
+namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {

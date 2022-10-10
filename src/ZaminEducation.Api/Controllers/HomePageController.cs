@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ZaminEducation.Domain.Entities.MainPages;
 using ZaminEducation.Service.DTOs.HomePage;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Api.Controllers
 {
+    [Authorize(Roles = "SuperAdmin")]
     public class HomePageController : BaseController
     {
         private readonly IHomePageService _homePageService;
@@ -18,7 +20,7 @@ namespace ZaminEducation.Api.Controllers
         /// take a landing page informations
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet, AllowAnonymous]
         public async ValueTask<ActionResult<HomePage>> GetHomePageAsync()
         {
             return Ok(await _homePageService.GetHomePageAsync());

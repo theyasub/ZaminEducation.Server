@@ -46,7 +46,7 @@ namespace ZaminEducation.Service.Services.Courses
 
         public async ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto)
         {
-            Course course = await courseRepository.GetAsync(c =>
+            Course course = await courseRepository.GetAsync(expression: c =>
                 c.YouTubePlaylistLink.Equals(courseForCreationDto.YouTubePlaylistLink));
 
             if (course is not null)
