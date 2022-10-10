@@ -9,8 +9,6 @@ namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {
-
-
         [Fact]
         public async Task ShouldCreateUser()
         {
