@@ -2,7 +2,6 @@
 using System.IO;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
-using ZaminEducation.Domain.Entities.MainPages;
 using ZaminEducation.Domain.Entities.Quizzes;
 using ZaminEducation.Domain.Entities.user;
 using ZaminEducation.Domain.Entities.UserCourses;

@@ -5,14 +5,13 @@ using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Users;
 
-namespace ZaminEducation.Test.Unit.Services
+namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {
 
 
         [Fact]
-
         public async Task ShouldCreateUser()
         {
             // given
@@ -28,6 +27,7 @@ namespace ZaminEducation.Test.Unit.Services
 
             actualUser.Username.Should().BeEquivalentTo(expectedUser.Username);
         }
+
         [Fact]
         public async Task ShouldCreateUserWithAttachment()
         {

@@ -32,6 +32,7 @@
 
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>1591</NoWarn>
 	</PropertyGroup>
 
 </Project>

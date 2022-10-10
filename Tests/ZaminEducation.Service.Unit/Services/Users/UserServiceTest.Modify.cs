@@ -4,28 +4,32 @@ using System.Threading.Tasks;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Users;
 
-namespace ZaminEducation.Test.Unit.Services
+namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {
         [Fact]
-        public async Task ShouldGetUserById()
+        public async Task ShouldUpdateUser()
         {
             // given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
             UserForCreationDto inputUser = randomUser;
             UserForCreationDto expectedUser = inputUser.DeepClone();
+            UserForUpdateDto inputUserForUpdate = mapper.Map<UserForUpdateDto>(expectedUser);
+
+            inputUserForUpdate.LastName = Faker.Name.Last();
 
             // when
             User actualUser = await userService.CreateAsync(inputUser);
-            User gotUser = await userService.GetAsync(u => u.Id == actualUser.Id);
+
+            User actualUpdatedUser = await userService.UpdateAsync(actualUser.Id, inputUserForUpdate);
 
             // then
             actualUser.Should().NotBeNull();
-            gotUser.Should().NotBeNull();
-            actualUser.Should().BeEquivalentTo(gotUser);
+            actualUpdatedUser.Should().NotBeNull();
+
+            actualUser.Username.Should().BeEquivalentTo(expectedUser.Username);
+            actualUpdatedUser.Username.Should().BeEquivalentTo(inputUserForUpdate.Username);
         }
-
-
     }
 }

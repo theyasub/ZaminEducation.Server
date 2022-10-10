@@ -12,13 +12,10 @@ using ZaminEducation.Data.DbContexts;
 namespace ZaminEducation.Data.Migrations
 {
     [DbContext(typeof(ZaminEducationDbContext))]
-<<<<<<<< HEAD:src/ZaminEducation.Data/Migrations/20221008145320_UmirdiYeganMaxLength.Designer.cs
     [Migration("20221008145320_UmirdiYeganMaxLength")]
     partial class UmirdiYeganMaxLength
-========
     [Migration("20221007012313_ZCApplicantMigration")]
     partial class ZCApplicantMigration
->>>>>>>> 817a090bb08bc760e67a10aa78ec7bb8850efd63:src/ZaminEducation.Data/Migrations/20221007012313_ZCApplicantMigration.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
