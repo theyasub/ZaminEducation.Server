@@ -89,7 +89,7 @@ namespace ZaminEducation.Service.Services
             if (user is null)
                 throw new ZaminEducationException(404, "User not found!");
 
-            var alredyExistsUser = await userRepository.GetAsync(u => u.Username == dto.Username 
+            var alredyExistsUser = await userRepository.GetAsync(u => u.Username == dto.Username
                                                                     && u.State != ItemState.Deleted && u.Id != id);
 
             if (alredyExistsUser is not null)

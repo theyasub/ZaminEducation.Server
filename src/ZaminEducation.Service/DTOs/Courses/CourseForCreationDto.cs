@@ -12,7 +12,7 @@ namespace ZaminEducation.Service.DTOs.Courses
         [MaxLength(100)]
         public string Description { get; set; }
 
-        public long AuthorId { get; set; }
+        public long? AuthorId { get; set; }
 
         public IFormFile Image { get; set; }
 

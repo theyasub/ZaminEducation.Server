@@ -62,7 +62,7 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
-    
+
     /// <summary>
     /// update password
     /// </summary>
@@ -94,7 +94,7 @@ public class UsersController : BaseController
     /// <response code="400">if user data is not in the base</response>
     /// <response code="200">if user data have in database</response>
     [HttpGet("{id}"), Authorize("AllPolicy")]
-    public async ValueTask<ActionResult<User>> GetAsync([FromRoute]long id) =>
+    public async ValueTask<ActionResult<User>> GetAsync([FromRoute] long id) =>
         Ok(await userService.GetAsync(user => user.Id == id));
 
     /// <summary>
@@ -105,7 +105,7 @@ public class UsersController : BaseController
     /// <returns></returns>
     [HttpPut, Authorize("AllPolicy")]
     public async ValueTask<ActionResult<User>> UpdateAsync(
-        long id, [FromBody] UserForUpdateDto dto) => 
+        long id, [FromBody] UserForUpdateDto dto) =>
             Ok(await userService.UpdateAsync(id, dto));
 
     /// <summary>
