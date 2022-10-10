@@ -508,6 +508,37 @@ namespace ZaminEducation.Data.Migrations
                     b.ToTable("QuizResults");
                 });
 
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.user.ZCApplicantDirection", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ZCApplicantDirections");
+                });
+
             modelBuilder.Entity("ZaminEducation.Domain.Entities.UserCourses.Certificate", b =>
                 {
                     b.Property<long>("Id")
@@ -933,6 +964,101 @@ namespace ZaminEducation.Data.Migrations
                     b.ToTable("UserSocialNetworks");
                 });
 
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicant", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<bool>("AccesToUseMedia")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("DirectoryId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FatherName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ParentPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("UserRole")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DirectoryId");
+
+                    b.ToTable("ZCApplicants");
+                });
+
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicantAsset", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("FileId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("State")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ZCApplicantAssets");
+                });
+
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.Course", b =>
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Users.User", "Author")
@@ -1267,6 +1393,36 @@ namespace ZaminEducation.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicant", b =>
+                {
+                    b.HasOne("ZaminEducation.Domain.Entities.user.ZCApplicantDirection", "Directory")
+                        .WithMany()
+                        .HasForeignKey("DirectoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Directory");
+                });
+
+            modelBuilder.Entity("ZaminEducation.Domain.Entities.Users.ZCApplicantAsset", b =>
+                {
+                    b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "File")
+                        .WithMany()
+                        .HasForeignKey("FileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ZaminEducation.Domain.Entities.Users.ZCApplicant", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("File");
 
                     b.Navigation("User");
                 });

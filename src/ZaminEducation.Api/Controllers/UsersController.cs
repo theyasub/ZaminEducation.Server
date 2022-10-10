@@ -7,6 +7,7 @@ using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.DTOs.Users;
+using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Api.Controllers;
@@ -86,7 +87,7 @@ public class UsersController : BaseController
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    [HttpPost("change/password"), Authorize(Policy = "AllPolicy")]
+    [HttpPost("password"), Authorize("AllPolicy")]
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
 
@@ -97,8 +98,7 @@ public class UsersController : BaseController
     /// <returns>user</returns>
     /// <response code="400">if user data is not in the base</response>
     /// <response code="200">if user data have in database</response>
-    //[HttpGet("{id}"), Authorize("AllPolicy")]
-    [HttpGet("{id}")]
+    [HttpGet("{id}"), Authorize("AllPolicy")]
     public async ValueTask<ActionResult<User>> GetAsync([FromRoute]long id) =>
         Ok(await userService.GetAsync(user => user.Id == id));
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Text;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using ZaminEducation.Data.IRepositories;
@@ -50,7 +51,7 @@ namespace ZaminEducation.Service.Services
             return youtubeVideo;
         }
 
-        public async ValueTask<IEnumerable<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId)
+        public async ValueTask<IEnumerable<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId, long courseModuleId)
         {
             IEnumerable<string> links = await GetLinksAsync(youtubePlaylist);
 
@@ -67,6 +68,7 @@ namespace ZaminEducation.Service.Services
                     Thumbnail = video.Thumbnails.OrderByDescending(p => p.Resolution.Height).FirstOrDefault()?.Url,
                     Title = video.Title,
                     Url = video.Url,
+                    CourseModuleId = courseModuleId,
                     Length = video.Duration!.Value.Minutes,
                     Description = video.Description
                 };
