@@ -7,6 +7,7 @@ using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.UserCourses;
 using ZaminEducation.Service.DTOs.Users;
+using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Api.Controllers;
@@ -33,7 +34,16 @@ public class UsersController : BaseController
         Ok(await userService.CreateAsync(dto));
 
     /// <summary>
-    /// delete user
+    /// Update role 
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="roleId"></param>
+    /// <returns></returns>
+    [HttpPut("change/role"), Authorize(Roles = "SuperAdmin")]
+    public async ValueTask<ActionResult<User>> ChangeRoleAsync(long userId, byte roleId)
+        => Ok(await userService.ChangeRoleAsync(userId, roleId));
+
+    /// <summary>
     /// Toggle saved course
     /// </summary>
     /// <param name="dto"></param>
@@ -62,6 +72,18 @@ public class UsersController : BaseController
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
 
+<<<<<<< HEAD
+=======
+    /// <summary>
+    /// get all saved courses of users
+    /// </summary>
+    /// <param name="params"></param>
+    /// <returns></returns>
+    [HttpGet("saved-course"),Authorize]
+    public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
+        [FromQuery] PaginationParams @params,string search) =>
+            Ok(await savedCoursesService.GetAllAsync(@params,search:search));
+>>>>>>> 817a090bb08bc760e67a10aa78ec7bb8850efd63
 
     /// <summary>
     /// update password
@@ -69,20 +91,6 @@ public class UsersController : BaseController
     /// <param name="dto"></param>
     /// <returns></returns>
     [HttpPost("password"), Authorize("AllPolicy")]
-
-    /// <summary>
-    /// Get all saved courses of users
-    /// </summary>
-    /// <param name="params"></param>
-    /// <returns></returns>
-    [HttpGet("saved-course")]
-    public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
-        [FromQuery] PaginationParams @params) =>
-            Ok(await savedCoursesService.GetAllAsync(@params));
-
-
-    [HttpPost("Change/Password"), Authorize(Policy = "AllPolicy")]
-
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
 

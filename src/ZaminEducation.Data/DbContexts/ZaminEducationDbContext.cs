@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.IO;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Quizzes;
+using ZaminEducation.Domain.Entities.user;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
 
@@ -35,6 +37,9 @@ namespace ZaminEducation.Data.DbContexts
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserSocialNetwork> UserSocialNetworks { get; set; }
         public virtual DbSet<ReferralLink> ReferralLinks { get; set; }
+        public virtual DbSet<ZCApplicant> ZCApplicants { get; set; }
+        public virtual DbSet<ZCApplicantAsset> ZCApplicantAssets { get; set; }
+        public virtual DbSet<ZCApplicantDirection> ZCApplicantDirections { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
