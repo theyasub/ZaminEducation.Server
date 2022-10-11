@@ -25,7 +25,5 @@ namespace ZaminEducation.Test.Unit.Services.Users
             gotUser.Should().NotBeNull();
             actualUser.Should().BeEquivalentTo(gotUser);
         }
-
-
     }
 }

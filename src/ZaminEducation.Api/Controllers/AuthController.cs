@@ -18,7 +18,7 @@ namespace ZaminEducation.Api.Controllers
         }
 
         /// <summary>
-        /// authorization
+        /// Authorization
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>

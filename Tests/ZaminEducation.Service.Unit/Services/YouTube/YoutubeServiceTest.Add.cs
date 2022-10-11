@@ -23,9 +23,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             var expectedCategory = inputCategory.DeepClone();
             var expectedCourse = inputCourse.DeepClone();
 
-
             // when
-
             var actualAuthor = await userService.CreateAsync(inputAuthor);
             actualAuthor.Should().NotBeNull();
             actualAuthor.Username.Should().BeEquivalentTo(expectedAuthor.Username);

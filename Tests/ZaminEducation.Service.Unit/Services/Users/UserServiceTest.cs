@@ -26,7 +26,6 @@ namespace ZaminEducation.Test.Unit.Services.Users
         private readonly IUserService userService;
         private readonly IAttachmentService attachmentService;
 
-
         public UserServiceTest()
         {
             var options = new DbContextOptionsBuilder<ZaminEducationDbContext>()
@@ -43,7 +42,6 @@ namespace ZaminEducation.Test.Unit.Services.Users
 
             attachmentService = new AttachmentService(attachmentRepositoryMock);
             userService = new UserService(userRepositoryMock, mapper, attachmentService);
-
         }
 
         private UserForCreationDto CreateRandomUser(UserForCreationDto userForCreationDto)

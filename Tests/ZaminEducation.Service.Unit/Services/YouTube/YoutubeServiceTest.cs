@@ -72,7 +72,6 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
                 courseModuleService);
         }
 
-
         private CourseForCreationDto CreateRandomCourse(CourseForCreationDto courseForCreationDto)
         {
             courseForCreationDto.YouTubePlaylistLink = "https://www.youtube.com/watch?v=2NwXtLaZJkQ&list=PLAXSS6gGBPcVrqEaXc1Av4CLaLxbv9HOx";
@@ -102,7 +101,6 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
 
             return userForCreationDto;
         }
-
     }
 }
 
