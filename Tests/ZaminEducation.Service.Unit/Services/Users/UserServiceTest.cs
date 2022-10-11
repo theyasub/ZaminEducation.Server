@@ -25,6 +25,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
         private readonly ZaminEducationDbContext zaminEducationDbContext;
         private readonly IUserService userService;
         private readonly IAttachmentService attachmentService;
+        private User actualUser;
 
         public UserServiceTest()
         {

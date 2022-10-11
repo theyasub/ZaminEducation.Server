@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Force.DeepCloner;
+using System.Threading.Tasks;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.DTOs.Users;
 
@@ -8,7 +9,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
     public partial class YoutubeServiceTest
     {
         [Fact]
-        public async void ShouldCreateYoutubePlaylist()
+        public async ValueTask ShouldCreateYoutubePlaylist()
         {
             // given
             var randomAuthor = CreateRandomAuthor(new UserForCreationDto());

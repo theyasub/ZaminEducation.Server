@@ -9,7 +9,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
     public partial class UserServiceTest
     {
         [Fact]
-        public async Task ShouldUpdateUser()
+        public async ValueTask ShouldUpdateUser()
         {
             // given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
@@ -20,7 +20,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
             inputUserForUpdate.LastName = Faker.Name.Last();
 
             // when
-            User actualUser = await userService.CreateAsync(inputUser);
+            actualUser = await userService.CreateAsync(inputUser);
 
             User actualUpdatedUser = await userService.UpdateAsync(actualUser.Id, inputUserForUpdate);
 
