@@ -57,6 +57,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             courseVideoRepositoryMock = new Repository<CourseVideo>(zaminEducationDbContext);
             attachmentReositoryMock = new Repository<Attachment>(zaminEducationDbContext);
             referralLinkRepositoryMock = new Repository<ReferralLink>(zaminEducationDbContext);
+            courseRateRepositoryMock = new Repository<CourseRate>(zaminEducationDbContext);
 
             courseCategoryService = new CourseCategoryService(mapper, courseCategoryRepositoryMock);
             attachmentService = new AttachmentService(attachmentReositoryMock);

@@ -28,4 +28,8 @@
     <ProjectReference Include="..\..\src\ZaminEducation.Domain\ZaminEducation.Domain.csproj" />
     <ProjectReference Include="..\..\src\ZaminEducation.Service\ZaminEducation.Service.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwrootTest\images\" />
+  </ItemGroup>
 </Project>
