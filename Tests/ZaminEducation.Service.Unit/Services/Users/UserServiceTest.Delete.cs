@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Force.DeepCloner;
 using System.Threading.Tasks;
-using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Users;
 
 namespace ZaminEducation.Test.Unit.Services.Users
@@ -9,7 +8,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
     public partial class UserServiceTest
     {
         [Fact]
-        public async Task ShoulDeleteUserById()
+        public async ValueTask ShoulDeleteUserById()
         {
             //given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
@@ -18,7 +17,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
             UserForCreationDto inputUserForUpdate = inputUser.DeepClone();
             inputUserForUpdate.LastName = Faker.Name.Last();
             // when
-            User actualUser = await userService.CreateAsync(inputUser);
+            actualUser = await userService.CreateAsync(inputUser);
 
             bool isDeleted = await userService.DeleteAsync(u => u.Id == actualUser.Id);
 
@@ -30,7 +29,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
         }
 
         [Fact]
-        public async Task ShoulDeleteUserByUserName()
+        public async ValueTask ShoulDeleteUserByUserName()
         {
             //given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
@@ -39,7 +38,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
             UserForCreationDto inputUserForUpdate = inputUser.DeepClone();
             inputUserForUpdate.LastName = Faker.Name.Last();
             // when
-            User actualUser = await userService.CreateAsync(inputUser);
+            actualUser = await userService.CreateAsync(inputUser);
 
             bool isDeleted = await userService.DeleteAsync(u => u.Username == actualUser.Username);
 

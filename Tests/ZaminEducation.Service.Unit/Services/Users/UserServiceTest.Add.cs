@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using Force.DeepCloner;
 using System.Threading.Tasks;
-using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Users;
 
@@ -9,10 +8,8 @@ namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {
-
-
         [Fact]
-        public async Task ShouldCreateUser()
+        public async ValueTask ShouldCreateUser()
         {
             // given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
@@ -20,7 +17,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
             UserForCreationDto expectedUser = inputUser.DeepClone();
 
             // when
-            User actualUser = await userService.CreateAsync(inputUser);
+            actualUser = await userService.CreateAsync(inputUser);
 
             // then
             actualUser.Should().NotBeNull();
@@ -29,7 +26,7 @@ namespace ZaminEducation.Test.Unit.Services.Users
         }
 
         [Fact]
-        public async Task ShouldCreateUserWithAttachment()
+        public async ValueTask ShouldCreateUserWithAttachment()
         {
             // given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
@@ -40,10 +37,10 @@ namespace ZaminEducation.Test.Unit.Services.Users
             AttachmentForCreationDto expetedAttachment = inputAttachment.DeepClone();
 
             // when
-            User actualUser = await userService.CreateAsync(inputUser);
+            actualUser = await userService.CreateAsync(inputUser);
             await userService.AddAttachmentAsync(actualUser.Id, inputAttachment);
 
-            User actualUserWithAttachment = await userService.GetAsync(u => u.Id == actualUser.Id);
+            var actualUserWithAttachment = await userService.GetAsync(u => u.Id == actualUser.Id);
 
             // then
             actualUser.Should().NotBeNull();

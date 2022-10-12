@@ -15,24 +15,58 @@ namespace ZaminEducation.Api.Controllers
             this.directionService = directionService;
         }
 
+        /// <summary>
+        /// Create a new direction for ZaminCreative
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns>
+        /// created direction
+        /// </returns>
         [HttpPost]
         public async ValueTask<ActionResult<ZCApplicantDirection>> CreateAsync(
             ZCApplicantDirectionForCreationDto dto)
             => Ok(await directionService.CreateAsync(dto));
 
+        /// <summary>
+        /// Delete a direction
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// A bool value depending on whether the condition is met
+        /// </returns>
         [HttpDelete]
         public async ValueTask<ActionResult<bool>> DeleteAsync(long id)
             => Ok(await directionService.DeleteAsync(c => c.Id == id));
 
+        /// <summary>
+        /// Select a direction by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>
+        /// Selects a direction with the entered id
+        /// </returns>
         [HttpGet("id")]
         public async ValueTask<ActionResult<ZCApplicantDirection>> GetAsync(long id)
             => Ok(await directionService.GetAsync(c => c.Id == id));
 
+        /// <summary>
+        /// Update a direction by id with entered dto
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="dto"></param>
+        /// <returns>
+        /// Selects an updated direction 
+        /// </returns>
         [HttpPut]
         public async ValueTask<ActionResult<ZCApplicantDirection>> UpdateAsync(long id,
             ZCApplicantDirectionForCreationDto dto)
             => Ok(await directionService.UpdateAsync(c => c.Id == id, dto));
 
+        /// <summary>
+        /// Selects all directions
+        /// </summary>
+        /// <param name="params"></param>
+        /// <returns></returns>
         [HttpGet]
         public async ValueTask<ActionResult<IEnumerable<ZCApplicantDirection>>> GetAllAsync(
             PaginationParams @params)

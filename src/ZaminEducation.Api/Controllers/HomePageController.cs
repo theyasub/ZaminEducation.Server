@@ -17,7 +17,7 @@ namespace ZaminEducation.Api.Controllers
         }
 
         /// <summary>
-        /// take a landing page informations
+        /// Take a landing page informations
         /// </summary>
         /// <returns></returns>
         [HttpGet, AllowAnonymous]
@@ -27,7 +27,7 @@ namespace ZaminEducation.Api.Controllers
         }
 
         /// <summary>
-        /// update main page header data 
+        /// Update main page header data 
         /// </summary>
         /// <param name="id"></param>
         /// <param name="dto"></param>
@@ -66,7 +66,7 @@ namespace ZaminEducation.Api.Controllers
         }
 
         /// <summary>
-        /// update about us page data
+        /// Update about us page data
         /// </summary>
         /// <param name="id"></param>
         /// <param name="dto"></param>
@@ -79,7 +79,7 @@ namespace ZaminEducation.Api.Controllers
         }
 
         /// <summary>
-        /// update opportunity reasons  
+        /// Update opportunity reasons  
         /// </summary>
         /// <param name="id"></param>
         /// <param name="dto"></param>
@@ -92,7 +92,7 @@ namespace ZaminEducation.Api.Controllers
         }
 
         /// <summary>
-        /// update social networks 
+        /// Update social networks 
         /// </summary>
         /// <param name="id"></param>
         /// <param name="dto"></param>
