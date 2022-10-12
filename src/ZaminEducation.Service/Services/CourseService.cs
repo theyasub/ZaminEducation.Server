@@ -62,7 +62,7 @@ namespace ZaminEducation.Service.Services.Courses
 
             Course mappedCourse = mapper.Map<Course>(source: courseForCreationDto);
 
-            mappedCourse.ImageId = attachmentId;
+            mappedCourse.ImageId = (long)attachmentId;
             mappedCourse.Create();
 
             Course entity = await courseRepository.AddAsync(entity: mappedCourse);
@@ -85,6 +85,8 @@ namespace ZaminEducation.Service.Services.Courses
 
         public async ValueTask<string> GenerateLinkAsync(long courseId)
         {
+            await GetAsync(c => c.Id == courseId);
+
             var linkExists = await referralLinkRepository.GetAsync(
                 l => l.CourseId == courseId &&
                 l.UserId == (long)HttpContextHelper.UserId && l.State != Domain.Enums.ItemState.Deleted);
@@ -92,7 +94,7 @@ namespace ZaminEducation.Service.Services.Courses
 
             if (linkExists is null)
             {
-                string generatedLink = string.Concat(Guid.NewGuid().ToString());
+                string generatedLink = Guid.NewGuid().ToString("N").Substring(0, 9);
 
                 ReferralLink link = new ReferralLink()
                 {
@@ -184,7 +186,7 @@ namespace ZaminEducation.Service.Services.Courses
             }
             course = mapper.Map(courseForCreationDto, course);
 
-            course.ImageId = attachmentId;
+            course.ImageId = (long)attachmentId;
             course.Update();
 
             course = courseRepository.Update(entity: course);
