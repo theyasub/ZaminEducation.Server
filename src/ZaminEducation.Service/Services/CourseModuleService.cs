@@ -32,6 +32,30 @@ namespace ZaminEducation.Service.Services
             return entity;
         }
 
+        public async Task<ICollection<CourseModule>> CreateRangeAsync(long courseId, IEnumerable<string> moduleNames)
+        {
+            ICollection<CourseModule> courseModules = new List<CourseModule>();
+
+            foreach (var name in moduleNames)
+            {
+                CourseModule courseModule = new CourseModule()
+                {
+                    Name = name,
+                    CourseId = courseId,
+                };
+
+                courseModule.Create();
+
+                CourseModule entity = await this.courseModuleRepository.AddAsync(courseModule);
+
+                courseModules.Add(entity);
+            }
+
+            await this.courseModuleRepository.SaveChangesAsync();
+
+            return courseModules;
+        }
+
         public async ValueTask<bool> DeleteAsync(Expression<Func<CourseModule, bool>> expression)
         {
             CourseModule courseModule = await this.courseModuleRepository.GetAsync(expression);

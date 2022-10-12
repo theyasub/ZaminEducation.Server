@@ -22,6 +22,9 @@ namespace ZaminEducation.Service.DTOs.Courses
         public string ModuleName { get; set; }
 
         [Required]
+        public IEnumerable<string> ModuleNames { get; set; }
+
+        [Required]
         public CourseLevel Level { get; set; }
     }
 }
