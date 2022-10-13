@@ -399,6 +399,7 @@ FodyWeavers.xsd
 
 src/ZaminEducation.Api/appsettings.json
 src/ZaminEducation.Api/appsettings.Development.json
+src/ZaminEducation.Data/Migrations
 .idea/.idea.ZaminEducation.Server/.idea/workspace.xml
 .idea/.idea.ZaminEducation.Server/.idea/projectSettingsUpdater.xml
 */wwwrootTests/Images

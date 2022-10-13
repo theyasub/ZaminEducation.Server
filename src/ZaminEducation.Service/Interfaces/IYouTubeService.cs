@@ -7,7 +7,7 @@ namespace ZaminEducation.Service.Interfaces
     public interface IYouTubeService
     {
         ValueTask<CourseVideo> CreateAsync(string link, long id);
-        ValueTask<IEnumerable<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId, long courseModuleId);
+        ValueTask<ICollection<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId, long? courseModuleId = null);
         ValueTask<bool> DeleteAsync(long youtubeId);
         ValueTask<CourseVideo> UpdateAsync(long videoId, string link);
         ValueTask<CourseVideo> GetAsync(Expression<Func<CourseVideo, bool>> expression);

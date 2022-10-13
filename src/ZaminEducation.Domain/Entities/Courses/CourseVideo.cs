@@ -11,8 +11,7 @@ namespace ZaminEducation.Domain.Entities.Courses
         public string Description { get; set; }
         public string Thumbnail { get; set; }
         public long Length { get; set; }
-
-        public long CourseModuleId { get; set; }
+        public long? CourseModuleId { get; set; }
         public CourseModule CourseModule { get; set; }
 
         public long? CourseId { get; set; }

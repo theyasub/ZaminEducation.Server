@@ -5,6 +5,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
+using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.Exceptions;
@@ -52,6 +53,9 @@ namespace ZaminEducation.Service.Services.Courses
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
 
+            else if (courseForCreationDto.AuthorId != (byte)UserRole.Mentor)
+                throw new ZaminEducationException(400, "Not the Author");
+
             long? attachmentId = null;
             if (courseForCreationDto.Image is not null)
             {
@@ -69,19 +73,15 @@ namespace ZaminEducation.Service.Services.Courses
 
             await courseRepository.SaveChangesAsync();
 
-            var courseModule = await this.courseModuleService.CreateAsync(new CourseModuleForCreationDto()
-            {
-                Name = courseForCreationDto.ModuleName,
-                CourseId = entity.Id
-            });
+            if (courseForCreationDto.ModuleNames is not null)
+                entity.Modules = await this.courseModuleService.CreateRangeAsync(entity.Id, courseForCreationDto.ModuleNames);
 
-            entity.Videos = (ICollection<CourseVideo>)await youTubeService.CreateRangeAsync(
+            entity.Videos = await youTubeService.CreateRangeAsync(
                 youtubePlaylist: courseForCreationDto.YouTubePlaylistLink,
-                courseId: entity.Id,
-                courseModuleId: courseModule.Id);
+                courseId: entity.Id);
 
             return entity;
-        }
+         }
 
         public async ValueTask<string> GenerateLinkAsync(long courseId)
         {
@@ -191,7 +191,9 @@ namespace ZaminEducation.Service.Services.Courses
 
             course = courseRepository.Update(entity: course);
 
-            await courseRepository.SaveChangesAsync();
+            course.Videos = await this.youTubeService.CreateRangeAsync(
+                youtubePlaylist: course.YouTubePlaylistLink,
+                courseId: course.Id);
 
             return course;
         }

@@ -50,11 +50,17 @@ namespace ZaminEducation.Service.Services
             return youtubeVideo;
         }
 
-        public async ValueTask<IEnumerable<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId, long courseModuleId)
+        public async ValueTask<ICollection<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId, long? courseModuleId = null)
         {
             IEnumerable<string> links = await GetLinksAsync(youtubePlaylist);
 
-            var videos = new List<CourseVideo>();
+            IEnumerable<string> oldLinks = await this.youtubeRepository.GetAll(cv => cv.CourseId.Equals(courseId)).Select(cv => cv.Url).ToListAsync();
+
+            ICollection<CourseVideo> videos = new List<CourseVideo>();
+            
+            if (oldLinks.SequenceEqual<string>(links))
+                return await this.youtubeRepository.GetAll(cv => cv.CourseId.Equals(courseId)).ToListAsync();
+
             var yt = new YoutubeClient();
 
             foreach (var link in links)

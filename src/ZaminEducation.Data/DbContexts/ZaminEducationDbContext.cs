@@ -110,6 +110,15 @@ namespace ZaminEducation.Data.DbContexts
                 .HasOne(c => c.Author)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
+<<<<<<< HEAD
+=======
+
+            modelBuilder.Entity<CourseVideo>()
+                .HasOne(c => c.Course)
+                .WithMany()
+                .HasForeignKey(c => c.CourseId)
+                .OnDelete(DeleteBehavior.Cascade);
+>>>>>>> 3540169ca8521dff14c7fd0951443577021e9c2a
         }
     }
 }
