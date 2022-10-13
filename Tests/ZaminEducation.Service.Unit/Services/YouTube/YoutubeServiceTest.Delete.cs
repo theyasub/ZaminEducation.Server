@@ -1,12 +1,13 @@
 ﻿using FluentAssertions;
 using Force.DeepCloner;
 using System.Threading.Tasks;
+using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.DTOs.Users;
 
 namespace ZaminEducation.Test.Unit.Services.YouTube
 {
-    public partial class YoutubeServiceTest
+    public partial class YoutubeServiceAndCourseServiceTest
     {
         [Fact]
         public async Task ShouldDeleteCourseById()
@@ -21,8 +22,13 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             // when
             var actualAuthor = await userService.CreateAsync(randomAuthor);
             var actualCategory = await courseCategoryService.CreateAsync(randomCategory);
+
+
+            await userService.ChangeRoleAsync(actualAuthor.Id, (byte)UserRole.Mentor);
+
             randomCourse.AuthorId = actualAuthor.Id;
             randomCourse.CategoryId = actualCategory.Id;
+
 
             var actualCourse = await courseService.CreateAsync(randomCourse);
 

@@ -1,12 +1,13 @@
 ﻿using FluentAssertions;
 using Force.DeepCloner;
+using System.Linq;
 using System.Threading.Tasks;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.DTOs.Users;
 
 namespace ZaminEducation.Test.Unit.Services.YouTube
 {
-    public partial class YoutubeServiceTest
+    public partial class YoutubeServiceAndCourseServiceTest
     {
         [Fact]
         public async ValueTask ShouldUpdateYoutubePlaylist()
@@ -29,6 +30,14 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
 
             var actuallyUpdatedCourse = await courseService.UpdateAsync(
                     c => c.Id == actualCourse.Id, randomCourse);
+
+            var actualCourseModuleId = (await courseService.GetAsync(c => c.Id == actualCourse.Id)).Modules.FirstOrDefault().Id;
+
+            var actualYoutubePlayList =
+                await youTubeService.CreateRangeAsync(actualCourse.YouTubePlaylistLink,
+                    actualCourse.Id,
+                    actualCourseModuleId);
+            // 
 
             // then
             actualCourse.Should().NotBeNull();

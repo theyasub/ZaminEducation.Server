@@ -19,7 +19,7 @@ using ZaminEducation.Service.Services.Courses;
 
 namespace ZaminEducation.Test.Unit.Services.YouTube
 {
-    public partial class YoutubeServiceTest
+    public partial class YoutubeServiceAndCourseServiceTest
     {
         private readonly ZaminEducationDbContext zaminEducationDbContext;
 
@@ -40,7 +40,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
         private readonly ICourseModuleService courseModuleService;
         private readonly IMapper mapper;
 
-        public YoutubeServiceTest()
+        public YoutubeServiceAndCourseServiceTest()
         {
             var options = new DbContextOptionsBuilder<ZaminEducationDbContext>()
                            .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
@@ -68,6 +68,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
                 youTubeService,
                 courseRateRepositoryMock,
                 attachmentService,
+                userService,
                 mapper,
                 referralLinkRepositoryMock,
                 courseModuleService);

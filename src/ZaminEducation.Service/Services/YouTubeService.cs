@@ -101,9 +101,9 @@ namespace ZaminEducation.Service.Services
             return true;
         }
 
-        public async ValueTask<CourseVideo> UpdateAsync(long courseId, string link)
+        public async ValueTask<CourseVideo> UpdateAsync(long videoId, string link)
         {
-            var existVideo = await youtubeRepository.GetAsync(p => p.Id == courseId);
+            var existVideo = await youtubeRepository.GetAsync(p => p.Id == videoId);
 
             if (existVideo is null)
                 throw new ZaminEducationException(404, "Video not found!");
