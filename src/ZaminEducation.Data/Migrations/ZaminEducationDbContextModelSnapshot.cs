@@ -235,13 +235,10 @@ namespace ZaminEducation.Data.Migrations
                     b.Property<long?>("CourseId")
                         .HasColumnType("bigint");
 
-<<<<<<< HEAD
-=======
                     b.Property<long?>("CourseId1")
                         .HasColumnType("bigint");
 
->>>>>>> 3540169ca8521dff14c7fd0951443577021e9c2a
-                    b.Property<long>("CourseModuleId")
+                    b.Property<long?>("CourseModuleId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -279,11 +276,8 @@ namespace ZaminEducation.Data.Migrations
 
                     b.HasIndex("CourseId");
 
-<<<<<<< HEAD
-=======
                     b.HasIndex("CourseId1");
 
->>>>>>> 3540169ca8521dff14c7fd0951443577021e9c2a
                     b.HasIndex("CourseModuleId");
 
                     b.ToTable("CourseVideos");
@@ -1124,10 +1118,6 @@ namespace ZaminEducation.Data.Migrations
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.CourseVideo", b =>
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
-<<<<<<< HEAD
-                        .WithMany("Videos")
-                        .HasForeignKey("CourseId");
-=======
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -1135,13 +1125,10 @@ namespace ZaminEducation.Data.Migrations
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", null)
                         .WithMany("Videos")
                         .HasForeignKey("CourseId1");
->>>>>>> 3540169ca8521dff14c7fd0951443577021e9c2a
 
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.CourseModule", "CourseModule")
                         .WithMany("Videos")
-                        .HasForeignKey("CourseModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseModuleId");
 
                     b.Navigation("Course");
 

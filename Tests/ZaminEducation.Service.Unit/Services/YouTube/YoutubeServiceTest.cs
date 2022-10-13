@@ -68,6 +68,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
                 youTubeService,
                 courseRateRepositoryMock,
                 attachmentService,
+                userService,
                 mapper,
                 referralLinkRepositoryMock,
                 courseModuleService);

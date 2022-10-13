@@ -5,6 +5,7 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
+using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Courses;
@@ -25,6 +26,7 @@ namespace ZaminEducation.Service.Services.Courses
         private readonly IRepository<ReferralLink> referralLinkRepository;
         private readonly ICourseModuleService courseModuleService;
         private readonly IAttachmentService attachmentService;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
 
         public CourseService(
@@ -32,6 +34,7 @@ namespace ZaminEducation.Service.Services.Courses
             IYouTubeService youTubeService,
             IRepository<CourseRate> courseRateRepository,
             IAttachmentService attachmentService,
+            IUserService userService,
             IMapper mapper,
             IRepository<ReferralLink> referralLinkRepository,
             ICourseModuleService courseModuleService)
@@ -41,6 +44,7 @@ namespace ZaminEducation.Service.Services.Courses
             this.courseRateRepository = courseRateRepository;
             this.attachmentService = attachmentService;
             this.mapper = mapper;
+            this.userService = userService;
             this.referralLinkRepository = referralLinkRepository;
             this.courseModuleService = courseModuleService;
         }
@@ -50,10 +54,12 @@ namespace ZaminEducation.Service.Services.Courses
             Course course = await courseRepository.GetAsync(expression: c =>
                 c.YouTubePlaylistLink.Equals(courseForCreationDto.YouTubePlaylistLink));
 
+            User author = await userService.GetAsync(u => u.Id == courseForCreationDto.AuthorId);
+
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
 
-            else if (courseForCreationDto.AuthorId != (byte)UserRole.Mentor)
+            else if ((byte)author.Role != (byte)UserRole.Mentor)
                 throw new ZaminEducationException(400, "Not the Author");
 
             long? attachmentId = null;
@@ -81,7 +87,7 @@ namespace ZaminEducation.Service.Services.Courses
                 courseId: entity.Id);
 
             return entity;
-         }
+        }
 
         public async ValueTask<string> GenerateLinkAsync(long courseId)
         {
