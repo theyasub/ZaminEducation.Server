@@ -62,7 +62,7 @@ namespace ZaminEducation.Service.Services.Courses
 
             Course mappedCourse = mapper.Map<Course>(source: courseForCreationDto);
 
-            mappedCourse.ImageId = (long)attachmentId;
+            mappedCourse.ImageId = attachmentId;
             mappedCourse.Create();
 
             Course entity = await courseRepository.AddAsync(entity: mappedCourse);

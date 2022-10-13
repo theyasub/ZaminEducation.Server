@@ -6,7 +6,7 @@ using ZaminEducation.Service.DTOs.Users;
 
 namespace ZaminEducation.Test.Unit.Services.YouTube
 {
-    public partial class YoutubeServiceTest
+    public partial class YoutubeServiceAndCourseServiceTest
     {
         [Fact]
         public async Task ShouldDeleteCourseById()

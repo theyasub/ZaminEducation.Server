@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.IO;
 using ZaminEducation.Domain.Entities.Commons;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.Quizzes;
@@ -111,7 +110,6 @@ namespace ZaminEducation.Data.DbContexts
                 .HasOne(c => c.Author)
                 .WithMany()
                 .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }
