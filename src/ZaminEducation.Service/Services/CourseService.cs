@@ -5,6 +5,8 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
+using ZaminEducation.Domain.Entities.Users;
+using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.Exceptions;
@@ -24,6 +26,7 @@ namespace ZaminEducation.Service.Services.Courses
         private readonly IRepository<ReferralLink> referralLinkRepository;
         private readonly ICourseModuleService courseModuleService;
         private readonly IAttachmentService attachmentService;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
 
         public CourseService(
@@ -31,6 +34,7 @@ namespace ZaminEducation.Service.Services.Courses
             IYouTubeService youTubeService,
             IRepository<CourseRate> courseRateRepository,
             IAttachmentService attachmentService,
+            IUserService userService,
             IMapper mapper,
             IRepository<ReferralLink> referralLinkRepository,
             ICourseModuleService courseModuleService)
@@ -40,6 +44,7 @@ namespace ZaminEducation.Service.Services.Courses
             this.courseRateRepository = courseRateRepository;
             this.attachmentService = attachmentService;
             this.mapper = mapper;
+            this.userService = userService;
             this.referralLinkRepository = referralLinkRepository;
             this.courseModuleService = courseModuleService;
         }
@@ -49,8 +54,13 @@ namespace ZaminEducation.Service.Services.Courses
             Course course = await courseRepository.GetAsync(expression: c =>
                 c.YouTubePlaylistLink.Equals(courseForCreationDto.YouTubePlaylistLink));
 
+            User author = await userService.GetAsync(u => u.Id == courseForCreationDto.AuthorId);
+
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
+
+            else if ((byte)author.Role != (byte)UserRole.Mentor)
+                throw new ZaminEducationException(400, "Not the Author");
 
             long? attachmentId = null;
             if (courseForCreationDto.Image is not null)
@@ -69,22 +79,20 @@ namespace ZaminEducation.Service.Services.Courses
 
             await courseRepository.SaveChangesAsync();
 
-            var courseModule = await this.courseModuleService.CreateAsync(new CourseModuleForCreationDto()
-            {
-                Name = courseForCreationDto.ModuleName,
-                CourseId = entity.Id
-            });
+            if (courseForCreationDto.ModuleNames is not null)
+                entity.Modules = await this.courseModuleService.CreateRangeAsync(entity.Id, courseForCreationDto.ModuleNames);
 
-            entity.Videos = (ICollection<CourseVideo>)await youTubeService.CreateRangeAsync(
+            entity.Videos = await youTubeService.CreateRangeAsync(
                 youtubePlaylist: courseForCreationDto.YouTubePlaylistLink,
-                courseId: entity.Id,
-                courseModuleId: courseModule.Id);
+                courseId: entity.Id);
 
             return entity;
         }
 
         public async ValueTask<string> GenerateLinkAsync(long courseId)
         {
+            await GetAsync(c => c.Id == courseId);
+
             var linkExists = await referralLinkRepository.GetAsync(
                 l => l.CourseId == courseId &&
                 l.UserId == (long)HttpContextHelper.UserId && l.State != Domain.Enums.ItemState.Deleted);
@@ -92,7 +100,7 @@ namespace ZaminEducation.Service.Services.Courses
 
             if (linkExists is null)
             {
-                string generatedLink = string.Concat(Guid.NewGuid().ToString());
+                string generatedLink = Guid.NewGuid().ToString("N").Substring(0, 9);
 
                 ReferralLink link = new ReferralLink()
                 {
@@ -184,12 +192,14 @@ namespace ZaminEducation.Service.Services.Courses
             }
             course = mapper.Map(courseForCreationDto, course);
 
-            course.ImageId = attachmentId;
+            course.ImageId = (long)attachmentId;
             course.Update();
 
             course = courseRepository.Update(entity: course);
 
-            await courseRepository.SaveChangesAsync();
+            course.Videos = await this.youTubeService.CreateRangeAsync(
+                youtubePlaylist: course.YouTubePlaylistLink,
+                courseId: course.Id);
 
             return course;
         }

@@ -238,6 +238,9 @@ namespace ZaminEducation.Data.Migrations
                     b.Property<long>("CourseModuleId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("CourseModuleId")
+                        .HasColumnType("bigint");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -272,6 +275,8 @@ namespace ZaminEducation.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("CourseId1");
 
                     b.HasIndex("CourseModuleId");
 
@@ -1113,6 +1118,11 @@ namespace ZaminEducation.Data.Migrations
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.CourseVideo", b =>
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", null)
                         .WithMany("Videos")
                         .HasForeignKey("CourseId");
 

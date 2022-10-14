@@ -22,7 +22,7 @@ public class UsersController : BaseController
     }
 
     /// <summary>
-    /// create new user
+    /// Create new user
     /// </summary>
     /// <param name="dto">user create</param>
     /// <returns>Created user infortaions</returns>
@@ -52,7 +52,7 @@ public class UsersController : BaseController
         Ok(await savedCoursesService.ToggleAsync(dto));
 
     /// <summary>
-    /// delete user by id (for only admins)
+    /// Delete user by id (for only admins)
     /// </summary>
     /// <param name="id"></param>
     /// <returns>true if user deleted succesfully else false</returns>
@@ -62,7 +62,7 @@ public class UsersController : BaseController
 
 
     /// <summary>
-    /// get all of users
+    /// Get all of users
     /// </summary>
     /// <param name="params">pagenation params</param>
     /// <returns> user collection </returns>
@@ -72,7 +72,7 @@ public class UsersController : BaseController
             Ok(await userService.GetAllAsync(@params));
 
     /// <summary>
-    /// get all saved courses of users
+    /// Get all saved courses of users
     /// </summary>
     /// <param name="params"></param>
     /// <returns></returns>
@@ -82,7 +82,7 @@ public class UsersController : BaseController
             Ok(await savedCoursesService.GetAllAsync(@params, search: search));
 
     /// <summary>
-    /// update password
+    /// Update password
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
@@ -91,7 +91,7 @@ public class UsersController : BaseController
         Ok(await userService.ChangePasswordAsync(dto));
 
     /// <summary>
-    /// get one user information
+    /// Get one user information
     /// </summary>
     /// <param name="id">user id</param>
     /// <returns>user</returns>
@@ -102,7 +102,7 @@ public class UsersController : BaseController
         Ok(await userService.GetAsync(user => user.Id == id));
 
     /// <summary>
-    /// update user 
+    /// Update user 
     /// </summary>
     /// <param name="id"></param>
     /// <param name="dto"></param>
@@ -113,7 +113,7 @@ public class UsersController : BaseController
             Ok(await userService.UpdateAsync(id, dto));
 
     /// <summary>
-    /// get self user info
+    /// Get self user info
     /// </summary>
     /// <returns>user</returns>
     [HttpGet("info"), Authorize]
@@ -121,7 +121,7 @@ public class UsersController : BaseController
         => Ok(await userService.GetInfoAsync());
 
     /// <summary>
-    /// create attachment
+    /// Create attachment
     /// </summary>
     /// <returns></returns>
     [HttpPost("attachments/{id}"), Authorize("UserPolicy")]
