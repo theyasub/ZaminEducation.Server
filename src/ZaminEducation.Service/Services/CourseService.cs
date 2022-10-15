@@ -24,7 +24,6 @@ namespace ZaminEducation.Service.Services.Courses
         private readonly IRepository<Course> courseRepository;
         private readonly IRepository<CourseRate> courseRateRepository;
         private readonly IRepository<ReferralLink> referralLinkRepository;
-        private readonly ICourseModuleService courseModuleService;
         private readonly IAttachmentService attachmentService;
         private readonly IUserService userService;
         private readonly IMapper mapper;
@@ -36,8 +35,7 @@ namespace ZaminEducation.Service.Services.Courses
             IAttachmentService attachmentService,
             IUserService userService,
             IMapper mapper,
-            IRepository<ReferralLink> referralLinkRepository,
-            ICourseModuleService courseModuleService)
+            IRepository<ReferralLink> referralLinkRepository)
         {
             this.courseRepository = courseRepository;
             this.youTubeService = youTubeService;
@@ -46,7 +44,6 @@ namespace ZaminEducation.Service.Services.Courses
             this.mapper = mapper;
             this.userService = userService;
             this.referralLinkRepository = referralLinkRepository;
-            this.courseModuleService = courseModuleService;
         }
 
         public async ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto)
@@ -54,13 +51,10 @@ namespace ZaminEducation.Service.Services.Courses
             Course course = await courseRepository.GetAsync(expression: c =>
                 c.YouTubePlaylistLink.Equals(courseForCreationDto.YouTubePlaylistLink));
 
-            User author = await userService.GetAsync(u => u.Id == courseForCreationDto.AuthorId);
-
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
 
-            else if ((byte)author.Role != (byte)UserRole.Mentor)
-                throw new ZaminEducationException(400, "Not the Author");
+            await IsAuthor(courseForCreationDto.AuthorId);
 
             long? attachmentId = null;
             if (courseForCreationDto.Image is not null)
@@ -78,9 +72,6 @@ namespace ZaminEducation.Service.Services.Courses
             Course entity = await courseRepository.AddAsync(entity: mappedCourse);
 
             await courseRepository.SaveChangesAsync();
-
-            if (courseForCreationDto.ModuleNames is not null)
-                entity.Modules = await this.courseModuleService.CreateRangeAsync(entity.Id, courseForCreationDto.ModuleNames);
 
             entity.Videos = await youTubeService.CreateRangeAsync(
                 youtubePlaylist: courseForCreationDto.YouTubePlaylistLink,
@@ -126,8 +117,9 @@ namespace ZaminEducation.Service.Services.Courses
                 throw new ZaminEducationException(404, "Course not found");
 
             courseRepository.Delete(entity: course);
+            await this.attachmentService.DeleteAsync(a => a.Name == course.Image.Name);
 
-            await courseRepository.SaveChangesAsync();
+            // DeleteAsync() ^ has SaveChanges inside, therefore it is not here
 
             return true;
         }
@@ -187,7 +179,7 @@ namespace ZaminEducation.Service.Services.Courses
             if (courseForCreationDto.Image is not null)
             {
                 var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
-                var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
+                var attachment = await this.attachmentService.UpdateAsync(course.Id, courseForCreationDto.Image.OpenReadStream());
                 attachmentId = attachment.Id;
             }
             course = mapper.Map(courseForCreationDto, course);
@@ -304,6 +296,14 @@ namespace ZaminEducation.Service.Services.Courses
                 throw new ZaminEducationException(404, "CourseRate not found");
 
             return existCourseRate;
+        }
+
+        private async ValueTask IsAuthor(long authorId)
+        {
+            User author = await userService.GetAsync(u => u.Id == authorId);
+
+            if (author.Role != UserRole.Mentor)
+                throw new ZaminEducationException(400, "Not the Author");
         }
     }
 }
