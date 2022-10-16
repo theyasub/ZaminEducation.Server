@@ -35,7 +35,6 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             var deletedCourse = await courseService.DeleteAsync(c => c.Id == actualCourse.Id);
 
             // then
-
             actualCourse.Should().NotBeNull();
             deletedCourse.Should().Be(true);
         }

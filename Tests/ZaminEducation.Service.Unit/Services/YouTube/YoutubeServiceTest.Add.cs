@@ -13,6 +13,34 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
         public async ValueTask ShouldCreateYoutubePlaylist()
         {
             // given
+            var dependencies = await CreateAllDependencies();
+
+            // when
+            var actualYoutubePlayList =
+                await youTubeService.CreateRangeAsync(dependencies.YoutubePlaylistLink,
+                    dependencies.CourseId,
+                    dependencies.CourseModuleId);
+
+            // then
+            actualYoutubePlayList.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async ValueTask ShouldCreateRandomYoutubeVideo()
+        {
+            // given
+            var dependencies = await CreateAllDependencies();
+
+            // when
+            var actualYoutubeVideo =
+                await youTubeService.CreateAsync("https://www.youtube.com/watch?v=JxjXechMs4c", dependencies.CourseId);
+
+            // then
+            actualYoutubeVideo.Should().NotBeNull();
+        }
+
+        private async ValueTask<(string YoutubePlaylistLink, long CourseId, long CourseModuleId)> CreateAllDependencies()
+        {
             var randomAuthor = CreateRandomAuthor(new UserForCreationDto());
             var randomCategory = CreateRandomCategory(new CourseCategoryForCreationDto());
             var randomCourse = CreateRandomCourse(new CourseForCreationDto());
@@ -45,12 +73,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
 
             var actualCourseModuleId = (await courseService.GetAsync(c => c.Id == actualCourse.Id)).Modules.FirstOrDefault().Id;
 
-            var actualYoutubePlayList =
-                await youTubeService.CreateRangeAsync(actualCourse.YouTubePlaylistLink,
-                    actualCourse.Id,
-                    actualCourseModuleId);
-
-            actualYoutubePlayList.Should().NotBeNull();
+            return (actualCourse.YouTubePlaylistLink, actualCourse.Id, actualCourseModuleId);
         }
     }
 }
