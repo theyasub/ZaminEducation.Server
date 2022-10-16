@@ -117,9 +117,16 @@ namespace ZaminEducation.Service.Services.Courses
                 throw new ZaminEducationException(404, "Course not found");
 
             courseRepository.Delete(entity: course);
-            await this.attachmentService.DeleteAsync(a => a.Name == course.Image.Name);
 
-            // DeleteAsync() ^ has SaveChanges inside, therefore it is not here
+            if (course.ImageId is not null)
+            {
+                await this.attachmentService.DeleteAsync(a => a.Id == course.Image.Id);
+                return true;
+            }
+
+            await this.courseRepository.SaveChangesAsync();
+
+            //await youTubeService.DeleteRangeAsync(course.Id);
 
             return true;
         }
@@ -215,16 +222,6 @@ namespace ZaminEducation.Service.Services.Courses
             return this.mapper.Map<CourseViewModel>(entity);
         }
 
-        public async ValueTask<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression)
-        {
-            var course = await courseRepository.GetAsync(expression, new string[] { "Modules" });
-
-            if (course is null)
-                throw new ZaminEducationException(404, "Course not found");
-
-            return course.Modules;
-        }
-
         public async ValueTask<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression)
         {
             var course = await courseRepository.GetAsync(expression, new string[] { "Targets" });
@@ -298,9 +295,22 @@ namespace ZaminEducation.Service.Services.Courses
             return existCourseRate;
         }
 
+        public async ValueTask<Course> RetrieveAsync(Expression<Func<Course, bool>> expression)
+        {
+            var course = await this.courseRepository.GetAsync(expression);
+
+            if (course is null)
+                throw new ZaminEducationException(404, "Course not found");
+
+            return course;
+        }
+
         private async ValueTask IsAuthor(long authorId)
         {
             User author = await userService.GetAsync(u => u.Id == authorId);
+
+            if (author is null)
+                throw new ZaminEducationException(404, "Author not found");
 
             if (author.Role != UserRole.Mentor)
                 throw new ZaminEducationException(400, "Not the Author");

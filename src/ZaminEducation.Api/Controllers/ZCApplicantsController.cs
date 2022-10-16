@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ZaminEducation.Api.Controllers;
+using ZaminEducation.Api.Helpers;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.HomePage;
 using ZaminEducation.Domain.Entities.Users;
@@ -8,6 +10,7 @@ using ZaminEducation.Service.Interfaces;
 
 namespace ZaminCreative.Api.Controllers
 {
+    [Authorize(Roles = CustomRoles.AdminRole)]
     public class ZCApplicantsController : BaseController
     {
         private readonly IZCApplicantService applicantUserService;
@@ -25,7 +28,7 @@ namespace ZaminCreative.Api.Controllers
         /// <returns>
         /// A created applicant
         /// </returns>
-        [HttpPost]
+        [HttpPost, AllowAnonymous]
         public async ValueTask<ActionResult<ZCApplicant>> CreateAsync(
             [FromForm] ZCApplicantForCreationDto dto, IFormFile file = null)
             => Ok(await applicantUserService.CreateAsync(dto,file?.OpenReadStream(),file?.FileName));
@@ -61,7 +64,7 @@ namespace ZaminCreative.Api.Controllers
         /// <returns>
         /// a applicant depending on whether the condition is met
         /// </returns>
-        [HttpGet("id")]
+        [HttpGet("id"), AllowAnonymous]
         public async ValueTask<ActionResult<ZCApplicant>> GetAsync(long id)
             => Ok(await applicantUserService.GetAsync(u => u.Id == id));
 
@@ -101,7 +104,7 @@ namespace ZaminCreative.Api.Controllers
         /// Select applicant info
         /// </summary>
         /// <returns></returns>
-        [HttpGet("page-info")]
+        [HttpGet("page-info"), AllowAnonymous]
         public async ValueTask<ActionResult<ZCApplicationInfo>> GetHomePageInfoAsyncAsync()
             => Ok(await applicantUserService.GetHomePageInfoAsyncAsync());
     }

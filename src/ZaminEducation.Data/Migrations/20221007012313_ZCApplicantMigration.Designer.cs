@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZaminEducation.Data.DbContexts;
 
@@ -11,9 +12,12 @@ using ZaminEducation.Data.DbContexts;
 namespace ZaminEducation.Data.Migrations
 {
     [DbContext(typeof(ZaminEducationDbContext))]
-    partial class ZaminEducationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221008145320_UmirdiYeganMaxLength")]
+    partial class UmirdiYeganMaxLength
+    [Migration("20221007012313_ZCApplicantMigration")]
+    partial class ZCApplicantMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -238,9 +242,6 @@ namespace ZaminEducation.Data.Migrations
                     b.Property<long>("CourseModuleId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("CourseModuleId")
-                        .HasColumnType("bigint");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -275,8 +276,6 @@ namespace ZaminEducation.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
-
-                    b.HasIndex("CourseId1");
 
                     b.HasIndex("CourseModuleId");
 
@@ -1118,11 +1117,6 @@ namespace ZaminEducation.Data.Migrations
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.CourseVideo", b =>
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
-                        .WithMany()
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", null)
                         .WithMany("Videos")
                         .HasForeignKey("CourseId");
 

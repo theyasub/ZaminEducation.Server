@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZaminEducation.Api.Helpers;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Api.Controllers;
 
-[Authorize(Policy = "AllPolicy")]
 public class CourseCommentController : BaseController
 {
     private readonly ICourseCommentService courseCommentService;
@@ -21,7 +21,7 @@ public class CourseCommentController : BaseController
     /// <param name="message"></param>
     /// <param name="parentId"></param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost, Authorize(Roles = CustomRoles.AllRoles)]
     public async ValueTask<IActionResult> CreateAsync(long courseId, string message, long? parentId) =>
         Ok(await this.courseCommentService.AddAsync(courseId, message, parentId));
 
@@ -51,7 +51,7 @@ public class CourseCommentController : BaseController
     /// <param name="id"></param>
     /// <param name="message"></param>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpPut("{id}"), Authorize]
     public async ValueTask<IActionResult> UpdateAsync(long id, string message) =>
         Ok(await this.courseCommentService.UpdateAsync(id, message));
 
@@ -60,7 +60,7 @@ public class CourseCommentController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpDelete("id")]
+    [HttpDelete("id"), Authorize]
     public async ValueTask<IActionResult> DeleteAsync(long id) =>
         Ok(await this.courseCommentService.DeleteAsync(id));
 
