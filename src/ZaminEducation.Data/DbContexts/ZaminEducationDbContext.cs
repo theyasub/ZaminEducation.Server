@@ -104,7 +104,7 @@ namespace ZaminEducation.Data.DbContexts
             modelBuilder.Entity<CourseModule>()
                 .HasOne(cm => cm.Course)
                 .WithMany()
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Course>()
                 .HasOne(c => c.Author)

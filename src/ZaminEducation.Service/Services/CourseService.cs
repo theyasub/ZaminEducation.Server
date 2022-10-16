@@ -215,16 +215,6 @@ namespace ZaminEducation.Service.Services.Courses
             return this.mapper.Map<CourseViewModel>(entity);
         }
 
-        public async ValueTask<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression)
-        {
-            var course = await courseRepository.GetAsync(expression, new string[] { "Modules" });
-
-            if (course is null)
-                throw new ZaminEducationException(404, "Course not found");
-
-            return course.Modules;
-        }
-
         public async ValueTask<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression)
         {
             var course = await courseRepository.GetAsync(expression, new string[] { "Targets" });
@@ -296,6 +286,16 @@ namespace ZaminEducation.Service.Services.Courses
                 throw new ZaminEducationException(404, "CourseRate not found");
 
             return existCourseRate;
+        }
+
+        public async ValueTask<Course> RetrieveAsync(Expression<Func<Course, bool>> expression)
+        {
+            var course = await this.courseRepository.GetAsync(expression);
+
+            if (course is null)
+                throw new ZaminEducationException(404, "Course not found");
+
+            return course;
         }
 
         private async ValueTask IsAuthor(long authorId)

@@ -62,7 +62,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             courseCategoryService = new CourseCategoryService(mapper, courseCategoryRepositoryMock);
             attachmentService = new AttachmentService(attachmentReositoryMock);
             userService = new UserService(userRepositoryMock, mapper, attachmentService);
-            courseModuleService = new CourseModuleService(courseModuleRepositoryMock, mapper);
+            courseModuleService = new CourseModuleService(courseModuleRepositoryMock, courseService, mapper);
             youTubeService = new YouTubeService(courseVideoRepositoryMock, courseRepositoryMock);
             courseService = new CourseService(courseRepositoryMock,
                 youTubeService,
@@ -70,8 +70,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
                 attachmentService,
                 userService,
                 mapper,
-                referralLinkRepositoryMock,
-                courseModuleService);
+                referralLinkRepositoryMock);
         }
 
         private CourseForCreationDto CreateRandomCourse(CourseForCreationDto courseForCreationDto)
@@ -81,7 +80,6 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             courseForCreationDto.Name = Faker.Name.First();
             courseForCreationDto.Level = (CourseLevel)Faker.RandomNumber.Next(0, 2);
             courseForCreationDto.Description = Faker.Lorem.Sentence(5);
-            courseForCreationDto.ModuleName = Faker.Name.First();
             return courseForCreationDto;
         }
 
