@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZaminEducation.Api.Extensions.Attributes;
+using ZaminEducation.Api.Helpers;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.UserCourses;
 using ZaminEducation.Domain.Entities.Users;
@@ -38,7 +39,7 @@ public class UsersController : BaseController
     /// <param name="userId"></param>
     /// <param name="roleId"></param>
     /// <returns></returns>
-    [HttpPut("change/role"), Authorize(Roles = "SuperAdmin")]
+    [HttpPut("change/role"), Authorize(Roles = CustomRoles.SuperAdminRole)]
     public async ValueTask<ActionResult<User>> ChangeRoleAsync(long userId, byte roleId)
         => Ok(await userService.ChangeRoleAsync(userId, roleId));
 
@@ -56,7 +57,7 @@ public class UsersController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <returns>true if user deleted succesfully else false</returns>
-    [HttpDelete("{id}"), Authorize(Roles = "Admin")]
+    [HttpDelete("{id}"), Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<ActionResult<bool>> DeleteAsync([FromRoute] long id) =>
         Ok(await userService.DeleteAsync(user => user.Id == id));
 
@@ -66,7 +67,7 @@ public class UsersController : BaseController
     /// </summary>
     /// <param name="params">pagenation params</param>
     /// <returns> user collection </returns>
-    [HttpGet, Authorize(Roles = "Admin")]
+    [HttpGet, Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<ActionResult<IEnumerable<User>>> GetAllAsync(
         [FromQuery] PaginationParams @params) =>
             Ok(await userService.GetAllAsync(@params));
@@ -86,7 +87,7 @@ public class UsersController : BaseController
     /// </summary>
     /// <param name="dto"></param>
     /// <returns></returns>
-    [HttpPost("password"), Authorize("AllPolicy")]
+    [HttpPost("password"), Authorize]
     public async ValueTask<ActionResult<User>> ChangePasswordAsync(UserForChangePassword dto) =>
         Ok(await userService.ChangePasswordAsync(dto));
 
@@ -97,8 +98,8 @@ public class UsersController : BaseController
     /// <returns>user</returns>
     /// <response code="400">if user data is not in the base</response>
     /// <response code="200">if user data have in database</response>
-    [HttpGet("{id}"), Authorize("AllPolicy")]
-    public async ValueTask<ActionResult<User>> GetAsync([FromRoute] long id) =>
+    [HttpGet("{id}"), Authorize(Roles = CustomRoles.AllRoles)]
+    public async ValueTask<ActionResult<User>> GetAsync([FromRoute]long id) =>
         Ok(await userService.GetAsync(user => user.Id == id));
 
     /// <summary>
@@ -107,7 +108,7 @@ public class UsersController : BaseController
     /// <param name="id"></param>
     /// <param name="dto"></param>
     /// <returns></returns>
-    [HttpPut, Authorize("AllPolicy")]
+    [HttpPut, Authorize(Roles = CustomRoles.AllRoles)]
     public async ValueTask<ActionResult<User>> UpdateAsync(
         long id, [FromBody] UserForUpdateDto dto) =>
             Ok(await userService.UpdateAsync(id, dto));
@@ -124,7 +125,7 @@ public class UsersController : BaseController
     /// Create attachment
     /// </summary>
     /// <returns></returns>
-    [HttpPost("attachments/{id}"), Authorize("UserPolicy")]
+    [HttpPost("attachments/{id}"), Authorize(Roles = CustomRoles.UserRole)]
     public async Task<IActionResult> Attachment(long id, [FormFileAttributes, IsNoMoreThenMaxSize(3145728)] IFormFile formFile)
         => Ok(await userService.AddAttachmentAsync(id, formFile.ToAttachmentOrDefault()));
 }

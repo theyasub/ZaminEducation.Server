@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZaminEducation.Api.Helpers;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.Interfaces;
@@ -7,7 +8,7 @@ using ZaminEducation.Service.Interfaces.Courses;
 
 namespace ZaminEducation.Api.Controllers;
 
-//[Authorize(Policy = "AdminPolicy")]
+
 public class CourseController : BaseController
 {
     private readonly ICourseService courseService;
@@ -23,7 +24,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="courseDto"></param>
     /// <returns></returns>
-    [HttpPost]
+    [HttpPost, Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<IActionResult> CreateAsync([FromForm] CourseForCreationDto courseDto)
         => Ok(await this.courseService.CreateAsync(courseDto));
 
@@ -32,7 +33,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="categoryDto"></param>
     /// <returns></returns>
-    [HttpPost("category")]
+    [HttpPost("category"), Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<IActionResult> CreateCategoryAsync(CourseCategoryForCreationDto categoryDto)
         => Ok(await this.courseCategoryService.CreateAsync(categoryDto));
 
@@ -41,7 +42,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="courseId"></param>
     /// <returns></returns>
-    [HttpPost("link")]
+    [HttpPost("link"), Authorize]
     public async ValueTask<IActionResult> GenerateLinkAsync(long courseId)
         => Ok(await this.courseService.GenerateLinkAsync(courseId));
 
@@ -51,7 +52,7 @@ public class CourseController : BaseController
     /// <param name="params"></param>
     /// <returns></returns>
 
-    [HttpGet, AllowAnonymous]
+    [HttpGet]
     public async ValueTask<IActionResult> GetAllAsync([FromQuery] PaginationParams @params)
         => Ok(await this.courseService.GetAllAsync(@params));
 
@@ -60,7 +61,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="params"></param>
     /// <returns></returns>
-    [HttpGet("category"), AllowAnonymous]
+    [HttpGet("category")]
     public async ValueTask<IActionResult> GetAllCategory([FromQuery] PaginationParams @params)
         => Ok(await this.courseCategoryService.GetAllAsync(@params));
 
@@ -69,7 +70,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpGet("{id}"), AllowAnonymous]
+    [HttpGet("{id}")]
     public async ValueTask<IActionResult> GetByIdAsync(long id)
         => Ok(await this.courseService.GetAsync(course => course.Id.Equals(id)));
 
@@ -78,7 +79,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpGet("category/{id}"), AllowAnonymous]
+    [HttpGet("category/{id}")]
     public async ValueTask<IActionResult> GetCategoryAsync([FromRoute] long id)
         => Ok(await this.courseCategoryService.GetAsync(category => category.Id.Equals(id)));
 
@@ -88,7 +89,7 @@ public class CourseController : BaseController
     /// <param name="id"></param>
     /// <param name="courseDto"></param>
     /// <returns></returns>
-    [HttpPut("{id}")]
+    [HttpPut("{id}"), Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<IActionResult> UpdateAsync(long id, [FromForm] CourseForCreationDto courseDto)
         => Ok(await this.courseService.UpdateAsync(course => course.Id.Equals(id), courseDto));
 
@@ -98,7 +99,7 @@ public class CourseController : BaseController
     /// <param name="id"></param>
     /// <param name="categoryDto"></param>
     /// <returns></returns>
-    [HttpPut("category/{id}")]
+    [HttpPut("category/{id}"), Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<IActionResult> UpdateCategoryAsync(long id, CourseCategoryForCreationDto categoryDto)
         => Ok(await this.courseCategoryService.UpdateAsync(id, categoryDto));
 
@@ -107,7 +108,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id}"), Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<IActionResult> DeleteAsync(long id)
         => Ok(await this.courseService.DeleteAsync(course => course.Id.Equals(id)));
 
@@ -116,7 +117,7 @@ public class CourseController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpDelete("category/{id}"), Authorize(Roles = "Admin")]
+    [HttpDelete("category/{id}"), Authorize(Roles = CustomRoles.AdminRole)]
     public async ValueTask<ActionResult<bool>> DeleteCategoryAsync([FromRoute] long id) =>
         Ok(await courseCategoryService.DeleteAsync(user => user.Id == id));
 

@@ -1,12 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ZaminEducation.Api.Helpers;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Service.DTOs.Quizzes;
 using ZaminEducation.Service.Interfaces;
 
 namespace ZaminEducation.Api.Controllers
 {
-    [Authorize(Policy = "AdminPolicy")]
+    [Authorize(Roles = CustomRoles.AdminRole)]
     public class TestsController : BaseController
     {
         private readonly IQuizService quizService;
@@ -112,7 +113,7 @@ namespace ZaminEducation.Api.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("results/{userId}"), Authorize(Policy = "AllPolicy")]
+        [HttpGet("results/{userId}"), Authorize(Roles = CustomRoles.AllRoles)]
         public async ValueTask<IActionResult> GetAsync([FromRoute(Name = "userId")] long id)
             => Ok(await this.quizResultService.GetAsync(qr => qr.UserId == id));
 
@@ -122,7 +123,7 @@ namespace ZaminEducation.Api.Controllers
         /// <param name="id"></param>
         /// <param name="params"></param>
         /// <returns></returns>
-        [HttpGet("results/{userId}/collection"), Authorize(Policy = "AllPolicy")]
+        [HttpGet("results/{userId}/collection"), Authorize(Roles = CustomRoles.AllRoles)]
         public async ValueTask<IActionResult> GetAllAsync([FromRoute(Name = "userId")] long id, [FromQuery] PaginationParams @params)
             => Ok(await this.quizResultService.GetAllAsync(qr => qr.UserId == id, @params));
     }
