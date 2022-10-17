@@ -117,7 +117,7 @@ namespace ZaminEducation.Service.Services
             UpdateRangeAsync(string youtubePlaylist, long courseId, long courseModuleId)
         {
             await DeleteRangeAsync(courseId);
-            
+
             IEnumerable<string> links = await GetLinksAsync(youtubePlaylist);
 
             ICollection<CourseVideo> videos = new List<CourseVideo>();
