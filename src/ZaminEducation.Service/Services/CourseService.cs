@@ -126,6 +126,8 @@ namespace ZaminEducation.Service.Services.Courses
 
             await this.courseRepository.SaveChangesAsync();
 
+            //await youTubeService.DeleteRangeAsync(course.Id);
+
             return true;
         }
 
@@ -306,6 +308,9 @@ namespace ZaminEducation.Service.Services.Courses
         private async ValueTask IsAuthor(long authorId)
         {
             User author = await userService.GetAsync(u => u.Id == authorId);
+
+            if (author is null)
+                throw new ZaminEducationException(404, "Author not found");
 
             if (author.Role != UserRole.Mentor)
                 throw new ZaminEducationException(400, "Not the Author");
