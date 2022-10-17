@@ -23,7 +23,7 @@ namespace ZaminEducation.Service.Services
             this.courseRepository = courseRepository;
         }
 
-        public async ValueTask<CourseComment> AddAsync(long courseId, string message, long? parentId = null)
+        public async ValueTask<CourseComment> CreateAsync(long courseId, string message, long? parentId = null)
         {
             var course = await courseRepository.GetAsync(c => c.Id == courseId);
 
@@ -98,7 +98,7 @@ namespace ZaminEducation.Service.Services
             return comment;
         }
 
-        public async ValueTask<IEnumerable<CourseComment>> GetRepliedComments(long id)
+        public async ValueTask<IEnumerable<CourseComment>> GetReplies(long id)
         {
             var comment = await courseCommentRepository.GetAsync(cc => cc.Id == id);
 

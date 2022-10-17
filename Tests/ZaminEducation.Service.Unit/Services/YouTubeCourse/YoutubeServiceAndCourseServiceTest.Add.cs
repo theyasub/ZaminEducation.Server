@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using System.Threading.Tasks;
 
-namespace ZaminEducation.Test.Unit.Services.YouTube
+namespace ZaminEducation.Test.Unit.Services.YouTubeCourse
 {
     public partial class YoutubeServiceAndCourseServiceTest
     {
