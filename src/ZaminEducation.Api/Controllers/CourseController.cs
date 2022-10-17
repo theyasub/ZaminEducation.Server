@@ -138,13 +138,4 @@ public class CourseController : BaseController
     [HttpGet("targets{id}")]
     public async ValueTask<IActionResult> GetCourseTargetsAsync(long id)
         => Ok(await this.courseService.GetCourseTargetsAsync(target => target.Id.Equals(id)));
-
-    /// <summary>
-    /// Select moduls of course by id
-    /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
-    [HttpGet("models{id}")]
-    public async ValueTask<IActionResult> GetCourseModulesAsync(long id)
-        => Ok(await this.courseService.GetCourseModulesAsync(model => model.Id.Equals(id)));
 }

@@ -17,10 +17,10 @@ namespace ZaminEducation.Service.Interfaces.Courses
         ValueTask<IEnumerable<Course>> GetAllAsync(PaginationParams @params, Expression<Func<Course, bool>> expression = null, string search = null);
         ValueTask<Course> UpdateAsync(Expression<Func<Course, bool>> expression, CourseForCreationDto courseForCreationDto);
         ValueTask<bool> DeleteAsync(Expression<Func<Course, bool>> expression);
+        ValueTask<Course> RetrieveAsync(Expression<Func<Course, bool>> expression);
         ValueTask<CourseViewModel> AddAttachmentAsync(long courseId, AttachmentForCreationDto dto);
         ValueTask<IEnumerable<CourseVideo>> GetCourseVideosAsync(Expression<Func<Course, bool>> expression);
         ValueTask<IEnumerable<CourseTarget>> GetCourseTargetsAsync(Expression<Func<Course, bool>> expression);
-        ValueTask<IEnumerable<CourseModule>> GetCourseModulesAsync(Expression<Func<Course, bool>> expression);
         Task<CourseRate> Rate(long id, byte value);
         Task<CourseRate> GetCourseRateOfUser(long id);
     }
