@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Service.DTOs.Users;
 
-namespace ZaminEducation.Test.Unit.Services
+namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {
         [Fact]
-        public async Task ShouldGetUserById()
+        public async ValueTask ShouldGetUserById()
         {
             // given
             UserForCreationDto randomUser = CreateRandomUser(new UserForCreationDto());
@@ -17,7 +17,7 @@ namespace ZaminEducation.Test.Unit.Services
             UserForCreationDto expectedUser = inputUser.DeepClone();
 
             // when
-            User actualUser = await userService.CreateAsync(inputUser);
+            actualUser = await userService.CreateAsync(inputUser);
             User gotUser = await userService.GetAsync(u => u.Id == actualUser.Id);
 
             // then
@@ -25,7 +25,5 @@ namespace ZaminEducation.Test.Unit.Services
             gotUser.Should().NotBeNull();
             actualUser.Should().BeEquivalentTo(gotUser);
         }
-
-
     }
 }

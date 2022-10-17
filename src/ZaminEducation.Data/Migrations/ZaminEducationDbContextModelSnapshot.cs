@@ -80,7 +80,7 @@ namespace ZaminEducation.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<long>("ImageId")
+                    b.Property<long?>("ImageId")
                         .HasColumnType("bigint");
 
                     b.Property<int>("Level")
@@ -235,7 +235,10 @@ namespace ZaminEducation.Data.Migrations
                     b.Property<long?>("CourseId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CourseModuleId")
+                    b.Property<long?>("CourseId1")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("CourseModuleId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -257,8 +260,7 @@ namespace ZaminEducation.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -273,6 +275,8 @@ namespace ZaminEducation.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("CourseId1");
 
                     b.HasIndex("CourseModuleId");
 
@@ -1076,9 +1080,7 @@ namespace ZaminEducation.Data.Migrations
 
                     b.HasOne("ZaminEducation.Domain.Entities.Commons.Attachment", "Image")
                         .WithMany()
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.Navigation("Author");
 
@@ -1116,14 +1118,17 @@ namespace ZaminEducation.Data.Migrations
             modelBuilder.Entity("ZaminEducation.Domain.Entities.Courses.CourseVideo", b =>
                 {
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ZaminEducation.Domain.Entities.Courses.Course", null)
                         .WithMany("Videos")
-                        .HasForeignKey("CourseId");
+                        .HasForeignKey("CourseId1");
 
                     b.HasOne("ZaminEducation.Domain.Entities.Courses.CourseModule", "CourseModule")
                         .WithMany("Videos")
-                        .HasForeignKey("CourseModuleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourseModuleId");
 
                     b.Navigation("Course");
 

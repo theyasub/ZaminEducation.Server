@@ -29,7 +29,7 @@ namespace ZaminEducation.Api.Middlewares
 
                 await this.HandleException(context, 500, ex.Message);
             }
-        }
+         }
 
         public async Task HandleException(HttpContext context, int code, string message)
         {

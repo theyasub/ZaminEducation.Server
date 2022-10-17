@@ -15,7 +15,7 @@ using ZaminEducation.Service.Interfaces;
 using ZaminEducation.Service.Mappers;
 using ZaminEducation.Service.Services;
 
-namespace ZaminEducation.Test.Unit.Services
+namespace ZaminEducation.Test.Unit.Services.Users
 {
     public partial class UserServiceTest
     {
@@ -25,7 +25,7 @@ namespace ZaminEducation.Test.Unit.Services
         private readonly ZaminEducationDbContext zaminEducationDbContext;
         private readonly IUserService userService;
         private readonly IAttachmentService attachmentService;
-
+        private User actualUser;
 
         public UserServiceTest()
         {
@@ -43,7 +43,6 @@ namespace ZaminEducation.Test.Unit.Services
 
             attachmentService = new AttachmentService(attachmentRepositoryMock);
             userService = new UserService(userRepositoryMock, mapper, attachmentService);
-
         }
 
         private UserForCreationDto CreateRandomUser(UserForCreationDto userForCreationDto)

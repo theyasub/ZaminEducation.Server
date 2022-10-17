@@ -5,6 +5,8 @@ using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Configurations;
 using ZaminEducation.Domain.Entities.Courses;
 using ZaminEducation.Domain.Entities.UserCourses;
+using ZaminEducation.Domain.Entities.Users;
+using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.Exceptions;
@@ -22,8 +24,8 @@ namespace ZaminEducation.Service.Services.Courses
         private readonly IRepository<Course> courseRepository;
         private readonly IRepository<CourseRate> courseRateRepository;
         private readonly IRepository<ReferralLink> referralLinkRepository;
-        private readonly ICourseModuleService courseModuleService;
         private readonly IAttachmentService attachmentService;
+        private readonly IUserService userService;
         private readonly IMapper mapper;
 
         public CourseService(
@@ -31,26 +33,28 @@ namespace ZaminEducation.Service.Services.Courses
             IYouTubeService youTubeService,
             IRepository<CourseRate> courseRateRepository,
             IAttachmentService attachmentService,
+            IUserService userService,
             IMapper mapper,
-            IRepository<ReferralLink> referralLinkRepository,
-            ICourseModuleService courseModuleService)
+            IRepository<ReferralLink> referralLinkRepository)
         {
             this.courseRepository = courseRepository;
             this.youTubeService = youTubeService;
             this.courseRateRepository = courseRateRepository;
             this.attachmentService = attachmentService;
             this.mapper = mapper;
+            this.userService = userService;
             this.referralLinkRepository = referralLinkRepository;
-            this.courseModuleService = courseModuleService;
         }
 
         public async ValueTask<Course> CreateAsync(CourseForCreationDto courseForCreationDto)
         {
-            Course course = await courseRepository.GetAsync(c =>
+            Course course = await courseRepository.GetAsync(expression: c =>
                 c.YouTubePlaylistLink.Equals(courseForCreationDto.YouTubePlaylistLink));
 
             if (course is not null)
                 throw new ZaminEducationException(400, "Course already exists");
+
+            await IsAuthor(courseForCreationDto.AuthorId);
 
             long? attachmentId = null;
             if (courseForCreationDto.Image is not null)
@@ -69,22 +73,17 @@ namespace ZaminEducation.Service.Services.Courses
 
             await courseRepository.SaveChangesAsync();
 
-            var courseModule = await this.courseModuleService.CreateAsync(new CourseModuleForCreationDto()
-            {
-                Name = courseForCreationDto.ModuleName,
-                CourseId = entity.Id
-            });
-
-            entity.Videos = (ICollection<CourseVideo>)await youTubeService.CreateRangeAsync(
+            entity.Videos = await youTubeService.CreateRangeAsync(
                 youtubePlaylist: courseForCreationDto.YouTubePlaylistLink,
-                courseId: entity.Id,
-                courseModuleId: courseModule.Id);
+                courseId: entity.Id);
 
             return entity;
         }
 
         public async ValueTask<string> GenerateLinkAsync(long courseId)
         {
+            await GetAsync(c => c.Id == courseId);
+
             var linkExists = await referralLinkRepository.GetAsync(
                 l => l.CourseId == courseId &&
                 l.UserId == (long)HttpContextHelper.UserId && l.State != Domain.Enums.ItemState.Deleted);
@@ -92,7 +91,7 @@ namespace ZaminEducation.Service.Services.Courses
 
             if (linkExists is null)
             {
-                string generatedLink = string.Concat(Guid.NewGuid().ToString());
+                string generatedLink = Guid.NewGuid().ToString("N").Substring(0, 9);
 
                 ReferralLink link = new ReferralLink()
                 {
@@ -118,8 +117,11 @@ namespace ZaminEducation.Service.Services.Courses
                 throw new ZaminEducationException(404, "Course not found");
 
             courseRepository.Delete(entity: course);
+            await this.attachmentService.DeleteAsync(a => a.Name == course.Image.Name);
 
-            await courseRepository.SaveChangesAsync();
+            // DeleteAsync() ^ has SaveChanges inside, therefore it is not here
+
+            //await youTubeService.DeleteRangeAsync(course.Id);
 
             return true;
         }
@@ -179,17 +181,19 @@ namespace ZaminEducation.Service.Services.Courses
             if (courseForCreationDto.Image is not null)
             {
                 var attachmentDto = courseForCreationDto.Image.ToAttachmentOrDefault();
-                var attachment = await this.attachmentService.UploadAsync(dto: attachmentDto);
+                var attachment = await this.attachmentService.UpdateAsync(course.Id, courseForCreationDto.Image.OpenReadStream());
                 attachmentId = attachment.Id;
             }
             course = mapper.Map(courseForCreationDto, course);
 
-            course.ImageId = attachmentId;
+            course.ImageId = (long)attachmentId;
             course.Update();
 
             course = courseRepository.Update(entity: course);
 
-            await courseRepository.SaveChangesAsync();
+            course.Videos = await this.youTubeService.CreateRangeAsync(
+                youtubePlaylist: course.YouTubePlaylistLink,
+                courseId: course.Id);
 
             return course;
         }
@@ -294,6 +298,17 @@ namespace ZaminEducation.Service.Services.Courses
                 throw new ZaminEducationException(404, "CourseRate not found");
 
             return existCourseRate;
+        }
+
+        private async ValueTask IsAuthor(long authorId)
+        {
+            User author = await userService.GetAsync(u => u.Id == authorId);
+
+            if (author is null)
+                throw new ZaminEducationException(404, "Author not found");
+
+            if (author.Role != UserRole.Mentor)
+                throw new ZaminEducationException(400, "Not the Author");
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Text;
 using YoutubeExplode;
 using YoutubeExplode.Common;
 using ZaminEducation.Data.IRepositories;
@@ -51,11 +50,12 @@ namespace ZaminEducation.Service.Services
             return youtubeVideo;
         }
 
-        public async ValueTask<IEnumerable<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId, long courseModuleId)
+        public async ValueTask<ICollection<CourseVideo>> CreateRangeAsync(string youtubePlaylist, long courseId, long? courseModuleId = null)
         {
             IEnumerable<string> links = await GetLinksAsync(youtubePlaylist);
 
-            var videos = new List<CourseVideo>();
+            ICollection<CourseVideo> videos = new List<CourseVideo>();
+
             var yt = new YoutubeClient();
 
             foreach (var link in links)
@@ -96,9 +96,59 @@ namespace ZaminEducation.Service.Services
             return true;
         }
 
-        public async ValueTask<CourseVideo> UpdateAsync(long courseId, string link)
+        public async ValueTask<bool> DeleteRangeAsync(long courseId)
         {
-            var existVideo = await youtubeRepository.GetAsync(p => p.Id == courseId);
+            var course = await courseRepository.GetAsync(c => c.Id == courseId);
+
+            if (course is null)
+                throw new ZaminEducationException(404, "Course not found!");
+
+            IEnumerable<CourseVideo> courseVideos = youtubeRepository.GetAll(yu => yu.CourseId == courseId);
+
+            foreach (var video in courseVideos)
+                youtubeRepository.Delete(video);
+
+            await youtubeRepository.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async ValueTask<ICollection<CourseVideo>>
+            UpdateRangeAsync(string youtubePlaylist, long courseId, long courseModuleId)
+        {
+            await DeleteRangeAsync(courseId);
+            
+            IEnumerable<string> links = await GetLinksAsync(youtubePlaylist);
+
+            ICollection<CourseVideo> videos = new List<CourseVideo>();
+
+            var yt = new YoutubeClient();
+
+            foreach (var link in links)
+            {
+                var video = await yt.Videos.GetAsync(link);
+
+                var youtubeVideo = new CourseVideo
+                {
+                    CourseId = courseId,
+                    Thumbnail = video.Thumbnails.OrderByDescending(p => p.Resolution.Height).FirstOrDefault()?.Url,
+                    Title = video.Title,
+                    Url = video.Url,
+                    CourseModuleId = courseModuleId,
+                    Length = video.Duration!.Value.Minutes,
+                    Description = video.Description
+                };
+
+                youtubeVideo.Update();
+                videos.Add(await youtubeRepository.AddAsync(youtubeVideo));
+            }
+
+            return videos;
+        }
+
+        public async ValueTask<CourseVideo> UpdateAsync(long videoId, string link)
+        {
+            var existVideo = await youtubeRepository.GetAsync(p => p.Id == videoId);
 
             if (existVideo is null)
                 throw new ZaminEducationException(404, "Video not found!");
