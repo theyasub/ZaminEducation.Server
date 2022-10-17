@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
+using FluentAssertions;
+using Force.DeepCloner;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
 using ZaminEducation.Data.DbContexts;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Data.Repositories;
@@ -80,7 +84,6 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             courseForCreationDto.Name = Faker.Name.First();
             courseForCreationDto.Level = (CourseLevel)Faker.RandomNumber.Next(0, 2);
             courseForCreationDto.Description = Faker.Lorem.Sentence(5);
-            //courseForCreationDto.ModuleName = Faker.Name.First();
 
             return courseForCreationDto;
         }
@@ -101,7 +104,51 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             userForCreationDto.DateOfBirth = DateTime.UtcNow;
             userForCreationDto.Password = Faker.Lorem.Sentence(1);
 
+
+
             return userForCreationDto;
+        }
+
+        private async ValueTask<(string YoutubePlaylistLink, long CourseId, long CourseModuleId)> CreateAllDependencies()
+        {
+            var randomAuthor = CreateRandomAuthor(new UserForCreationDto());
+            var randomCategory = CreateRandomCategory(new CourseCategoryForCreationDto());
+            var randomCourse = CreateRandomCourse(new CourseForCreationDto());
+
+            var inputAuthor = randomAuthor;
+            var inputCategory = randomCategory;
+            var inputCourse = randomCourse;
+
+            var expectedAuthor = inputAuthor.DeepClone();
+            var expectedCategory = inputCategory.DeepClone();
+            var expectedCourse = inputCourse.DeepClone();
+
+            // when
+            var actualAuthor = await userService.CreateAsync(inputAuthor);
+            await userService.ChangeRoleAsync(actualAuthor.Id, 2);
+
+            var actualCategory = await courseCategoryService.CreateAsync(inputCategory);
+
+
+            inputCourse.AuthorId = actualAuthor.Id;
+            inputCourse.CategoryId = actualCategory.Id;
+
+            var actualCourse = await courseService.CreateAsync(inputCourse);
+
+
+            var actualCourseModuleId = (await courseService.GetAsync(c => c.Id == actualCourse.Id)).Modules.FirstOrDefault().Id;
+
+            // then
+            actualCourse.Should().NotBeNull();
+            actualCourse.Name.Should().BeEquivalentTo(expectedCourse.Name);
+
+            actualCategory.Should().NotBeNull();
+            actualCategory.Name.Should().BeEquivalentTo(expectedCategory.Name);
+
+            actualAuthor.Should().NotBeNull();
+            actualAuthor.Username.Should().BeEquivalentTo(expectedAuthor.Username);
+
+            return (actualCourse.YouTubePlaylistLink, actualCourse.Id, actualCourseModuleId);
         }
     }
 }

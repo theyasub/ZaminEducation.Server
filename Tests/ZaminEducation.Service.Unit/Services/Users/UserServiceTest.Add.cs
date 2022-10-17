@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Force.DeepCloner;
+using System.IO;
 using System.Threading.Tasks;
 using ZaminEducation.Service.DTOs.Commons;
 using ZaminEducation.Service.DTOs.Users;
@@ -46,8 +47,11 @@ namespace ZaminEducation.Test.Unit.Services.Users
             actualUser.Should().NotBeNull();
             actualUserWithAttachment.Should().NotBeNull();
             actualUserWithAttachment.Image.Should().NotBeNull();
-
             actualUser.Username.Should().BeEquivalentTo(expectedUser.Username);
+
+            File.Delete(Path.Combine("../../../wwwrootTest/images", actualUserWithAttachment.Image.Name));
+
+
         }
     }
 }

@@ -1,43 +1,39 @@
 ﻿using FluentAssertions;
-using Force.DeepCloner;
 using System.Threading.Tasks;
-using ZaminEducation.Domain.Enums;
-using ZaminEducation.Service.DTOs.Courses;
-using ZaminEducation.Service.DTOs.Users;
 
 namespace ZaminEducation.Test.Unit.Services.YouTube
 {
     public partial class YoutubeServiceAndCourseServiceTest
     {
         [Fact]
-        public async Task ShouldDeleteCourseById()
+        public async ValueTask ShouldDeleteCourseAndPlaylistById()
         {
             // given
-            var randomAuthor = CreateRandomAuthor(new UserForCreationDto());
-            var randomCategory = CreateRandomCategory(new CourseCategoryForCreationDto());
-            var randomCourse = CreateRandomCourse(new CourseForCreationDto());
-
-            var expectedCourse = randomCourse.DeepClone();
+            var dependencies = await CreateAllDependencies();
 
             // when
-            var actualAuthor = await userService.CreateAsync(randomAuthor);
-            var actualCategory = await courseCategoryService.CreateAsync(randomCategory);
+            var deletedPlayList = await youTubeService.DeleteRangeAsync(dependencies.CourseId);
 
-
-            await userService.ChangeRoleAsync(actualAuthor.Id, (byte)UserRole.Mentor);
-
-            randomCourse.AuthorId = actualAuthor.Id;
-            randomCourse.CategoryId = actualCategory.Id;
-
-
-            var actualCourse = await courseService.CreateAsync(randomCourse);
-
-            var deletedCourse = await courseService.DeleteAsync(c => c.Id == actualCourse.Id);
+            var deletedCourse = await courseService.DeleteAsync(c => c.Id == dependencies.CourseId);
 
             // then
-
-            actualCourse.Should().NotBeNull();
             deletedCourse.Should().Be(true);
+            deletedPlayList.Should().Be(true);
+        }
+
+        [Fact]
+        public async ValueTask ShouldDeleteVideoById()
+        {
+            // given
+            var dependencies = await CreateAllDependencies();
+
+            // when
+            var actualVideo = await youTubeService.CreateAsync("https://www.youtube.com/watch?v=JxjXechMs4c", dependencies.CourseId);
+
+            var isDeleted = await youTubeService.DeleteAsync(actualVideo.Id);
+            // then
+
+            isDeleted.Should().Be(true);
         }
     }
 }

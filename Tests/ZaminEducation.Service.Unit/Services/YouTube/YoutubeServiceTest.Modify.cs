@@ -37,13 +37,19 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
                 await youTubeService.CreateRangeAsync(actualCourse.YouTubePlaylistLink,
                     actualCourse.Id,
                     actualCourseModuleId);
-            // 
+
+            var actualUpdatedPlayList = await youTubeService.UpdateRangeAsync(
+                "https://www.youtube.com/watch?v=0mbVfSoxtDM&list=PLI8lx2Sb0tswGcNZJPOqJt_c47iSv8C9w",
+                actualCourse.Id,
+                actualCourseModuleId);
 
             // then
             actualCourse.Should().NotBeNull();
             actualCourse.Name.Should().BeEquivalentTo(expectedCourse.Name);
 
             actualCourse.Name.Should().NotBeEquivalentTo(actuallyUpdatedCourse.Name);
+
+            actualUpdatedPlayList.Should().NotBeEquivalentTo(actualYoutubePlayList);
         }
     }
 }
