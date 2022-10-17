@@ -117,9 +117,14 @@ namespace ZaminEducation.Service.Services.Courses
                 throw new ZaminEducationException(404, "Course not found");
 
             courseRepository.Delete(entity: course);
-            await this.attachmentService.DeleteAsync(a => a.Name == course.Image.Name);
 
-            // DeleteAsync() ^ has SaveChanges inside, therefore it is not here
+            if (course.ImageId is not null)
+            {
+                await this.attachmentService.DeleteAsync(a => a.Id == course.Image.Id);
+                return true;
+            }
+
+            await this.courseRepository.SaveChangesAsync();
 
             return true;
         }
