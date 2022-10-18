@@ -40,7 +40,7 @@ namespace ZaminCreative.Api.Controllers
         /// <returns>
         /// A bool value depending on whether the condition is met
         /// </returns>
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async ValueTask<ActionResult<bool>> DeleteAsync(long id)
             => Ok(await applicantUserService.DeleteAsync(u => u.Id == id));
 
@@ -52,7 +52,7 @@ namespace ZaminCreative.Api.Controllers
         /// <returns>
         /// Updated applicant
         /// </returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         public async ValueTask<ActionResult<ZCApplicant>> UpdateAsync(
             long id,ZCApplicantForCreationDto dto)
             => Ok(await applicantUserService.UpdateAsync(u => u.Id == id, dto));
@@ -64,7 +64,7 @@ namespace ZaminCreative.Api.Controllers
         /// <returns>
         /// a applicant depending on whether the condition is met
         /// </returns>
-        [HttpGet("id"), AllowAnonymous]
+        [HttpGet("{id}"), AllowAnonymous]
         public async ValueTask<ActionResult<ZCApplicant>> GetAsync(long id)
             => Ok(await applicantUserService.GetAsync(u => u.Id == id));
 

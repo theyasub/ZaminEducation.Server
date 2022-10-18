@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ZaminEducation.Service.DTOs.Users
+namespace Users.Microservice.Services.DTOs
 {
     public class UserForChangePassword
     {
