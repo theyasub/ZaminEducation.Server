@@ -82,7 +82,7 @@ namespace ZaminEducation.Service.Services.Courses
 
         public async ValueTask<string> GenerateLinkAsync(long courseId)
         {
-            await GetAsync(c => c.Id == courseId);
+            await RetrieveAsync(c => c.Id == courseId);
 
             var linkExists = await referralLinkRepository.GetAsync(
                 l => l.CourseId == courseId &&

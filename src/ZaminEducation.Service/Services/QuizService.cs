@@ -41,7 +41,7 @@ namespace ZaminEducation.Service.Services
         public async ValueTask<Quiz> CreateAsync(long courseId,
             QuizForCreationDto quizDto, QuizContentForCreationDto questionDto)
         {
-            var course = await courseService.GetAsync(c => c.Id == courseId);
+            var course = await courseService.RetrieveAsync(c => c.Id == courseId);
 
             if (course is null)
                 throw new ZaminEducationException(400, "Bad request");
