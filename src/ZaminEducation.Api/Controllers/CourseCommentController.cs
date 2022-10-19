@@ -60,7 +60,7 @@ public class CourseCommentController : BaseController
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    [HttpDelete("id"), Authorize]
+    [HttpDelete("{id}"), Authorize]
     public async ValueTask<IActionResult> DeleteAsync(long id) =>
         Ok(await this.courseCommentService.DeleteAsync(id));
 
