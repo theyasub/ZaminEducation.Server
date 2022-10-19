@@ -21,7 +21,7 @@ using ZaminEducation.Service.Mappers;
 using ZaminEducation.Service.Services;
 using ZaminEducation.Service.Services.Courses;
 
-namespace ZaminEducation.Test.Unit.Services.YouTube
+namespace ZaminEducation.Test.Unit.Services.YouTubeCourse
 {
     public partial class YoutubeServiceAndCourseServiceTest
     {
@@ -35,8 +35,10 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
         private readonly IRepository<Attachment> attachmentReositoryMock;
         private readonly IRepository<CourseModule> courseModuleRepositoryMock;
         private readonly IRepository<ReferralLink> referralLinkRepositoryMock;
+        private readonly IRepository<CourseComment> courseCommentRepositoryMock;
 
         private readonly ICourseCategoryService courseCategoryService;
+        private readonly ICourseCommentService courseCommentService;
         private readonly IYouTubeService youTubeService;
         private readonly IUserService userService;
         private readonly ICourseService courseService;
@@ -67,6 +69,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             attachmentService = new AttachmentService(attachmentReositoryMock);
             userService = new UserService(userRepositoryMock, mapper, attachmentService);
             courseModuleService = new CourseModuleService(courseModuleRepositoryMock, courseService, mapper);
+            courseCommentService = new CourseCommentService(courseCommentRepositoryMock, courseRepositoryMock);
             youTubeService = new YouTubeService(courseVideoRepositoryMock, courseRepositoryMock);
             courseService = new CourseService(courseRepositoryMock,
                 youTubeService,

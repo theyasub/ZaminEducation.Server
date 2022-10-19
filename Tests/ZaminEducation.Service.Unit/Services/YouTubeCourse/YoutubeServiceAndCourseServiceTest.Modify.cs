@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using ZaminEducation.Service.DTOs.Courses;
 using ZaminEducation.Service.DTOs.Users;
 
-namespace ZaminEducation.Test.Unit.Services.YouTube
+namespace ZaminEducation.Test.Unit.Services.YouTubeCourse
 {
     public partial class YoutubeServiceAndCourseServiceTest
     {
@@ -50,6 +50,47 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             actualCourse.Name.Should().NotBeEquivalentTo(actuallyUpdatedCourse.Name);
 
             actualUpdatedPlayList.Should().NotBeEquivalentTo(actualYoutubePlayList);
+        }
+
+        [Fact]
+        public async ValueTask ShouldUpdateYoutubeVideo()
+        {
+            var randomAuthor = CreateRandomAuthor(new UserForCreationDto());
+            var randomCategory = CreateRandomCategory(new CourseCategoryForCreationDto());
+            var randomCourse = CreateRandomCourse(new CourseForCreationDto());
+
+            var expectedCourse = randomCourse.DeepClone();
+
+            // when
+            var actualAuthor = await userService.CreateAsync(randomAuthor);
+            var actualCategory = await courseCategoryService.CreateAsync(randomCategory);
+            randomCourse.AuthorId = actualAuthor.Id;
+            randomCourse.CategoryId = actualCategory.Id;
+
+            var actualCourse = await courseService.CreateAsync(randomCourse);
+
+            randomCourse.Name = Faker.Name.FullName();
+
+            var actuallyUpdatedCourse = await courseService.UpdateAsync(
+                    c => c.Id == actualCourse.Id, randomCourse);
+
+            var actualCourseModuleId = (await courseService.GetAsync(c => c.Id == actualCourse.Id)).Modules.FirstOrDefault().Id;
+
+            var actualYoutubeVideo =
+                await youTubeService.CreateAsync("https://www.youtube.com/watch?v=_U52_fXgxu0",
+                    actualCourse.Id);
+
+            var actualUpdatedVideo = await youTubeService.UpdateAsync(
+                actualYoutubeVideo.Id,
+                "https://www.youtube.com/watch?v=O9XTWHUW7qQ");
+
+            // then
+            actualCourse.Should().NotBeNull();
+            actualCourse.Name.Should().BeEquivalentTo(expectedCourse.Name);
+
+            actualCourse.Name.Should().NotBeEquivalentTo(actuallyUpdatedCourse.Name);
+
+            actualUpdatedVideo.Should().NotBeEquivalentTo(actualYoutubeVideo);
         }
     }
 }

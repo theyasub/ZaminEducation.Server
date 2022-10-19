@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using System.Threading.Tasks;
 
-namespace ZaminEducation.Test.Unit.Services.YouTube
+namespace ZaminEducation.Test.Unit.Services.YouTubeCourse
 {
     public partial class YoutubeServiceAndCourseServiceTest
     {
@@ -17,8 +17,8 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             var deletedCourse = await courseService.DeleteAsync(c => c.Id == dependencies.CourseId);
 
             // then
-            deletedCourse.Should().Be(true);
-            deletedPlayList.Should().Be(true);
+            deletedCourse.Should().BeTrue();
+            deletedPlayList.Should().BeTrue();
         }
 
         [Fact]
@@ -33,7 +33,7 @@ namespace ZaminEducation.Test.Unit.Services.YouTube
             var isDeleted = await youTubeService.DeleteAsync(actualVideo.Id);
             // then
 
-            isDeleted.Should().Be(true);
+            isDeleted.Should().BeTrue();
         }
     }
 }

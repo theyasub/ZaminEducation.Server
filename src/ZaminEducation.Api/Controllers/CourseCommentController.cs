@@ -23,7 +23,7 @@ public class CourseCommentController : BaseController
     /// <returns></returns>
     [HttpPost, Authorize(Roles = CustomRoles.AllRoles)]
     public async ValueTask<IActionResult> CreateAsync(long courseId, string message, long? parentId) =>
-        Ok(await this.courseCommentService.AddAsync(courseId, message, parentId));
+        Ok(await this.courseCommentService.CreateAsync(courseId, message, parentId));
 
     /// <summary>
     /// Select all comments of course by id
@@ -70,6 +70,6 @@ public class CourseCommentController : BaseController
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet("repliedcomment/{id}")]
-    public async ValueTask<IActionResult> GetRepliedComments(long id) =>
-        Ok(await this.courseCommentService.GetRepliedComments(id));
+    public async ValueTask<IActionResult> GetReplies(long id) =>
+        Ok(await this.courseCommentService.GetReplies(id));
 }

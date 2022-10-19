@@ -50,8 +50,6 @@ namespace ZaminEducation.Test.Unit.Services.Users
             actualUser.Username.Should().BeEquivalentTo(expectedUser.Username);
 
             File.Delete(Path.Combine("../../../wwwrootTest/images", actualUserWithAttachment.Image.Name));
-
-
         }
     }
 }
