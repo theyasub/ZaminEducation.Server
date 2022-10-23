@@ -4,6 +4,7 @@ using Users.Microservice.Extentions.Attributes;
 using Users.Microservice.Helpers;
 using Users.Microservice.Models.Configurations;
 using Users.Microservice.Models.Entities;
+using Users.Microservice.Models.Enums;
 using Users.Microservice.Services.DTOs;
 using Users.Microservice.Services.Extentions;
 using Users.Microservice.Services.Interfaces;
@@ -40,8 +41,8 @@ namespace Users.Microservice.Controllers
         /// <param name="roleId"></param>
         /// <returns></returns>
         [HttpPut("change/role"), Authorize(Roles = CustomRoles.SuperAdminRole)]
-        public async ValueTask<ActionResult<User>> ChangeRoleAsync(long userId, byte roleId)
-            => Ok(await userService.ChangeRoleAsync(userId, roleId));
+        public async ValueTask<ActionResult<User>> ChangeRoleAsync(long userId, UserRole role)
+            => Ok(await userService.ChangeRoleAsync(userId, role));
 
         /// <summary>
         /// Toggle saved course
@@ -50,18 +51,14 @@ namespace Users.Microservice.Controllers
         /// <returns></returns>
         [HttpPost("saved-course")]
         public async ValueTask<ActionResult<SavedCourse>> ToggleAsync(SavedCourseForCreationDto dto) =>
-            Ok(await savedCoursesService.ToggleAsync(dto));
+            Ok(await savedCoursesService.ToggleAsync(dto, long.Parse(User.FindFirst("Id").Value)));
 
         /// <summary>
         /// Delete user by id (for only admins)
         /// </summary>
         /// <param name="id"></param>
         /// <returns>true if user deleted succesfully else false</returns>
-        /// 
-
-        // role admin emasligi sabab hatolik beryapti 
-        //[HttpDelete("{id}"), Authorize(Roles = CustomRoles.AdminRole)]
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize(Roles = CustomRoles.AdminRole)]
         public async ValueTask<ActionResult<bool>> DeleteAsync([FromRoute] long id) =>
             Ok(await userService.DeleteAsync(user => user.Id == id));
 
@@ -71,10 +68,7 @@ namespace Users.Microservice.Controllers
         /// </summary>
         /// <param name="params">pagenation params</param>
         /// <returns> user collection </returns>
-
-
-        //[HttpGet, Authorize(Roles = CustomRoles.AllRoles)]
-        [HttpGet]
+        [HttpGet, Authorize(Roles = CustomRoles.AdminRole)]
         public async ValueTask<ActionResult<IEnumerable<User>>> GetAllAsync(
             [FromQuery] PaginationParams @params) =>
                 Ok(await userService.GetAllAsync(@params));
@@ -87,7 +81,7 @@ namespace Users.Microservice.Controllers
         [HttpGet("saved-course"), Authorize]
         public async ValueTask<ActionResult<IEnumerable<SavedCourse>>> GetAllSavedCoursesAsync(
             [FromQuery] PaginationParams @params, string search) =>
-                Ok(await savedCoursesService.GetAllAsync(@params, search: search));
+                Ok(await savedCoursesService.GetAllAsync(@params, long.Parse(User.FindFirst("Id").Value), search: search));
 
         /// <summary>
         /// Update password
@@ -105,10 +99,7 @@ namespace Users.Microservice.Controllers
         /// <returns>user</returns>
         /// <response code="400">if user data is not in the base</response>
         /// <response code="200">if user data have in database</response>
-        /// 
-
-        //[HttpGet("{id}"), Authorize(Roles = CustomRoles.AllRoles)]
-        [HttpGet("{id}")]
+        [HttpGet("{id}"), Authorize(Roles = CustomRoles.AllRoles)]
         public async ValueTask<ActionResult<User>> GetAsync([FromRoute] long id) =>
             Ok(await userService.GetAsync(user => user.Id == id));
 
@@ -118,10 +109,7 @@ namespace Users.Microservice.Controllers
         /// <param name="id"></param>
         /// <param name="dto"></param>
         /// <returns></returns>
-        /// 
-
-        //[HttpPut("{id}"), Authorize(Roles = CustomRoles.AllRoles)]
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize(Roles = CustomRoles.AllRoles)]
         public async ValueTask<ActionResult<User>> UpdateAsync(
             long id, [FromBody] UserForUpdateDto dto) =>
                 Ok(await userService.UpdateAsync(id, dto));
@@ -131,15 +119,16 @@ namespace Users.Microservice.Controllers
         /// </summary>
         /// <returns>user</returns>
         [HttpGet("info"), Authorize]
-        public async ValueTask<ActionResult<User>> GetInfoAsync()
-            => Ok(await userService.GetInfoAsync());
+        public async ValueTask<ActionResult<User>> GetInfoAsync() =>
+            Ok(await userService.GetInfoAsync(long.Parse(User.FindFirst("Id").Value)));
 
         /// <summary>
         /// Create attachment
         /// </summary>
         /// <returns></returns>
         [HttpPost("attachments/{id}"), Authorize(Roles = CustomRoles.UserRole)]
-        public async Task<IActionResult> Attachment(long id, [FormFileAttributes, IsNoMoreThenMaxSize(3145728)] IFormFile formFile)
-            => Ok(await userService.AddAttachmentAsync(id, formFile.ToAttachmentOrDefault()));
+        public async Task<IActionResult> Attachment(long id, 
+            [FormFileAttributes, IsNoMoreThenMaxSize(3145728)] IFormFile formFile) =>
+            Ok(await userService.AddAttachmentAsync(id, formFile.ToAttachmentOrDefault()));
     }
 }
