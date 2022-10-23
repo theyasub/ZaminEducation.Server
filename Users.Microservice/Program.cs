@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Users.Microservice.Data.DbContexts;
 using Users.Microservice.Extentions;
-using Users.Microservice.Mappers;
 using Users.Microservice.Models.Enums;
 using Users.Microservice.Services.Helpers;
 
@@ -29,13 +28,14 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole(
         Enum.GetName(UserRole.Admin)));
 });
+builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.ConfigureJwt(builder.Configuration);
+builder.Services.AddSwaggerService();
 builder.Services.AddControllers();
 builder.Services.AddCustomServices();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -46,10 +46,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+EnvironmentHelper.WebRootPath = app.Services.GetRequiredService<IWebHostEnvironment>()?.WebRootPath;
 if (app.Services.GetService<IHttpContextAccessor>() != null)
     HttpContextHelper.Accessor = app.Services.GetRequiredService<IHttpContextAccessor>();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

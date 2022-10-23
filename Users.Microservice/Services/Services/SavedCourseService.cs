@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Users.Microservice.Data.IRepositories;
 using Users.Microservice.Models.Configurations;
@@ -31,7 +30,7 @@ namespace Users.Microservice.Services.Services
         /// </summary>
         /// <param name="dto"></param>
         /// <returns></returns>
-        public async ValueTask<bool> ToggleAsync(SavedCourseForCreationDto dto)
+        public async ValueTask<bool> ToggleAsync(SavedCourseForCreationDto dto, long userId)
         {
             var existsUser = await userRepository.GetAsync(x => x.Id == dto.UserId);
             var existsCourse = await courseRepository.GetAsync(c => c.Id == dto.CourseId);
@@ -40,7 +39,7 @@ namespace Users.Microservice.Services.Services
                 throw new UserMicroserviceException(404, "Course not found");
             if (existsUser is null)
                 throw new UserMicroserviceException(404, "User not found");
-            if (dto.UserId != HttpContextHelper.UserId)
+            if (dto.UserId != userId)
                 throw new UserMicroserviceException(403, "Forbidden");
 
 
@@ -65,15 +64,15 @@ namespace Users.Microservice.Services.Services
             return true;
         }
 
-        public async ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, Expression<Func<SavedCourse, bool>> expression = null, string search = null)
+        public async ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, long userId, Expression<Func<SavedCourse, bool>> expression = null, string search = null)
         {
             var pagedList = savedCourseRepository.GetAll(expression, new string[] { "Course", "User" }, false).Skip((@params.PageIndex - 1) * @params.PageSize).Take(@params.PageSize);
 
             return !string.IsNullOrEmpty(search)
                 ? await pagedList.Where(sc => (sc.Course.Name == search ||
                     sc.Course.Category.Name == search) &&
-                    sc.UserId.Equals(HttpContextHelper.UserId)).ToListAsync()
-                : await pagedList.Where(c => c.UserId.Equals(HttpContextHelper.UserId)).ToListAsync();
+                    sc.UserId.Equals(userId)).ToListAsync()
+                : await pagedList.Where(c => c.UserId.Equals(userId)).ToListAsync();
         }
 
         public async ValueTask<SavedCourse> GetAsync(Expression<Func<SavedCourse, bool>> expression = null)

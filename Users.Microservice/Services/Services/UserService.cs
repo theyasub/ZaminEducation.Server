@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using Users.Microservice.Data.IRepositories;
 using Users.Microservice.Models.Configurations;
@@ -37,20 +36,18 @@ namespace Users.Microservice.Services.Services
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Username = dto.Username,
-                Password = dto.Password,
+                Password = dto.Password.Encrypt(),
                 Bio = dto.Bio,
                 Gender = dto.Gender,
-                DateOfBirth = dto.DateOfBirth
+                DateOfBirth = dto.DateOfBirth,
+                Role = UserRole.SuperAdmin
             };
-
-            mappedUser.Password = dto.Password.Encrypt();
             mappedUser.Create();
 
-            User newUser = await userRepository.AddAsync(mappedUser);
-
+            mappedUser = await userRepository.AddAsync(mappedUser);
             await userRepository.SaveChangesAsync();
 
-            return newUser;
+            return mappedUser;
         }
 
         public async ValueTask<bool> DeleteAsync(Expression<Func<User, bool>> expression)
@@ -82,8 +79,8 @@ namespace Users.Microservice.Services.Services
 
         public async ValueTask<User> GetAsync(Expression<Func<User, bool>> expression)
         {
-            var user = await userRepository.GetAsync(expression, new string[] { "Address", "Image" });
-
+            //var user = await userRepository.GetAsync(expression, new string[] { "Address", "Image" });
+            var user = await userRepository.GetAsync(expression);
             if (user is null)
                 throw new UserMicroserviceException(404, "User not found");
 
@@ -111,15 +108,15 @@ namespace Users.Microservice.Services.Services
             user.Update();
 
             userRepository.Update(user);
-
             await userRepository.SaveChangesAsync();
 
             return user;
         }
 
-        public async ValueTask<User> GetInfoAsync()
-            => await userRepository.GetAsync(u => u.Id == HttpContextHelper.UserId);
-
+        public async ValueTask<User> GetInfoAsync(long id)
+        {
+            return await userRepository.GetAsync(u => u.Id == id);
+        }
         public async ValueTask<User> AddAttachmentAsync(long userId, AttachmentForCreationDto attachmentForCreationDto)
         {
             var attachment = await attachmentService.UploadAsync(attachmentForCreationDto);
@@ -151,12 +148,14 @@ namespace Users.Microservice.Services.Services
                 throw new Exception("Password is incorrect!");
 
             existUser.Password = dto.NewPassword.Encrypt();
+
+            existUser = userRepository.Update(existUser);
             await userRepository.SaveChangesAsync();
 
             return existUser;
         }
 
-        public async ValueTask<User> ChangeRoleAsync(long userId, byte roleId)
+        public async ValueTask<User> ChangeRoleAsync(long userId, UserRole role)
         {
             var account = await userRepository.GetAsync(u => u.Id == userId
                                     && u.State != ItemState.Deleted && u.Role != UserRole.SuperAdmin);
@@ -164,10 +163,10 @@ namespace Users.Microservice.Services.Services
             if (account is null)
                 throw new UserMicroserviceException(404, "User not found");
 
-            if (roleId != 1 && roleId != 2)
+            if (role != UserRole.Admin && role != UserRole.Mentor)
                 throw new UserMicroserviceException(404, "Such role does not exist");
 
-            account.Role = (UserRole)roleId;
+            account.Role = role;
             account.Update();
 
             await userRepository.SaveChangesAsync();
