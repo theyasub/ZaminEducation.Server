@@ -3,12 +3,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AngleSharp;
 using ZaminEducation.Data.IRepositories;
 using ZaminEducation.Domain.Entities.Users;
 using ZaminEducation.Domain.Enums;
 using ZaminEducation.Service.Exceptions;
 using ZaminEducation.Service.Extensions;
 using ZaminEducation.Service.Interfaces;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace ZaminEducation.Service.Services
 {

@@ -20,25 +20,18 @@ builder.Services.AddControllers();
 
 // Add db context
 builder.Services.AddDbContext<ZaminEducationDbContext>(option =>
-    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddAuthorization(options =>
+// Add authentication
+builder.Services.AddAuthorization();
+
+// Cors service
+builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllPolicy", policy => policy.RequireRole(
-        Enum.GetName(UserRole.Admin),
-        Enum.GetName(UserRole.Mentor),
-        Enum.GetName(UserRole.User)));
-
-    options.AddPolicy("MentorPolicy", policy => policy.RequireRole(
-        Enum.GetName(UserRole.Admin),
-        Enum.GetName(UserRole.Mentor)));
-
-    options.AddPolicy("UserPolicy", policy => policy.RequireRole(
-        Enum.GetName(UserRole.Admin),
-        Enum.GetName(UserRole.User)));
-
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole(
-        Enum.GetName(UserRole.Admin)));
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyHeader().WithMethods("POST").WithOrigins("https://aloshop.uz");
+    });
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -69,7 +62,7 @@ builder.Services.AddControllers(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -86,6 +79,8 @@ if (app.Services.GetService<IHttpContextAccessor>() != null)
 app.UseMiddleware<ZaminEducationExceptionMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 
