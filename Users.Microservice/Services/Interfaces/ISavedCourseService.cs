@@ -8,7 +8,7 @@ namespace Users.Microservice.Services.Interfaces
     public interface ISavedCourseService
     {
         ValueTask<SavedCourse> GetAsync(Expression<Func<SavedCourse, bool>> expression = null);
-        ValueTask<bool> ToggleAsync(SavedCourseForCreationDto dto, long userId);
-        ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, long userId, Expression<Func<SavedCourse, bool>> expression = null, string search = null);
+        ValueTask<bool> ToggleAsync(SavedCourseForCreationDto dto);
+        ValueTask<IEnumerable<SavedCourse>> GetAllAsync(PaginationParams @params, Expression<Func<SavedCourse, bool>> expression = null, string search = null);
     }
 }

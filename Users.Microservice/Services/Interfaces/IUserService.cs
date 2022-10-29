@@ -1,7 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Users.Microservice.Models.Configurations;
 using Users.Microservice.Models.Entities;
-using Users.Microservice.Models.Enums;
 using Users.Microservice.Services.DTOs;
 
 namespace Users.Microservice.Services.Interfaces
@@ -13,9 +12,9 @@ namespace Users.Microservice.Services.Interfaces
         ValueTask<User> GetAsync(Expression<Func<User, bool>> expression);
         ValueTask<IEnumerable<User>> GetAllAsync(PaginationParams @params, Expression<Func<User, bool>> expression = null, string search = null);
         ValueTask<bool> DeleteAsync(Expression<Func<User, bool>> expression);
-        ValueTask<User> GetInfoAsync(long id);
+        ValueTask<User> GetInfoAsync();
         ValueTask<User> ChangePasswordAsync(UserForChangePassword dto);
         ValueTask<User> AddAttachmentAsync(long id, AttachmentForCreationDto attachmentForCreationDto);
-        ValueTask<User> ChangeRoleAsync(long userId, UserRole role);
+        ValueTask<User> ChangeRoleAsync(long userId, byte roleId);
     }
 }
