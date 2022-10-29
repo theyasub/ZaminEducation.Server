@@ -1,4 +1,4 @@
-/*using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZaminEducation.Api.Extensions.Attributes;
 using ZaminEducation.Api.Helpers;
@@ -130,4 +130,3 @@ public class UsersController : BaseController
         => Ok(await userService.AddAttachmentAsync(id, formFile.ToAttachmentOrDefault()));
 }
 
-*/

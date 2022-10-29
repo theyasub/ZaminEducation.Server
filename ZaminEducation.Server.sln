@@ -17,12 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{5947F63A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZaminEducation.Test.Unit", "Tests\ZaminEducation.Service.Unit\ZaminEducation.Test.Unit.csproj", "{40D9E4D9-7819-48DC-9C76-E77EB906C462}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZaminEducation.Microservices", "ZaminEducation.Microservices", "{09B24C1E-0627-4642-988D-DED618144F31}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Users.Microservice", "Users.Microservice\Users.Microservice.csproj", "{94F75586-93CB-4129-A9E6-9F952EA37BA0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ZaminEducation.Gateway", "ZaminEducation.Getewey\ZaminEducation.Gateway.csproj", "{0360AD10-45FD-4869-B973-6CAAA551A029}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,14 +43,6 @@ Global
 		{40D9E4D9-7819-48DC-9C76-E77EB906C462}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40D9E4D9-7819-48DC-9C76-E77EB906C462}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40D9E4D9-7819-48DC-9C76-E77EB906C462}.Release|Any CPU.Build.0 = Release|Any CPU
-		{94F75586-93CB-4129-A9E6-9F952EA37BA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{94F75586-93CB-4129-A9E6-9F952EA37BA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{94F75586-93CB-4129-A9E6-9F952EA37BA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{94F75586-93CB-4129-A9E6-9F952EA37BA0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0360AD10-45FD-4869-B973-6CAAA551A029}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0360AD10-45FD-4869-B973-6CAAA551A029}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0360AD10-45FD-4869-B973-6CAAA551A029}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0360AD10-45FD-4869-B973-6CAAA551A029}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -67,9 +53,6 @@ Global
 		{BF5876D9-339C-4379-92C8-5B2659B23D5F} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
 		{6C36F056-244F-4240-AB23-DE952F6BCB9B} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
 		{40D9E4D9-7819-48DC-9C76-E77EB906C462} = {5947F63A-1C9A-4C81-BF84-F8F738F94F18}
-		{09B24C1E-0627-4642-988D-DED618144F31} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
-		{94F75586-93CB-4129-A9E6-9F952EA37BA0} = {09B24C1E-0627-4642-988D-DED618144F31}
-		{0360AD10-45FD-4869-B973-6CAAA551A029} = {DC481027-5BE4-4A0F-94BC-FBD4447C3777}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {74B4CB6C-6660-42CF-9A03-ED278EBC4D09}

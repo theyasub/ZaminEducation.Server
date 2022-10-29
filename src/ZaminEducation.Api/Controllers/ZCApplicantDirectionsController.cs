@@ -37,7 +37,7 @@ namespace ZaminEducation.Api.Controllers
         /// <returns>
         /// A bool value depending on whether the condition is met
         /// </returns>
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async ValueTask<ActionResult<bool>> DeleteAsync(long id)
             => Ok(await directionService.DeleteAsync(c => c.Id == id));
 
@@ -48,7 +48,7 @@ namespace ZaminEducation.Api.Controllers
         /// <returns>
         /// Selects a direction with the entered id
         /// </returns>
-        [HttpGet("{id}"), AllowAnonymous]
+        [HttpGet("id"), AllowAnonymous]
         public async ValueTask<ActionResult<ZCApplicantDirection>> GetAsync(long id)
             => Ok(await directionService.GetAsync(c => c.Id == id));
 
@@ -60,7 +60,7 @@ namespace ZaminEducation.Api.Controllers
         /// <returns>
         /// Selects an updated direction 
         /// </returns>
-        [HttpPut("{id}")]
+        [HttpPut]
         public async ValueTask<ActionResult<ZCApplicantDirection>> UpdateAsync(long id,
             ZCApplicantDirectionForCreationDto dto)
             => Ok(await directionService.UpdateAsync(c => c.Id == id, dto));
